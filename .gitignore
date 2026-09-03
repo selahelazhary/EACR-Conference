@@ -1,11 +1,35 @@
-__pycache__/
-*.pyc
-.venv/
-venv/
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Next.js
+.next
+out
+build
+dist
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
 
-.vercel
-.env*
+# Python (old system)
+__pycache__
+*.pyc
+*.pyo
+eacr/__pycache__
