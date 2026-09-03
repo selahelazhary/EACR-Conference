@@ -783,3 +783,35 @@ a.plaque:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 @media (max-width: 1180px) {
   [data-masthead="bar"] .masthead__nav a { padding-inline: .34rem; font-size: .82rem; }
 }
+
+/* ═══ الترويسةُ على الهاتف لا تُسحق ═════════════════════════
+   الاسمُ الطويلُ كان يزاحم زرَّ القائمة حتّى يصير عرضُه صفراً،
+   فتُغلق أقسامُ الموقع في وجه قارئ الهاتف. الأزرارُ لا تنكمش،
+   والاسمُ وحدَه هو ما يقصُر.
+   ═══════════════════════════════════════════════════════ */
+.masthead__menu,
+.masthead__tools,
+.masthead__tools > * { flex-shrink: 0; }
+.masthead__tools { display: flex; align-items: center; gap: .1rem; }
+.brand { min-width: 0; flex-shrink: 1; }
+.brand__text { min-width: 0; }
+.brand__text strong,
+.brand__text small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .brand__text strong { font-size: 1.05rem; }
+  [data-masthead] .brand__mark { width: 34px; height: 34px; }
+  .icon-btn { width: 34px; height: 34px; }
+}
+/* على الشاشة الضيّقة: المحفوظاتُ في القائمة الجانبيّة أصلاً،
+   فتُخلي مكانَها لاسم الصحيفة كاملاً */
+@media (max-width: 480px) {
+  .masthead__tools a[href="/saved/"] { display: none; }
+}
+@media (max-width: 420px) {
+  .brand__text strong { font-size: .95rem; }
+}
