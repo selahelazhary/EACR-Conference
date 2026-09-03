@@ -1,0 +1,135 @@
+{
+ "_meta": {
+  "database": "https://earc-55619-default-rtdb.europe-west1.firebasedatabase.app",
+  "sections": [
+   "news",
+   "events",
+   "workshops",
+   "speakers",
+   "videos",
+   "gallery"
+  ],
+  "synced_at": "2026-09-03T08:57:13+00:00"
+ },
+ "categories": {
+  "cat_1788424590602": {
+   "name": "تجربه"
+  }
+ },
+ "config": null,
+ "events": {
+  "-P0aQhpOk1mMu-ixa2-A": {
+   "author": "معاذ",
+   "categories": [
+    "cat_1788424590602"
+   ],
+   "content": "<p><img src=\"https://i.ibb.co/Jjqg9fVQ/download.png\"></p>",
+   "createdAt": 1788424668010,
+   "date": "2026-09-03",
+   "dateLabel": "3 سبتمبر 2026",
+   "featured": true,
+   "focus": {
+    "x": 50,
+    "y": 50
+   },
+   "image": "",
+   "readTime": 1,
+   "source": "",
+   "summary": "تجربه",
+   "timestamp": 1788426000000,
+   "title": "تجربه",
+   "updatedAt": 1788424939019,
+   "updatedBy": "elgoharyx@admin.com",
+   "venue": "",
+   "when": ""
+  }
+ },
+ "gallery": null,
+ "news": null,
+ "site_config": {
+  "appearance": {
+   "brand": "#000000",
+   "radius": "sharp",
+   "spark": "#000000",
+   "theme": "nile"
+  },
+  "identity": {
+   "title": "EACR Conference"
+  },
+  "sections": [
+   {
+    "accent": "#E72085",
+    "description": "ما استجدَّ من إعلانات المؤتمر ومواعيدِه وقراراتِ لجانه.",
+    "display": "standard",
+    "icon": "bolt",
+    "id": "news",
+    "name": "أخبار",
+    "plural": "أخبارُ المؤتمر",
+    "single": "خبر",
+    "slug": "news"
+   },
+   {
+    "accent": "#00ABCB",
+    "description": "الجلساتُ العلميّةُ وورشُ العمل والندواتُ بمواعيدها وقاعاتها.",
+    "display": "agenda",
+    "icon": "calendar",
+    "id": "events",
+    "name": "فعاليّات",
+    "plural": "فعاليّاتُ المؤتمر",
+    "single": "فعاليّة",
+    "slug": "events"
+   },
+   {
+    "accent": "#B8860B",
+    "description": "ورشٌ تدريبيّةٌ عمليّةٌ مصاحبةٌ للمؤتمر بمواعيدها وقاعاتها ومدرّبيها.",
+    "display": "agenda",
+    "icon": "tools",
+    "id": "workshops",
+    "name": "ورش العمل",
+    "plural": "ورشُ العمل",
+    "single": "ورشة",
+    "slug": "workshops"
+   },
+   {
+    "accent": "#7A2E8E",
+    "description": "الأساتذةُ والباحثون المشاركون في جلسات المؤتمر.",
+    "display": "people",
+    "icon": "mic",
+    "id": "speakers",
+    "name": "المتحدّثون",
+    "plural": "المتحدّثون",
+    "single": "متحدّث",
+    "slug": "speakers"
+   },
+   {
+    "accent": "#C2185B",
+    "description": "تسجيلاتُ الجلسات والكلماتِ ومقتطفاتٌ مصوّرةٌ من أروقة المؤتمر.",
+    "display": "video",
+    "icon": "play",
+    "id": "videos",
+    "name": "فيديوهات",
+    "plural": "فيديوهاتُ المؤتمر",
+    "single": "فيديو",
+    "slug": "videos"
+   },
+   {
+    "accent": "#0F7C8A",
+    "description": "ألبومُ المؤتمر: لحظاتٌ من الافتتاح والجلسات والمعارض المصاحبة.",
+    "display": "gallery",
+    "icon": "camera",
+    "id": "gallery",
+    "name": "صور المؤتمر",
+    "plural": "صورُ المؤتمر",
+    "single": "صورة",
+    "slug": "gallery"
+   }
+  ],
+  "updatedAt": 1788425349025,
+  "updatedBy": "elgoharyx@admin.com"
+ },
+ "site_texts": null,
+ "speakers": null,
+ "sponsors": null,
+ "videos": null,
+ "workshops": null
+}

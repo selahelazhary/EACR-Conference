@@ -36,12 +36,12 @@
 
   const render = () => {
     const list = getSaved();
-    count.textContent = list.length ? `${list.length} مادّةً محفوظة` : '';
+    count.textContent = list.length ? `${list.length} منشوراً محفوظاً` : '';
     grid.innerHTML = list.length
       ? list.map(cardHTML).join('')
       : `<div class="empty" style="grid-column:1/-1">
            <p class="empty__text">قائمتُك فارغة</p>
-           <p class="empty__hint">اضغط علامةَ الحفظ على أيّ مادّةٍ لتظهر هنا. تُحفظ في متصفّحك وحده.</p>
+           <p class="empty__hint">اضغط علامةَ الحفظ على أيّ منشورٍ ليظهر هنا. تُحفظ في متصفّحك وحده.</p>
          </div>`;
   };
 

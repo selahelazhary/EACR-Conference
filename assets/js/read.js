@@ -1,5 +1,5 @@
-/* ═══ قارئُ المادّة المباشرة (/read.html) ═══════════════════
-   يعرض مادّةً نُشرت للتوّ في القاعدة قبل إعادة بناء الموقع.
+/* ═══ قارئُ المنشور المباشرة (/read.html) ═══════════════════
+   يعرض منشوراً نُشر للتوّ في القاعدة قبل إعادة بناء الموقع.
    ═══════════════════════════════════════════════════════ */
 (() => {
   'use strict';
@@ -10,19 +10,16 @@
   const status = document.getElementById('live-status');
   if (!root) return;
 
-  const DB = window.EACR_DB || 'https://newserver-4e3d8-default-rtdb.firebaseio.com';
-  /* [المفرد فوق المادّة، الرابط، الجمع في «تصفّح …»] */
-  const SECTIONS = {
-    reports: ['تقرير', '/reports/', 'التقارير'],
-    investigations: ['تحقيق', '/investigations/', 'التحقيقات'],
-    articles: ['مقال', '/articles/', 'المقالات'],
-    news: ['خبر', '/news/', 'الأخبار'],
-    interviews: ['حوار', '/interviews/', 'الحوارات'],
-    infographics: ['إنفوجرافيك', '/infographics/', 'الإنفوجرافيك'],
-    videos: ['فيديو', '/videos/', 'الفيديوهات']
-  };
+  const DB = (window.EACR_DB || '').replace(/\/$/, '');
+  /* [المفرد فوق المنشور، الرابط، الجمع في «تصفّح …»] — من الأقسام
+     التي يكتبها المولّد، فأيُّ قسمٍ يُضاف من اللوحة يُقرأ هنا. */
+  const SECTIONS = Object.fromEntries(
+    (window.EACR_SECTIONS || []).map((s) => [
+      s.id, [s.single || s.name, `/${s.slug || s.id}/`, s.plural || s.name]
+    ])
+  );
 
-  // هيكلٌ عظميٌّ ريثما تصل المادّة
+  // هيكلٌ عظميٌّ ريثما يصل المنشور
   root.insertAdjacentHTML('beforeend', window.EACR?.skeletonArticle() || '');
 
   const params = new URLSearchParams(location.search);
@@ -93,7 +90,7 @@
       return;
     }
     if (!item || typeof item !== 'object') {
-      fail('لم نجد هذه المادّة');
+      fail('لم نجد هذا المنشور');
       return;
     }
 
@@ -105,6 +102,11 @@
       ? ` style="object-position:${Number(item.focus.x) || 0}% ${Number(item.focus.y) || 0}%"` : '';
     const video = youtubeId(item.video || item.videoUrl || item.url || item.link || '');
     const body = sanitize(item.content || item.body || item.text || '');
+    const when = (item.when || item.time || '').toString().trim();
+    const venue = (item.venue || item.hall || item.place || '').toString().trim();
+    const role = (item.role || item.affiliation || item.position || '').toString().trim();
+    const facts = [role, when, venue].filter(Boolean)
+      .map((fact) => `<span class="event__fact">${escape(fact)}</span>`).join('');
 
     document.title = `${title} | ${SITE_TITLE}`;
 
@@ -116,6 +118,7 @@
         </div>
         <h1 class="article__title">${escape(title)}</h1>
         ${dek ? `<p class="article__dek">${escape(dek)}</p>` : ''}
+        ${facts ? `<p class="event__facts">${facts}</p>` : ''}
         <div class="article__meta">
           <div class="byline">
             <span class="byline__avatar" aria-hidden="true">د</span>
@@ -138,11 +141,11 @@
           : ''}
 
       <div class="article__grid" style="padding-inline:0">
-        <div class="prose prose--wide">${body || '<p class="prose__empty">لا يتوفّر نصُّ هذه المادّة.</p>'}</div>
+        <div class="prose prose--wide">${body || '<p class="prose__empty">لا يتوفّر نصُّ هذا المنشور.</p>'}</div>
       </div>
 
       <p class="quiz__disclaimer" style="margin-inline:auto">
-        هذه المادّةُ معروضةٌ مباشرةً من قاعدة التحرير قبل إدراجها في النسخة الثابتة من الموقع.
+        هذا المنشورُ معروضٌ مباشرةً من قاعدة التحرير قبل إدراجه في النسخة الثابتة من الموقع.
         <a href="${sectionUrl}" style="color:var(--brand)">تصفّح ${escape(sectionPlural)}</a>
       </p>`;
   })();

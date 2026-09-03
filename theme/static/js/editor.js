@@ -1,4 +1,4 @@
-/* ═══ محرّرُ المواد ══════════════════════════════════════════
+/* ═══ محرّرُ المنشورات ══════════════════════════════════════════
    Quill نواةً، وفوقه ما يحتاجه محرّرٌ صحفيّ فعلاً:
 
    · شريطُ أدواتٍ عربيٌّ مجموعٌ بالوظيفة، لاصقٌ عند التمرير.
@@ -187,7 +187,7 @@
       <div class="ed" dir="rtl">
         <div class="ed__bar" role="toolbar" aria-label="أدواتُ التحرير">${toolbarHTML()}</div>
         <div class="ed__find" hidden>
-          <input type="text" class="ed__q" placeholder="ابحث في المادّة…" aria-label="نصُّ البحث">
+          <input type="text" class="ed__q" placeholder="ابحث في المنشور…" aria-label="نصُّ البحث">
           <input type="text" class="ed__r" placeholder="استبدل بـ…" aria-label="البديل">
           <span class="ed__count"></span>
           <button type="button" class="btn btn--ghost btn--sm" data-find-prev>السابق</button>
@@ -214,7 +214,7 @@
 
     const quill = new Quill(host.querySelector('.ed__quill'), {
       theme: 'snow',
-      placeholder: 'اكتب المادّة هنا… ألصق من وورد بلا خوف: يُنظَّف التنسيقُ ويبقى المعنى.',
+      placeholder: 'اكتب المنشور هنا… ألصق من وورد بلا خوف: يُنظَّف التنسيقُ ويبقى المعنى.',
       modules: {
         toolbar: false,
         history: { delay: 700, maxStack: 200, userOnly: true },

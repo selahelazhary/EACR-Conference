@@ -47,14 +47,14 @@ MAX_ENTRY_CHARS = 12_000  # ما يزيد يُقصّ عند أقرب نهاية�
 
 
 def _feed_body(html: str, url: str) -> str:
-    """نصُّ المادّة كما يصلح للقارئ: بلا صورٍ مضمّنةٍ وبطولٍ معقول."""
+    """نصُّ المنشور كما يصلح للقارئ: بلا صورٍ مضمّنةٍ وبطولٍ معقول."""
     body = DATA_URI_IMG_RE.sub("", html or "")
     if len(body) <= MAX_ENTRY_CHARS:
         return body
     window = body[:MAX_ENTRY_CHARS]
     cuts = list(TAG_END_RE.finditer(window))
     trimmed = window[: cuts[-1].end()] if cuts else window
-    return f'{trimmed}<p><a href="{url}">تابع قراءة المادّة كاملةً على الموقع ←</a></p>'
+    return f'{trimmed}<p><a href="{url}">تابع قراءة المنشور كاملاً على الموقع ←</a></p>'
 
 
 def rss(config: SiteConfig, items: list[Item], path: Path, limit: int = 30) -> Path:

@@ -146,7 +146,7 @@ _ROWS: tuple[tuple, ...] = (
     ("modern",    "الحديث",              "حديث",  "normal", "normal", "boxed",  "wide",    "normal", "hair",  "bar",     "split",  ""),
     ("cardstack", "الألواح",             "حديث",  "normal", "normal", "shadow", "wide",    "normal", "hair",  "bar",     "stack",  ""),
     ("minimal",   "الأدنى",              "حديث",  "narrow", "airy",   "plain",  "wide",    "calm",   "hair",  "compact", "stack",  "بياضٌ واسعٌ ولا زخرفة"),
-    ("dense",     "الكثيف",              "حديث",  "wide",   "tight",  "line",   "wide",    "normal", "hair",  "compact", "split",  "أكبرُ عددٍ من المواد في الشاشة"),
+    ("dense",     "الكثيف",              "حديث",  "wide",   "tight",  "line",   "wide",    "normal", "hair",  "compact", "split",  "أكبرُ عددٍ من المنشورات في الشاشة"),
     ("tiles",     "البلاط",              "حديث",  "wide",   "tight",  "tint",   "square",  "normal", "hair",  "bar",     "stack",  ""),
     # هادئ
     ("reader",    "القارئ",              "هادئ",  "narrow", "airy",   "plain",  "photo",   "calm",   "hair",  "compact", "list",   "مصمَّمٌ للقراءة الطويلة"),

@@ -1,4 +1,4 @@
-"""نموذجُ المحتوى: يجمع موادَّ Firebase وملفّاتِ Markdown في قائمةٍ واحدةٍ موحّدة."""
+"""نموذجُ المحتوى: يجمع منشورات Firebase وملفّاتِ Markdown في قائمةٍ واحدةٍ موحّدة."""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ class Category:
 
 @dataclass
 class Item:
-    """مادّةٌ تحريريّةٌ واحدة، أيّاً كان مصدرُها."""
+    """منشورٌ تحريريٌّ واحد، أيّاً كان مصدرُها."""
 
     id: str
     section: str
@@ -214,7 +214,7 @@ def build_topics(raw: Any) -> tuple[dict[str, Category], dict[str, list[str]]]:
     return topics, bundles
 
 
-# وصفٌ يليق بنتائج البحث حين تخلو المادّةُ من متنٍ يُشتقُّ منه ملخّص —
+# وصفٌ يليق بنتائج البحث حين يخلو المنشورُ من متنٍ يُشتقُّ منه ملخّص —
 # مبنيٌّ على شكل عرض القسم لا على معرّفه، فيصلح للأقسام التي تُضاف لاحقاً.
 DEK_TEMPLATES = {
     "video": "{title} — تسجيلٌ مصوَّرٌ من {conference}، المنعقد في {venue}.",
@@ -226,11 +226,11 @@ DEK_DEFAULT = "{title} — {section} في {conference}، المنعقد في {ve
 
 
 def _fallback_dek(item: Item, section: Any, config: SiteConfig) -> str:
-    """وصفٌ محترمٌ للمادّة الخالية من المتن، بدل تركِ الوصف فارغاً."""
+    """وصفٌ محترمٌ للمنشور الخالي من المتن، بدل تركِ الوصف فارغاً."""
     conference = config.conference
     fields = {
         "title": item.title.strip(),
-        "section": getattr(section, "many", "مادّة"),
+        "section": getattr(section, "many", "منشور"),
         "conference": conference.get("name") or config.get("title", ""),
         "venue": conference.get("venue") or "",
     }
@@ -263,7 +263,7 @@ def _finalize(
         item.image = first_image(item.body)
     if not item.dek:
         item.dek = excerpt(item.body, config.build.get("excerpt_words", 34))
-    if len(item.dek) < 60:  # موادُّ الصور والفيديو بلا متنٍ — وصفٌ يليق بنتائج البحث
+    if len(item.dek) < 60:  # منشوراتُ الصور والفيديو بلا متنٍ — وصفٌ يليق بنتائج البحث
         item.dek = _fallback_dek(item, section, config)
 
     # حزمُ التصنيف تُفكّ إلى موضوعاتٍ مفردة، والمكتوبُ يدويّاً يُسلَك مباشرةً
@@ -292,7 +292,7 @@ def from_snapshot(
     topics: dict[str, Category],
     bundles: dict[str, list[str]],
 ) -> list[Item]:
-    """يقرأ موادَّ الأقسام من لقطة Firebase."""
+    """يقرأ منشورات الأقسام من لقطة Firebase."""
     items: list[Item] = []
     for section in config.sections:
         node = snapshot.get(section.id)
@@ -344,7 +344,7 @@ def from_markdown(
     bundles: dict[str, list[str]],
     directory: Path | None = None,
 ) -> list[Item]:
-    """يقرأ الموادَّ المكتوبةَ محلّيّاً في content/articles/*.md."""
+    """يقرأ المنشوراتِ المكتوبةَ محلّيّاً في content/articles/*.md."""
     directory = directory or ARTICLES_DIR
     if not directory.exists():
         return []
@@ -495,7 +495,7 @@ def load_sponsors(raw: Any, config: SiteConfig) -> list[Tier]:
 
 
 def dedupe(items: Iterable[Item]) -> list[Item]:
-    """المادّةُ المحلّيّة تتقدّم على مثيلتها في القاعدة عند تطابق العنوان والقسم."""
+    """المنشورُ المحلّيُّ يتقدّم على مثيله في القاعدة عند تطابق العنوان والقسم."""
     seen: dict[tuple[str, str], Item] = {}
     for item in items:
         key = (item.section, slugify(item.title))

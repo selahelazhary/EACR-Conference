@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 from typing import Any
@@ -33,7 +34,7 @@ class Section:
     name: str
     plural: str = ""
     slug: str = ""
-    single: str = ""       # ما يُكتب فوق المادّة الواحدة: خبر · فعاليّة · متحدّث
+    single: str = ""       # ما يُكتب فوق المنشور الواحد: خبر · فعاليّة · متحدّث
     icon: str = "newspaper"
     accent: str = "#C2185B"
     display: str = "standard"
@@ -186,7 +187,26 @@ class SiteConfig:
 
     @property
     def conference(self) -> dict[str, Any]:
-        return self.data.get("conference", {}) or {}
+        """بياناتُ المؤتمر، ومعها لحظتا البداية والنهاية كاملتَي التوقيت.
+
+        اللوحةُ تحفظ التاريخَ يوماً (`2026-09-23`) وساعةَ الافتتاح ومنطقةَ
+        التوقيت كلاًّ على حدة، لأنّ ذلك أسهلُ في التحرير. والعدّادُ والبياناتُ
+        المهيكلة يحتاجان لحظةً واحدةً لا لبسَ فيها، فتُركَّب هنا مرّةً واحدة.
+        """
+        data = dict(self.data.get("conference", {}) or {})
+        zone = str(data.get("timezone") or "+03:00").strip()
+        opens = str(data.get("open_time") or "09:00").strip()
+
+        def moment(day: Any, clock: str) -> str:
+            text = str(day or "").strip()
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+                return ""
+            return f"{text}T{clock}{zone}"
+
+        data["starts_at"] = moment(data.get("starts"), f"{opens}:00" if len(opens) == 5 else "09:00:00")
+        # المؤتمرُ لا ينتهي عند فجر آخرِ يومٍ بل في آخره
+        data["ends_at"] = moment(data.get("ends") or data.get("starts"), "23:59:59")
+        return data
 
     @property
     def sponsors(self) -> dict[str, Any]:

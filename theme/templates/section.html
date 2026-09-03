@@ -26,8 +26,20 @@
   </div>
 </header>
 
-<section class="shell section-body">
+<section class="shell section-body" data-live-section="{{ section.id }}">
   {{ adx.unit('section_top', 'band') }}
+  {# صدرُ الشبكة: ما نُشر من اللوحة بعد آخر بناءٍ يُحقن هنا #}
+  {% if page.number == 1 %}
+    {% if section.display == 'people' %}
+      <div class="grid grid--people" data-live-grid hidden></div>
+    {% elif section.display == 'gallery' %}
+      <div class="grid grid--tiles" data-live-grid hidden></div>
+    {% elif section.display == 'agenda' %}
+      <div class="agenda" data-live-grid hidden></div>
+    {% else %}
+      <div class="grid grid--3 grid--gap" data-live-grid hidden></div>
+    {% endif %}
+  {% endif %}
   {% if page.items %}
     {% if section.display in ('people', 'gallery', 'agenda') %}
       {{ ui.section_grid(section, page.items) }}
@@ -54,7 +66,9 @@
     {% endif %}
     {{ ui.pagination(page) }}
   {% else %}
-    {{ ui.empty_state('لا توجد موادُّ في هذا القسم بعد.', 'يُستكمل النشرُ تباعاً — عُد إلينا قريباً.') }}
+    <div data-empty-state>
+      {{ ui.empty_state('لا توجد منشورات في هذا القسم بعد.', 'يُستكمل النشرُ تباعاً — عُد إلينا قريباً.') }}
+    </div>
   {% endif %}
 </section>
 

@@ -13,12 +13,12 @@ from . import content as content_mod
 from . import feeds
 from . import markup
 from .media import MediaStore
-from .config import MANIFEST_PATH, OUTPUT_DIR, STATIC_DIR, SiteConfig, load_config
+from .config import CONTENT_DIR, MANIFEST_PATH, OUTPUT_DIR, STATIC_DIR, SiteConfig, load_config
 from .content import Category, Item, StaticPage, Tier
 from .firebase import load_snapshot
 from .render import make_env, render_to, write
 
-MIN_TOPIC_ITEMS = 2  # صفحةُ الموضوع لا تُنشأ إلّا إذا جمعت مادّتين فأكثر
+MIN_TOPIC_ITEMS = 2  # صفحةُ الموضوع لا تُنشأ إلّا إذا جمع منشورين فأكثر
 
 # مجلّداتٌ يولّدها البناءُ دائماً — تُمسح قبل كلِّ بناءٍ لئلّا تبقى فيها بقايا
 FIXED_DIRS = (
@@ -97,7 +97,7 @@ def collect(config: SiteConfig | None = None) -> Site:
     items += content_mod.from_markdown(config, topics, bundles)
     items = content_mod.dedupe(items)
 
-    # العدُّ بعد إزالة التكرار، ثمّ إسقاطُ الموضوعات التي لا تجمع مادّتين
+    # العدُّ بعد إزالة التكرار، ثمّ إسقاطُ الموضوعات التي لا تجمع منشورين
     for topic in topics.values():
         topic.count = 0
     for item in items:
@@ -161,6 +161,29 @@ def copy_static(output: Path) -> None:
         shutil.copytree(STATIC_DIR, target)
 
 
+def publish_dictionaries(output: Path) -> int:
+    """ينشر معاجمَ الترجمة مع الأصول — الأصولُ تُمسح كلَّ بناءٍ فتُنسخ معها.
+
+    المعجمُ مصدرُه ``content/i18n/`` ويُصحَّح باليد؛ وهذا ينسخه مضغوطاً
+    إلى ``assets/i18n/`` حيث يقرؤه ``lang.js``.
+    """
+    source = CONTENT_DIR / "i18n"
+    if not source.is_dir():
+        return 0
+    target = output / "assets" / "i18n"
+    target.mkdir(parents=True, exist_ok=True)
+    count = 0
+    for path in sorted(source.glob("*.json")):
+        try:
+            table = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        write(target / path.name,
+              json.dumps(table, ensure_ascii=False, separators=(",", ":")))
+        count += 1
+    return count
+
+
 def _previous_dirs() -> list[str]:
     """مجلّداتُ البناء السابق — بها نعرف قسماً حُذف من اللوحة فنمسح صفحاتِه."""
     if not MANIFEST_PATH.exists():
@@ -198,6 +221,7 @@ def build(output: Path | None = None, verbose: bool = True) -> Site:
 
     clean_generated(output, config)
     copy_static(output)
+    publish_dictionaries(output)
 
     # الصورُ المضمّنةُ في نصوص المحرّر تُستخرج ملفّاتٍ قبل أن تُطبع في صفحة
     store = MediaStore(output / "assets" / "media")
@@ -255,7 +279,7 @@ def build(output: Path | None = None, verbose: bool = True) -> Site:
         page_url="/",
     )
 
-    # ── الأقسام وموادُّها ────────────────────────────────────────
+    # ── الأقسام ومنشوراتُها ────────────────────────────────────────
     for section in config.sections:
         items = site.by_section(section.id)
         pages = paginate(items, build_cfg.get("per_page", 12), section.url)
@@ -400,7 +424,7 @@ def build(output: Path | None = None, verbose: bool = True) -> Site:
 
     if verbose:
         print(f"  ✔ {written} ملفّاً مُولَّداً")
-        print(f"  ✔ {len(site.items)} مادّةً · {len(config.sections)} أقساماً · "
+        print(f"  ✔ {len(site.items)} منشوراً · {len(config.sections)} أقساماً · "
               f"{len(site.categories)} موضوعاً · {site.sponsor_count} داعماً")
         if store.count:
             print(f"  ✔ {store.count} صورةً مضمّنةً استُخرجت إلى ملفّات "

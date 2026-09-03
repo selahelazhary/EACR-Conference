@@ -740,7 +740,7 @@ table.rows tr:last-child td { border-block-end: 0; }
 .focus__prev-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .focus__prev small { font-size: .68rem; color: var(--muted); }
 
-/* ═══ محرّرُ المواد ═══════════════════════════════════════ */
+/* ═══ محرّرُ المنشورات ═══════════════════════════════════════ */
 .ed {
   border: 1px solid var(--line);
   border-radius: var(--r-md);

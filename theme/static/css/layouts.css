@@ -65,16 +65,18 @@
   height: auto;
 }
 [data-masthead="center"] .masthead__menu { grid-area: menu; }
+/* الشعارُ إلى جانب الاسم لا فوقه — والمجموعةُ كلُّها في وسط الترويسة */
 [data-masthead="center"] .brand {
   grid-area: brand;
   justify-self: center;
-  flex-direction: column;
-  text-align: center;
-  gap: .35rem;
+  flex-direction: row;
+  align-items: center;
+  text-align: start;
+  gap: .7rem;
   margin: 0;
 }
 [data-masthead="center"] .brand__mark { width: 46px; height: 46px; }
-[data-masthead="center"] .brand__text { align-items: center; }
+[data-masthead="center"] .brand__text { align-items: flex-start; text-align: start; }
 [data-masthead="center"] .brand__text strong { font-size: 1.7rem; }
 [data-masthead="center"] .masthead__nav {
   grid-area: nav;

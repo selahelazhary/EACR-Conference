@@ -55,7 +55,7 @@
           data-section="{{ item.section_one or item.section_name }}"
           data-image="{{ item.poster }}"
           data-date="{{ item.date_label }}"
-          aria-label="حفظُ المادّة للقراءة لاحقاً" title="حفظٌ للقراءة لاحقاً">
+          aria-label="حفظُ المنشور للقراءة لاحقاً" title="حفظٌ للقراءة لاحقاً">
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
       <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"
             fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
@@ -211,7 +211,7 @@
   </article>
 {% endmacro %}
 
-{# بلاطةُ معرض: الصورةُ هي المادّة، والعنوانُ يظهر عند المرور #}
+{# بلاطةُ معرض: الصورةُ هي المنشورُ، والعنوانُ يظهر عند المرور #}
 {% macro gallery_tile(item) %}
   <a class="tile" href="{{ item.url }}" style="--accent: {{ item.accent }}">
     {% if item.poster %}
@@ -273,5 +273,25 @@
     <div class="grid grid--3 grid--gap">
       {% for item in items %}{{ card(item, 'standard', dek=dek and loop.first) }}{% endfor %}
     </div>
+  {% endif %}
+{% endmacro %}
+
+{# عدّادُ ما بقي على المؤتمر — الأرقامُ تملؤها countdown.js، ولا يظهر
+   اللوحُ قبل أن تُحسب فلا يومض بأصفارٍ كاذبة. #}
+{% macro countdown(conference) %}
+  {% if conference.get('starts_at') %}
+  <div class="countdown" data-countdown data-no-translate
+       data-starts="{{ conference.starts_at }}"
+       data-ends="{{ conference.get('ends_at') or conference.starts_at }}" hidden>
+    <p class="countdown__label" data-countdown-label>يبدأ المؤتمرُ بعد</p>
+    <div class="countdown__units">
+      {% for unit, name in [('days', 'يوم'), ('hours', 'ساعة'), ('minutes', 'دقيقة'), ('seconds', 'ثانية')] %}
+        <div class="unit">
+          <b class="unit__num" data-countdown-{{ unit }}>—</b>
+          <span class="unit__name">{{ name }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
   {% endif %}
 {% endmacro %}

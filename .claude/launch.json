@@ -4,7 +4,7 @@
     {
       "name": "eacr",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["build.py", "--serve", "--port", "8010"],
+      "runtimeArgs": ["build.py", "--serve", "--no-i18n", "--port", "8010"],
       "port": 8010
     }
   ]

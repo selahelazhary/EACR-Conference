@@ -17,7 +17,10 @@ const PRECACHE = [
   '{{ asset("css/layouts.css") }}',
   '{{ asset("css/conference.css") }}',
   '{{ asset("js/skin.js") }}',
+  '{{ asset("js/lang.js") }}',
+  '/assets/i18n/en.json',
   '{{ asset("js/core.js") }}',
+  '{{ asset("js/countdown.js") }}',
   '{{ asset("js/search.js") }}',
   '/search-index.json'
 ];

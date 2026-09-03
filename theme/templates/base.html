@@ -54,6 +54,15 @@
 <meta name="theme-color" content="#0D0A0E" media="(prefers-color-scheme: dark)">
 <link rel="alternate" type="application/rss+xml" title="{{ cfg.title }}" href="/rss.xml">
 
+{# اللغةُ قبل أوّل رسم: الإنجليزيّةُ هي الأصل، والعربيّةُ باختيار القارئ.
+   ويبدأ سحبُ المعجم هنا فيصل مع الصفحة لا بعدها. #}
+<script>
+(function(){var l='en';try{l=localStorage.getItem('eacr:lang')||'en';}catch(e){}
+var r=document.documentElement;r.lang=l;r.dir=l==='ar'?'rtl':'ltr';r.setAttribute('data-lang',l);
+if(l!=='ar'){window.__EACR_I18N=fetch('/assets/i18n/'+l+'.json')
+  .then(function(x){return x.ok?x.json():{};}).catch(function(){return {};});}})();
+</script>
+
 {# يمنع وميضَ الوضع الفاتح قبل تطبيق تفضيل القارئ #}
 <script>
 (function(){try{var p=JSON.parse(localStorage.getItem('eacr:prefs')||'{}');
@@ -70,7 +79,8 @@ if(p.size)r.dataset.size=p.size;if(p.serif)r.dataset.serif='1';}catch(e){}})();
 }|tojson }};</script>
 {% endif %}
 <script>window.EACR_DB={{ cfg.firebase.database_url|tojson }};
-window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};</script>
+window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};
+window.EACR_SECTIONS={{ section_list|tojson }};</script>
 
 {# جلدُ الموقع: ما بُني في الرأس، وما قد يكون تبدّل في القاعدة بعده #}
 <script>window.EACR_SKIN={{ skin|tojson }};window.EACR_SKIN.attrs={{ layout_attrs_map|tojson }};</script>
@@ -100,7 +110,7 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
       <img class="brand__mark" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="40" height="40"
            alt="شعار {{ cfg.title }}" fetchpriority="high" decoding="async">
       <span class="brand__text">
-        <strong>{{ cfg.title }}</strong>
+        <strong data-no-translate>{{ cfg.title }}</strong>
         <small>{{ cfg.tagline }}</small>
       </span>
     </a>
@@ -137,7 +147,7 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
       {% endif %}
       {% if notify.get('enabled') and show('masthead.bell') %}
       <button class="icon-btn icon-btn--bell" type="button" data-notify-toggle
-              aria-label="إشعاراتُ المواد الجديدة" title="إشعاراتُ الجديد" hidden>
+              aria-label="إشعاراتُ المنشورات الجديدة" title="إشعاراتُ الجديد" hidden>
         <svg class="ico-bell" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
           <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 4-1.5 5.5-2 6.2-.3.4 0 1 .5 1h14c.5 0 .8-.6.5-1-.5-.7-2-2.2-2-6.2A5.5 5.5 0 0 0 12 3z"
                 fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
@@ -151,6 +161,8 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
         <span class="badge badge--pulse" data-notify-count hidden>0</span>
       </button>
       {% endif %}
+      <button class="icon-btn icon-btn--lang" type="button" data-lang-toggle
+              data-no-translate lang="ar" aria-label="اقرأ بالعربيّة" title="اقرأ بالعربيّة">ع</button>
       {% if show('masthead.theme') %}
       <button class="icon-btn" type="button" data-theme-toggle aria-label="تبديلُ الوضع الليلي" title="الوضع الليلي — D">
         <svg class="ico-sun" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
@@ -163,6 +175,15 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
         </svg>
       </button>
       {% endif %}
+    </div>
+  </div>
+  {# سطرُ التاريخ: ما تحت اسم الصحيفة في كلِّ صحيفة #}
+  <div class="dateline">
+    <div class="shell dateline__inner">
+      <span class="dateline__item">{{ now|ar_date }}</span>
+      {% if conference.get('venue') %}<span class="dateline__item">{{ conference.venue }}</span>{% endif %}
+      {% if conference.get('date_label') %}<span class="dateline__item">{{ conference.date_label }}</span>{% endif %}
+      {% if conference.get('edition') %}<span class="dateline__item dateline__spacer">{{ conference.get('short') or cfg.title }}</span>{% endif %}
     </div>
   </div>
   {% block ticker %}{% endblock %}
@@ -339,6 +360,8 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
 <script src="{{ asset('js/search.js') }}" defer></script>
 {% if notify.get('enabled') %}<script src="{{ asset('js/notify.js') }}" defer></script>{% endif %}
 {% if engage.get('enabled') %}<script src="{{ asset('js/engage.js') }}" defer></script>{% endif %}
+<script src="{{ asset('js/lang.js') }}" defer></script>
+<script src="{{ asset('js/live.js') }}" defer></script>
 {{ adx.scripts() }}
 {% block scripts %}{% endblock %}
 </body>

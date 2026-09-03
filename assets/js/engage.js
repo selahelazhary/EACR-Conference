@@ -90,7 +90,7 @@
     return data;
   }
 
-  /* ─── صفحةُ المادّة ───────────────────────────────────── */
+  /* ─── صفحةُ المنشور ───────────────────────────────────── */
   const article = document.querySelector('[data-engage-item]');
 
   async function countView() {

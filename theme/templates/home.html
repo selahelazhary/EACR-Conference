@@ -58,6 +58,8 @@
           <span class="hero__fact">{{ conference.city }}{% if conference.get('country') %}، {{ conference.country }}{% endif %}</span>
         {% endif %}
       </p>
+      {{ ui.countdown(conference) }}
+
       <div class="hero__acts">
         {% if conference.get('register_url') %}
           <a class="btn btn--brand" href="{{ conference.register_url }}" rel="noopener" target="_blank">التسجيلُ في المؤتمر</a>
@@ -241,9 +243,9 @@
  "url": {{ cfg.url|tojson }},
  "eventStatus": "https://schema.org/EventScheduled",
  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-{% if conference.get('starts') %}
- "startDate": {{ conference.starts|tojson }},
- "endDate": {{ (conference.get('ends') or conference.starts)|tojson }},
+{% if conference.get('starts_at') %}
+ "startDate": {{ conference.starts_at|tojson }},
+ "endDate": {{ (conference.get('ends_at') or conference.starts_at)|tojson }},
 {% endif %}
  "image": {{ (identity.get('share') or (cfg.url ~ '/assets/img/share.png'))|tojson }},
  "organizer": {
@@ -271,5 +273,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ asset('js/live.js') }}" defer></script>
+<script src="{{ asset('js/countdown.js') }}" defer></script>
 {% endblock %}

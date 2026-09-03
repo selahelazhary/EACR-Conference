@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-theme="auto" data-layout="magazine" data-masthead="center" data-hero="stack" data-cards="shadow">
+<html lang="ar" dir="rtl" data-theme="auto" data-layout="classic" data-masthead="bar" data-hero="split" data-cards="plain">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>المحفوظات | EACR Conference</title>
-<meta name="description" content="الموادُّ التي حفظتَها للقراءة لاحقاً — محفوظةٌ في متصفّحك وحده.">
+<meta name="description" content="المنشورات التي حفظتَها للقراءة لاحقاً — محفوظةٌ في متصفّحك وحده.">
 <link rel="canonical" href="https://eacr-conference.vercel.app/saved/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot-news" content="index, follow">
@@ -23,153 +23,153 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=Tajawal:wght@500;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=Cairo:wght@400;600;700;900&amp;display=swap">
 <link rel="stylesheet" href="/assets/css/tokens.css?v=67c066b9">
 <link rel="stylesheet" href="/assets/css/base.css?v=6674ad29">
 <link rel="stylesheet" href="/assets/css/layout.css?v=a663b4a1">
-<link rel="stylesheet" href="/assets/css/components.css?v=1c4615b6">
-<link rel="stylesheet" href="/assets/css/layouts.css?v=e62f63c9">
-<link rel="stylesheet" href="/assets/css/conference.css?v=93a17aa6">
+<link rel="stylesheet" href="/assets/css/components.css?v=9dbdb67b">
+<link rel="stylesheet" href="/assets/css/layouts.css?v=864895ab">
+<link rel="stylesheet" href="/assets/css/conference.css?v=39663aff">
 <style>:root {
-  --paper: #FCFAFB;
-  --paper-2: #F2F0F1;
-  --surface: #FEFDFD;
-  --surface-2: #EBE9EA;
-  --ink: #15141B;
-  --ink-2: #48474C;
-  --muted: #7F7E82;
-  --line: #D7D5D7;
-  --line-soft: #E8E6E8;
-  --brand: #C2185B;
+  --paper: #F4FAFA;
+  --paper-2: #EAF0F0;
+  --surface: #FBFDFD;
+  --surface-2: #E3E9E9;
+  --ink: #0C1A1C;
+  --ink-2: #3F4B4D;
+  --muted: #778182;
+  --line: #CFD6D6;
+  --line-soft: #E0E7E7;
+  --brand: #000000;
   --brand-ink: #FFFFFF;
-  --spark: #00ABCB;
+  --spark: #000000;
   --amber: #F0A202;
   --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
   --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
   --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --font-display: &#34;Tajawal&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: &#34;Cairo&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
   --font-body: &#34;IBM Plex Sans Arabic&#34;, &#34;IBM Plex Sans Arabic&#34;, system-ui, sans-serif;
   color-scheme: light;
 }
 :root[data-theme=&#34;light&#34;] {
-  --paper: #FCFAFB;
-  --paper-2: #F2F0F1;
-  --surface: #FEFDFD;
-  --surface-2: #EBE9EA;
-  --ink: #15141B;
-  --ink-2: #48474C;
-  --muted: #7F7E82;
-  --line: #D7D5D7;
-  --line-soft: #E8E6E8;
-  --brand: #C2185B;
+  --paper: #F4FAFA;
+  --paper-2: #EAF0F0;
+  --surface: #FBFDFD;
+  --surface-2: #E3E9E9;
+  --ink: #0C1A1C;
+  --ink-2: #3F4B4D;
+  --muted: #778182;
+  --line: #CFD6D6;
+  --line-soft: #E0E7E7;
+  --brand: #000000;
   --brand-ink: #FFFFFF;
-  --spark: #00ABCB;
+  --spark: #000000;
   --amber: #F0A202;
   --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
   --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
   --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --font-display: &#34;Tajawal&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: &#34;Cairo&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
   --font-body: &#34;IBM Plex Sans Arabic&#34;, &#34;IBM Plex Sans Arabic&#34;, system-ui, sans-serif;
   color-scheme: light;
 }
 :root[data-theme=&#34;dark&#34;] {
-  --paper: #180C15;
-  --paper-2: #22161E;
-  --surface: #221720;
-  --surface-2: #281C25;
-  --ink: #F2E7E5;
-  --ink-2: #C2B7B7;
-  --muted: #8E8285;
-  --line: #3B2F36;
-  --line-soft: #2B1F27;
-  --brand: #C2185B;
+  --paper: #0A1319;
+  --paper-2: #141D22;
+  --surface: #151E23;
+  --surface-2: #1B2328;
+  --ink: #E8ECE7;
+  --ink-2: #B7BCBA;
+  --muted: #828888;
+  --line: #2E363A;
+  --line-soft: #1D252B;
+  --brand: #000000;
   --brand-ink: #FFFFFF;
-  --spark: #00ABCB;
+  --spark: #000000;
   --amber: #FFC14D;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
   --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
   --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --font-display: &#34;Tajawal&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: &#34;Cairo&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
   --font-body: &#34;IBM Plex Sans Arabic&#34;, &#34;IBM Plex Sans Arabic&#34;, system-ui, sans-serif;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
   :root[data-theme=&#34;auto&#34;] {
-  --paper: #180C15;
-  --paper-2: #22161E;
-  --surface: #221720;
-  --surface-2: #281C25;
-  --ink: #F2E7E5;
-  --ink-2: #C2B7B7;
-  --muted: #8E8285;
-  --line: #3B2F36;
-  --line-soft: #2B1F27;
-  --brand: #C2185B;
+  --paper: #0A1319;
+  --paper-2: #141D22;
+  --surface: #151E23;
+  --surface-2: #1B2328;
+  --ink: #E8ECE7;
+  --ink-2: #B7BCBA;
+  --muted: #828888;
+  --line: #2E363A;
+  --line-soft: #1D252B;
+  --brand: #000000;
   --brand-ink: #FFFFFF;
-  --spark: #00ABCB;
+  --spark: #000000;
   --amber: #FFC14D;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
   --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
   --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --font-display: &#34;Tajawal&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: &#34;Cairo&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
   --font-body: &#34;IBM Plex Sans Arabic&#34;, &#34;IBM Plex Sans Arabic&#34;, system-ui, sans-serif;
   color-scheme: dark;
 }
 }
 @media (prefers-color-scheme: light) {
   :root[data-theme=&#34;auto&#34;] {
-  --paper: #FCFAFB;
-  --paper-2: #F2F0F1;
-  --surface: #FEFDFD;
-  --surface-2: #EBE9EA;
-  --ink: #15141B;
-  --ink-2: #48474C;
-  --muted: #7F7E82;
-  --line: #D7D5D7;
-  --line-soft: #E8E6E8;
-  --brand: #C2185B;
+  --paper: #F4FAFA;
+  --paper-2: #EAF0F0;
+  --surface: #FBFDFD;
+  --surface-2: #E3E9E9;
+  --ink: #0C1A1C;
+  --ink-2: #3F4B4D;
+  --muted: #778182;
+  --line: #CFD6D6;
+  --line-soft: #E0E7E7;
+  --brand: #000000;
   --brand-ink: #FFFFFF;
-  --spark: #00ABCB;
+  --spark: #000000;
   --amber: #F0A202;
   --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
   --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
   --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --font-display: &#34;Tajawal&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: &#34;Cairo&#34;, &#34;Tajawal&#34;, system-ui, sans-serif;
   --font-body: &#34;IBM Plex Sans Arabic&#34;, &#34;IBM Plex Sans Arabic&#34;, system-ui, sans-serif;
   color-scheme: light;
 }
 }
 :root {
   --shell: 1280px;
-  --gap: clamp(1.3rem, .8rem + 2vw, 2.4rem);
-  --gap-lg: clamp(3rem, 1.8rem + 4.4vw, 6.4rem);
-  --pad: clamp(1.2rem, .6rem + 2.6vw, 2.8rem);
-  --card-pad: 1rem;
-  --card-bg: var(--surface);
+  --gap: clamp(1rem, .6rem + 1.4vw, 1.75rem);
+  --gap-lg: clamp(2.2rem, 1.4rem + 3vw, 4.5rem);
+  --pad: clamp(1rem, .5rem + 2vw, 2rem);
+  --card-pad: 0;
+  --card-bg: transparent;
   --card-line: 0;
-  --card-shadow: var(--shadow-sm);
-  --card-radius: var(--r-lg);
+  --card-shadow: none;
+  --card-radius: 0;
   --media-ratio: 3/2;
-  --title-weight: 800;
-  --title-track: -.015em;
-  --title-lh: 1.35;
-  --rule-w: 1px;
-  --header-h: 104px;
+  --title-weight: 900;
+  --title-track: -.03em;
+  --title-lh: 1.28;
+  --rule-w: 2px;
+  --header-h: 62px;
 }</style>
 
 <link rel="icon" href="/assets/img/icon-32.png?v=a66d26b6" sizes="32x32" type="image/png">
@@ -181,6 +181,13 @@
 <link rel="alternate" type="application/rss+xml" title="EACR Conference" href="/rss.xml">
 
 <script>
+(function(){var l='en';try{l=localStorage.getItem('eacr:lang')||'en';}catch(e){}
+var r=document.documentElement;r.lang=l;r.dir=l==='ar'?'rtl':'ltr';r.setAttribute('data-lang',l);
+if(l!=='ar'){window.__EACR_I18N=fetch('/assets/i18n/'+l+'.json')
+  .then(function(x){return x.ok?x.json():{};}).catch(function(){return {};});}})();
+</script>
+
+<script>
 (function(){try{var p=JSON.parse(localStorage.getItem('eacr:prefs')||'{}');
 var r=document.documentElement;if(p.theme)r.dataset.theme=p.theme;
 if(p.accent)r.style.setProperty('--brand',p.accent);
@@ -189,10 +196,11 @@ if(p.size)r.dataset.size=p.size;if(p.serif)r.dataset.serif='1';}catch(e){}})();
 
 <script>window.EACR_NOTIFY={"ask": 0, "interval": 4, "max": 3};</script>
 <script>window.EACR_DB="https://earc-55619-default-rtdb.europe-west1.firebasedatabase.app";
-window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u0629", "gallery": "\u0635\u0648\u0631\u0629", "news": "\u062e\u0628\u0631", "speakers": "\u0645\u062a\u062d\u062f\u0651\u062b", "videos": "\u0641\u064a\u062f\u064a\u0648", "workshops": "\u0648\u0631\u0634\u0629"}, "title": "EACR Conference"};</script>
+window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u0629", "gallery": "\u0635\u0648\u0631\u0629", "news": "\u062e\u0628\u0631", "speakers": "\u0645\u062a\u062d\u062f\u0651\u062b", "videos": "\u0641\u064a\u062f\u064a\u0648", "workshops": "\u0648\u0631\u0634\u0629"}, "title": "EACR Conference"};
+window.EACR_SECTIONS=[{"accent": "#E72085", "description": "\u0645\u0627 \u0627\u0633\u062a\u062c\u062f\u064e\u0651 \u0645\u0646 \u0625\u0639\u0644\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u0624\u062a\u0645\u0631 \u0648\u0645\u0648\u0627\u0639\u064a\u062f\u0650\u0647 \u0648\u0642\u0631\u0627\u0631\u0627\u062a\u0650 \u0644\u062c\u0627\u0646\u0647.", "display": "standard", "icon": "bolt", "id": "news", "name": "\u0623\u062e\u0628\u0627\u0631", "plural": "\u0623\u062e\u0628\u0627\u0631\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u062e\u0628\u0631", "slug": "news"}, {"accent": "#00ABCB", "description": "\u0627\u0644\u062c\u0644\u0633\u0627\u062a\u064f \u0627\u0644\u0639\u0644\u0645\u064a\u0651\u0629\u064f \u0648\u0648\u0631\u0634\u064f \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u0646\u062f\u0648\u0627\u062a\u064f \u0628\u0645\u0648\u0627\u0639\u064a\u062f\u0647\u0627 \u0648\u0642\u0627\u0639\u0627\u062a\u0647\u0627.", "display": "agenda", "icon": "calendar", "id": "events", "name": "\u0641\u0639\u0627\u0644\u064a\u0651\u0627\u062a", "plural": "\u0641\u0639\u0627\u0644\u064a\u0651\u0627\u062a\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0641\u0639\u0627\u0644\u064a\u0651\u0629", "slug": "events"}, {"accent": "#B8860B", "description": "\u0648\u0631\u0634\u064c \u062a\u062f\u0631\u064a\u0628\u064a\u0651\u0629\u064c \u0639\u0645\u0644\u064a\u0651\u0629\u064c \u0645\u0635\u0627\u062d\u0628\u0629\u064c \u0644\u0644\u0645\u0624\u062a\u0645\u0631 \u0628\u0645\u0648\u0627\u0639\u064a\u062f\u0647\u0627 \u0648\u0642\u0627\u0639\u0627\u062a\u0647\u0627 \u0648\u0645\u062f\u0631\u0651\u0628\u064a\u0647\u0627.", "display": "agenda", "icon": "tools", "id": "workshops", "name": "\u0648\u0631\u0634 \u0627\u0644\u0639\u0645\u0644", "plural": "\u0648\u0631\u0634\u064f \u0627\u0644\u0639\u0645\u0644", "single": "\u0648\u0631\u0634\u0629", "slug": "workshops"}, {"accent": "#7A2E8E", "description": "\u0627\u0644\u0623\u0633\u0627\u062a\u0630\u0629\u064f \u0648\u0627\u0644\u0628\u0627\u062d\u062b\u0648\u0646 \u0627\u0644\u0645\u0634\u0627\u0631\u0643\u0648\u0646 \u0641\u064a \u062c\u0644\u0633\u0627\u062a \u0627\u0644\u0645\u0624\u062a\u0645\u0631.", "display": "people", "icon": "mic", "id": "speakers", "name": "\u0627\u0644\u0645\u062a\u062d\u062f\u0651\u062b\u0648\u0646", "plural": "\u0627\u0644\u0645\u062a\u062d\u062f\u0651\u062b\u0648\u0646", "single": "\u0645\u062a\u062d\u062f\u0651\u062b", "slug": "speakers"}, {"accent": "#C2185B", "description": "\u062a\u0633\u062c\u064a\u0644\u0627\u062a\u064f \u0627\u0644\u062c\u0644\u0633\u0627\u062a \u0648\u0627\u0644\u0643\u0644\u0645\u0627\u062a\u0650 \u0648\u0645\u0642\u062a\u0637\u0641\u0627\u062a\u064c \u0645\u0635\u0648\u0651\u0631\u0629\u064c \u0645\u0646 \u0623\u0631\u0648\u0642\u0629 \u0627\u0644\u0645\u0624\u062a\u0645\u0631.", "display": "video", "icon": "play", "id": "videos", "name": "\u0641\u064a\u062f\u064a\u0648\u0647\u0627\u062a", "plural": "\u0641\u064a\u062f\u064a\u0648\u0647\u0627\u062a\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0641\u064a\u062f\u064a\u0648", "slug": "videos"}, {"accent": "#0F7C8A", "description": "\u0623\u0644\u0628\u0648\u0645\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631: \u0644\u062d\u0638\u0627\u062a\u064c \u0645\u0646 \u0627\u0644\u0627\u0641\u062a\u062a\u0627\u062d \u0648\u0627\u0644\u062c\u0644\u0633\u0627\u062a \u0648\u0627\u0644\u0645\u0639\u0627\u0631\u0636 \u0627\u0644\u0645\u0635\u0627\u062d\u0628\u0629.", "display": "gallery", "icon": "camera", "id": "gallery", "name": "\u0635\u0648\u0631 \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "plural": "\u0635\u0648\u0631\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0635\u0648\u0631\u0629", "slug": "gallery"}];</script>
 
-<script>window.EACR_SKIN={"brand": "#C2185B", "layout": "magazine", "radius": "", "spark": "#00ABCB", "theme": "eacr"};window.EACR_SKIN.attrs={"data-cards": "shadow", "data-hero": "stack", "data-layout": "magazine", "data-masthead": "center"};</script>
-<script src="/assets/js/skin.js?v=bc8e1dce"></script>
+<script>window.EACR_SKIN={"brand": "#000000", "layout": "classic", "radius": "sharp", "spark": "#000000", "theme": "nile"};window.EACR_SKIN.attrs={"data-cards": "plain", "data-hero": "split", "data-layout": "classic", "data-masthead": "bar"};</script>
+<script src="/assets/js/skin.js?v=df0daedb"></script>
 <script>window.EACR_ENGAGE={"db": "https://earc-55619-default-rtdb.europe-west1.firebasedatabase.app", "moderation": true};</script>
 <meta name="robots" content="noindex, follow"></head>
 
@@ -212,7 +220,7 @@ window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u
       <img class="brand__mark" src="/assets/img/logo.png?v=4a492174" width="40" height="40"
            alt="شعار EACR Conference" fetchpriority="high" decoding="async">
       <span class="brand__text">
-        <strong>EACR Conference</strong>
+        <strong data-no-translate>EACR Conference</strong>
         <small>المؤتمرُ السنوي للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦</small>
       </span>
     </a>
@@ -252,7 +260,7 @@ window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u
         <span class="badge" data-saved-count hidden>0</span>
       </a>
       <button class="icon-btn icon-btn--bell" type="button" data-notify-toggle
-              aria-label="إشعاراتُ المواد الجديدة" title="إشعاراتُ الجديد" hidden>
+              aria-label="إشعاراتُ المنشورات الجديدة" title="إشعاراتُ الجديد" hidden>
         <svg class="ico-bell" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
           <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 4-1.5 5.5-2 6.2-.3.4 0 1 .5 1h14c.5 0 .8-.6.5-1-.5-.7-2-2.2-2-6.2A5.5 5.5 0 0 0 12 3z"
                 fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
@@ -265,6 +273,8 @@ window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u
         </svg>
         <span class="badge badge--pulse" data-notify-count hidden>0</span>
       </button>
+      <button class="icon-btn icon-btn--lang" type="button" data-lang-toggle
+              data-no-translate lang="ar" aria-label="اقرأ بالعربيّة" title="اقرأ بالعربيّة">ع</button>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="تبديلُ الوضع الليلي" title="الوضع الليلي — D">
         <svg class="ico-sun" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
           <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
@@ -276,6 +286,11 @@ window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u
         </svg>
       </button>
     </div>
+  </div>
+  <div class="dateline">
+    <div class="shell dateline__inner">
+      <span class="dateline__item">3 سبتمبر 2026</span>
+<span class="dateline__item">المركزُ القوميُّ للبحوث</span><span class="dateline__item">٢٣ — ٢٤ سبتمبر ٢٠٢٦</span><span class="dateline__item dateline__spacer">مؤتمر EACR ٢٠٢٦</span>    </div>
   </div>
 </header>
 
@@ -459,7 +474,9 @@ window.EACR_SITE={"sections": {"events": "\u0641\u0639\u0627\u0644\u064a\u0651\u
 
 <script src="/assets/js/core.js?v=e6a42e08" defer></script>
 <script src="/assets/js/search.js?v=09e10996" defer></script>
-<script src="/assets/js/notify.js?v=9dea37a5" defer></script><script src="/assets/js/engage.js?v=5c48c009" defer></script>
-<script src="/assets/js/saved.js?v=8bbc6b96" defer></script>
+<script src="/assets/js/notify.js?v=d45fe512" defer></script><script src="/assets/js/engage.js?v=ea4df25f" defer></script><script src="/assets/js/lang.js?v=286bcb3d" defer></script>
+<script src="/assets/js/live.js?v=bc0e604f" defer></script>
+
+<script src="/assets/js/saved.js?v=2223c704" defer></script>
 </body>
 </html>

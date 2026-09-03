@@ -446,7 +446,7 @@ a.plaque:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   border-top: 1px solid var(--line);
 }
 
-/* ── حقائقُ المادّة: موعدٌ ومكان ────────────────────────── */
+/* ── حقائقُ المنشور: موعدٌ ومكان ────────────────────────── */
 .factbar, .factlist {
   display: grid;
   gap: .1rem .9rem;
@@ -570,4 +570,216 @@ a.plaque:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   border-radius: var(--r-full);
   padding: 5px;
   box-shadow: 0 0 0 1px var(--line);
+}
+
+/* ── عدّادُ المؤتمر ──────────────────────────────────────── */
+.countdown {
+  margin-top: 1.3rem;
+  padding: .95rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  max-width: 100%;
+}
+
+.countdown__label {
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: var(--brand);
+  margin-bottom: .7rem;
+}
+
+.countdown__units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  /* الأرقامُ لاتينيّةُ الترتيب: يومٌ ثمّ ساعةٌ ثمّ دقيقةٌ ثمّ ثانية،
+     تُقرأ يساراً كما يتوقّعها القارئُ من أيِّ عدّادٍ رآه قبلها */
+  direction: ltr;
+}
+
+.unit {
+  display: grid;
+  gap: .15rem;
+  justify-items: center;
+  min-width: 62px;
+  padding: .55rem .5rem .45rem;
+  border-radius: var(--r-md);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand) 9%, var(--surface)),
+    color-mix(in srgb, var(--brand) 3%, var(--surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--brand) 18%, transparent);
+}
+
+.unit__num {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+  /* الثانيةُ تتغيّر كلَّ ثانية: عرضٌ ثابتٌ يمنع رقصَ اللوح */
+  font-feature-settings: "tnum" 1;
+}
+
+.unit__name {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--muted);
+  direction: rtl;
+}
+
+/* أثناء انعقاده: نبضةٌ خضراءُ بدل الأرقام */
+.countdown.is-live .countdown__label {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 0;
+  color: #15803D;
+  letter-spacing: 0;
+  font-size: .95rem;
+}
+
+.countdown.is-live .countdown__label::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #16A34A;
+  box-shadow: 0 0 0 0 rgb(22 163 74 / .55);
+  animation: live-pulse 1.8s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  70% { box-shadow: 0 0 0 9px rgb(22 163 74 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(22 163 74 / 0); }
+}
+
+.countdown.is-over .countdown__label {
+  margin-bottom: 0;
+  color: var(--muted);
+  letter-spacing: 0;
+  font-size: .95rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown.is-live .countdown__label::before { animation: none; }
+}
+
+@media (max-width: 720px) {
+  .countdown { display: block; }
+  .countdown__units { justify-content: center; }
+  .unit { min-width: 58px; }
+  .unit__num { font-size: 1.5rem; }
+}
+
+/* ═══ اللغةُ الثانية ═══════════════════════════════════════
+   الصفحةُ تُبنى عربيّةً وتُقرأ إنجليزيّةً: يتبدّل الاتّجاهُ
+   والخطُّ ووزنُ السطر، ولا يتبدّل تصميمٌ ولا لون.
+   ═══════════════════════════════════════════════════════ */
+[dir="ltr"] {
+  --font-display: "Tajawal", ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+[dir="ltr"] body { letter-spacing: 0; }
+[dir="ltr"] .prose { line-height: 1.75; }
+
+/* زرُّ اللغة: حرفان لا أيقونة */
+.icon-btn--lang {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: .82rem;
+  letter-spacing: .02em;
+  line-height: 1;
+}
+
+/* ريثما يصل المعجم: النصُّ حاضرٌ للفهرسة، هادئٌ للعين */
+[data-lang="en"]:not([data-translated]) .card__title,
+[data-lang="en"]:not([data-translated]) .lead__title,
+[data-lang="en"]:not([data-translated]) .event__title,
+[data-lang="en"]:not([data-translated]) .hero__title { opacity: .55; }
+[data-lang="en"] .card__title,
+[data-lang="en"] .lead__title,
+[data-lang="en"] .event__title,
+[data-lang="en"] .hero__title { transition: opacity .25s ease; }
+
+/* ═══ صحيفةٌ لا تنكسر بقلّة المحتوى ═════════════════════════
+   الشبكاتُ ذاتُ العمودين تفترض عموداً جانبيّاً مملوءاً. وفي أوّل
+   أيّام الموقع لا جانبَ ولا مختارات — فالعمودُ الوحيدُ يأخذ العرضَ
+   كلَّه بدل أن يترك نصفَ الشاشة بياضاً.
+   ═══════════════════════════════════════════════════════ */
+.lead-grid > .lead:only-child { grid-column: 1 / -1; }
+.lead-grid:not(:has(.top-list)) { grid-template-columns: minmax(0, 1fr); }
+.river:not(:has(.river__side > *)) { grid-template-columns: minmax(0, 1fr); }
+.river:not(:has(.river__side > *)) .river__side { display: none; }
+
+/* الصدرُ المنقسم: الشعارُ إلى الجانب والنصُّ يملأ ما بقي */
+.hero__inner { align-items: center; }
+
+/* ═══ ترويسةُ التاريخ ═══════════════════════════════════════
+   سطرٌ واحدٌ تحت اسم الصحيفة: اليومُ والمكانُ والنسخة. هو ما
+   يفصل الموقعَ الإخباريَّ عن صفحةِ تعريفٍ بمؤتمر.
+   ═══════════════════════════════════════════════════════ */
+.dateline {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface, transparent);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dateline__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 2.2rem;
+  flex-wrap: wrap;
+}
+.dateline__item { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.dateline__item + .dateline__item::before {
+  content: "";
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .5;
+  margin-inline-end: .7rem;
+}
+.dateline__spacer { margin-inline-start: auto; }
+.dateline__live { color: var(--brand); font-weight: 700; }
+@media (max-width: 640px) {
+  .dateline__item:nth-child(n+3) { display: none; }
+}
+
+/* ═══ شريطُ الأقسام لا يُبتر ═══════════════════════════════
+   ثمانيةُ أقسامٍ إلى جانب اسمِ الصحيفةِ وأدواتِها لا تسع شاشةَ
+   حاسوبٍ متوسّطة. فيُخفى سطرُ التعريف تحت الاسم، وتضيق مسافاتُ
+   الأقسام، وما بقي خارجاً يُمرَّر لا يُقصّ.
+   ═══════════════════════════════════════════════════════ */
+.masthead__nav {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-inline: contain;
+}
+.masthead__nav::-webkit-scrollbar { display: none; }
+.masthead__nav ul { flex-wrap: nowrap; }
+.masthead__nav a { white-space: nowrap; }
+
+@media (max-width: 1360px) {
+  [data-masthead="bar"] .brand__text small,
+  [data-masthead="tall"] .brand__text small { display: none; }
+  [data-masthead="bar"] .masthead__nav a { padding-inline: .5rem; font-size: .87rem; }
+}
+@media (max-width: 1400px) {
+  [data-masthead="bar"] .masthead__nav a { padding-inline: .42rem; font-size: .85rem; }
+  [data-masthead="bar"] .masthead__bar { gap: .55rem; }
+}
+@media (max-width: 1180px) {
+  [data-masthead="bar"] .masthead__nav a { padding-inline: .34rem; font-size: .82rem; }
 }

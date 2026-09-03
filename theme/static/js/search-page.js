@@ -34,7 +34,7 @@
     const found = search(data.items, query, section);
     count.textContent = query || section
       ? `${found.length} نتيجة${query ? ` لـ «${query}»` : ''}`
-      : `${data.items.length} مادّةً في الفهرس`;
+      : `${data.items.length} منشوراً في الفهرس`;
     grid.innerHTML = found.length
       ? found.slice(0, 60).map((item) => cardHTML(item, query)).join('')
       : '';

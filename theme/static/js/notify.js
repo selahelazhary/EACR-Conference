@@ -37,7 +37,7 @@
       const on = state.on && Notification.permission === 'granted';
       bell.classList.toggle('is-on', on);
       bell.setAttribute('aria-pressed', String(on));
-      bell.title = on ? 'الإشعاراتُ مفعّلة — اضغط لإيقافها' : 'فعّل إشعاراتِ المواد الجديدة';
+      bell.title = on ? 'الإشعاراتُ مفعّلة — اضغط لإيقافها' : 'فعّل إشعاراتِ المنشورات الجديدة';
     }
     const count = (state.unread || []).length;
     if (counter) {
@@ -112,9 +112,9 @@
   async function freshItems() {
     const [site, live] = await Promise.all([fromSite(), fromDatabase()]);
 
-    /* المادّةُ نفسُها تأتي من المصدرين بتاريخين مختلفين أحياناً.
+    /* المنشورُ نفسُه تأتي من المصدرين بتاريخين مختلفين أحياناً.
        نُبقي نسخةً واحدةً: رابطُها الدائمُ من الموقع إن وُجد،
-       وتاريخُها الأحدث — وإلّا عادت المادّةُ القديمةُ «جديدةً». */
+       وتاريخُها الأحدث — وإلّا عاد المنشورُ القديمُ «جديداً». */
     const merged = new Map();
     for (const entry of [...site, ...live]) {
       const key = (entry.title || '').trim();
@@ -127,7 +127,7 @@
     const all = Array.from(merged.values()).sort((a, b) => b.stamp - a.stamp);
 
     /* أحدثُ ما في القائمة كلِّها — لا أحدثُ ما سنُشعر به فقط،
-       وإلّا بقيت المادّةُ الرابعةُ تُشعر في كلِّ جولة. */
+       وإلّا بقي المنشورُ الرابعُ يُشعر في كلِّ جولة. */
     const newest = all.length ? all[0].stamp : 0;
 
     /* أوّلُ زيارةٍ: نُثبّت العلامةَ فحسب ولا نُشعر بشيءٍ قديم */
@@ -211,7 +211,7 @@
       const beat = payload && payload.data;
       if (!beat || !beat.title || !beat.at) return;
 
-      /* لا نُشعر بنبضةٍ رآها القارئُ من قبل، ولا بمادّةٍ سبق إشعارُها */
+      /* لا نُشعر بنبضةٍ رآها القارئُ من قبل، ولا بمنشورٍ سبق إشعارُها */
       const id = `${beat.type}:${beat.id}`;
       if (beat.at <= (state.seen || 0)) return;
       if ((state.sent || []).includes(id)) return;
@@ -257,7 +257,7 @@
     }
     save({ on: true, asked: true });
     paint();
-    if (!silent) toast('سنُشعرك بكلِّ مادّةٍ جديدة');
+    if (!silent) toast('سنُشعرك بكلِّ منشورٍ جديد');
 
     const registration = await navigator.serviceWorker.ready.catch(() => null);
     if (registration?.periodicSync) {
@@ -269,7 +269,7 @@
     }
     openStream();
     registration?.showNotification?.('تمّ تفعيلُ الإشعارات', {
-      body: 'سيصلك عنوانُ كلِّ مادّةٍ جديدةٍ فور نشرها.',
+      body: 'سيصلك عنوانُ كلِّ منشورٍ جديدٍ فور نشره.',
       icon: '/assets/img/icon-192.png', badge: '/assets/img/icon-192.png',
       dir: 'rtl', lang: 'ar', tag: 'eacr-welcome'
     });
@@ -310,8 +310,8 @@
     card.className = 'notify-invite';
     card.innerHTML = `
       <div class="notify-invite__body">
-        <strong>تصلك المادّةُ الجديدةُ فور نشرها؟</strong>
-        <span>إشعارٌ واحدٌ لكلِّ مادّة — بلا بريدٍ ولا تسجيل.</span>
+        <strong>يصلك المنشورُ الجديدُ فور نشره؟</strong>
+        <span>إشعارٌ واحدٌ لكلِّ منشور — بلا بريدٍ ولا تسجيل.</span>
       </div>
       <div class="notify-invite__acts">
         <button class="btn btn--sm" type="button" data-notify-action="enable">فعّل</button>

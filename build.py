@@ -5,6 +5,7 @@
     python build.py --sync          سحبُ المحتوى من Firebase ثمّ البناء
     python build.py --serve         بناءٌ ثمّ خادمٌ محلّيٌّ للمعاينة
     python build.py --sync --serve  الاثنان معاً
+    python build.py --no-i18n       بناءٌ بلا تحديث المعجم الإنجليزي
 """
 
 from __future__ import annotations
@@ -24,7 +25,8 @@ for stream in (sys.stdout, sys.stderr):
     except (AttributeError, ValueError):
         pass
 
-from eacr.builder import build  # noqa: E402
+from eacr import i18n  # noqa: E402
+from eacr.builder import build, publish_dictionaries  # noqa: E402
 from eacr.config import OUTPUT_DIR, load_config  # noqa: E402
 from eacr.firebase import FirebaseError, sync  # noqa: E402
 
@@ -63,11 +65,40 @@ def serve(directory: Path, port: int) -> None:
             print("\n  ▸ أُوقِف الخادم.")
 
 
+DICTIONARY = Path(__file__).resolve().parent / "content" / "i18n" / "en.json"
+
+
+def build_dictionary(output: Path, limit: int) -> None:
+    """يجمع نصوصَ الصفحات المبنيّة ويترجم ما لم يُترجَم، ثمّ ينشر المعجم."""
+    # الصفحاتُ المبنيّةُ وحدَها: لا قوالبُ المصدر ولا لوحةُ الإدارة
+    skip = {"theme", "eacr", "content", "tools", "brand", "assets",
+            "node_modules", ".git", ".claude", ".vercel"}
+    pages = sorted(
+        path for path in output.rglob("*.html")
+        if not skip & set(path.relative_to(output).parts) and path.name != "admin.html"
+    )
+    strings = i18n.collect(pages)
+    table = i18n.load(DICTIONARY)
+    before = len(table)
+    table, done, failed = i18n.extend(table, strings, limit=limit)
+    if len(table) != before:
+        i18n.save(DICTIONARY, table)
+
+    publish_dictionaries(output)   # المعجمُ المحدَّث إلى assets/i18n/
+    covered = sum(1 for s in strings if s in table)
+    print(f"    {covered}/{len(strings)} نصّاً مترجَماً"
+          + (f" · {done} جديداً" if done else "")
+          + (f" · {failed} تعذّر" if failed else ""))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="مولّد موقع مؤتمر EACR")
     parser.add_argument("--sync", action="store_true", help="سحبُ المحتوى من Firebase قبل البناء")
     parser.add_argument("--serve", action="store_true", help="تشغيلُ خادم معاينةٍ بعد البناء")
     parser.add_argument("--port", type=int, default=8000, help="منفذُ خادم المعاينة")
+    parser.add_argument("--no-i18n", action="store_true", help="تخطّي تحديث المعجم الإنجليزي")
+    parser.add_argument("--i18n-limit", type=int, default=400,
+                        help="أقصى عددِ نصوصٍ تُترجَم في الجولة الواحدة")
     args = parser.parse_args()
 
     config = load_config()
@@ -85,6 +116,13 @@ def main() -> int:
 
     print("  ▸ بناءُ الصفحات…")
     build(OUTPUT_DIR)
+
+    if not args.no_i18n:
+        print("  ▸ المعجمُ الإنجليزي…")
+        try:
+            build_dictionary(OUTPUT_DIR, args.i18n_limit)
+        except Exception as exc:  # المعجمُ رفاهيةٌ لا يسقط البناءُ لأجلها
+            print(f"    ✗ تعذّر تحديثُ المعجم: {exc}")
 
     if args.serve:
         serve(OUTPUT_DIR, args.port)

@@ -24,12 +24,12 @@
         <a class="topic-card" href="{{ category.url }}" style="--accent: {{ category.color }}">
           <span class="topic-card__bar" aria-hidden="true"></span>
           <b>{{ category.name }}</b>
-          <span class="topic-card__count">{{ category.count }} مادّة</span>
+          <span class="topic-card__count">{{ category.count }} منشور</span>
         </a>
       {% endfor %}
     </div>
   {% else %}
-    {{ ui.empty_state('لم تُنشأ موضوعاتٌ بعد.', 'ستظهر هنا موضوعاتُ المؤتمر مع نشر المواد.') }}
+    {{ ui.empty_state('لم تُنشأ موضوعاتٌ بعد.', 'ستظهر هنا موضوعاتُ المؤتمر مع نشر المنشورات.') }}
   {% endif %}
 
   <div class="section-grid">
@@ -37,7 +37,7 @@
       <a class="topic-card topic-card--section" href="{{ section.url }}" style="--accent: {{ section.accent }}">
         <span class="topic-card__bar" aria-hidden="true"></span>
         <b>{{ section.plural }}</b>
-        <span class="topic-card__count">{{ site.by_section(section.id)|length }} مادّة</span>
+        <span class="topic-card__count">{{ site.by_section(section.id)|length }} منشور</span>
         <span class="topic-card__dek">{{ section.description }}</span>
       </a>
     {% endfor %}

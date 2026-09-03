@@ -108,8 +108,15 @@
     }
   }
 
-  /* ─── ما حُفظ في الجهاز يُطبَّق قبل الرسم فلا يومض الجلدُ القديم ─── */
-  const cached = read(localStorage, KEY);
+  /* ─── ما حُفظ في الجهاز يُطبَّق قبل الرسم فلا يومض الجلدُ القديم ───
+     إلّا أن يكون الموقعُ قد بُني بجلدٍ آخر بعد ذلك الحفظ: فالبناءُ
+     أحدثُ من الذاكرة، ولا يُعقل أن يُلبس القارئُ جلداً أُلغي. */
+  const SIGN = KEYS.map((key) => BUILT[key] || '').join('|');
+  let cached = read(localStorage, KEY);
+  if (cached && cached.__built !== SIGN) {
+    cached = null;
+    try { localStorage.removeItem(KEY); sessionStorage.removeItem(CHECKED); } catch { /* لا مخزن */ }
+  }
   if (cached) dress(cached);
 
   /* ─── ثمّ نسأل القاعدةَ: هل تغيّر شيء؟ ─── */
@@ -139,6 +146,7 @@
         next.attrs = cached.attrs;
       }
 
+      next.__built = SIGN;
       save(localStorage, KEY, next);
       dress(next);
     } catch { /* لا شبكة: يبقى المبنيُّ أو المحفوظ */ }
@@ -151,5 +159,8 @@
   }
 
   /* اللوحةُ تنادي هذا حين تحفظ، فيتبدّل الجلدُ في اللسان المفتوح */
-  window.EACR_SKIN_APPLY = (skin) => { save(localStorage, KEY, skin); dress(skin); };
+  window.EACR_SKIN_APPLY = (skin) => {
+    save(localStorage, KEY, { ...skin, __built: SIGN });
+    dress(skin);
+  };
 })();

@@ -1,4 +1,4 @@
-/* ═══ صفحةُ المادّة: رأسٌ، وجدولُ محتويات، ونصٌّ للقراءة الطويلة ═══ */
+/* ═══ صفحةُ المنشور: رأسٌ، وجدولُ محتويات، ونصٌّ للقراءة الطويلة ═══ */
 
 /* ───────────────── مسارُ التصفّح ───────────────── */
 .crumbs { padding-block: 1rem .2rem; }
@@ -13,7 +13,7 @@
   color: var(--ink-2);
 }
 
-/* ───────────────── رأسُ المادّة ───────────────── */
+/* ───────────────── رأسُ المنشور ───────────────── */
 .article__head {
   max-width: 900px;
   padding-block: 1rem 1.8rem;
@@ -260,7 +260,7 @@
 /* الفقرةُ التي يقرؤها المُلقي الصوتي */
 .prose .is-speaking { background: color-mix(in srgb, var(--amber) 26%, transparent); border-radius: 4px; }
 
-/* ───────────────── ذيلُ المادّة ───────────────── */
+/* ───────────────── ذيلُ المنشور ───────────────── */
 .article__foot { max-width: 900px; display: grid; gap: 1.6rem; padding-bottom: var(--gap-lg); }
 .article__tags { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .8rem; color: var(--muted); }
 

@@ -1,6 +1,6 @@
 /* ═══ لوحةُ إدارة مؤتمر EACR ═══════════════════════════════
    لوحةٌ واحدةٌ يُدار منها الموقع: دخولٌ ببريدٍ وكلمة مرور،
-   ومحرّرٌ يرفع الصورَ بدل أن يلصقها في النصّ، وقائمةُ موادَّ
+   ومحرّرٌ يرفع الصورَ بدل أن يلصقها في النصّ، وقائمةُ منشورات
    قابلةٌ للبحث والتصفية والعمل الجماعي، ولوحةُ قيادةٍ تقول لك
    بالضبط: هل يحتاج الموقعُ إعادةَ بناءٍ أم لا.
    ═══════════════════════════════════════════════════════ */
@@ -328,7 +328,7 @@
       return `<a class="card stat stat--accent" style="--accent:${esc(section.accent)}" href="#/content/${section.id}">
         <span class="stat__label">${esc(section.plural)}</span>
         <span class="stat__value">${list.length}</span>
-        <span class="stat__note">${list[0] ? `آخرُها ${esc(ago(list[0].stamp))}` : 'لا مواد بعد'}</span>
+        <span class="stat__note">${list[0] ? `آخرُها ${esc(ago(list[0].stamp))}` : 'لا منشورات بعد'}</span>
       </a>`;
     }).join('');
 
@@ -339,7 +339,7 @@
           <p>حالةُ المنصّة في لمحة — أهلاً ${esc((S.user.email || '').split('@')[0])}.</p>
         </div>
         <div class="page-acts">
-          <a class="btn btn--brand" href="#/compose">＋ مادّةٌ جديدة</a>
+          <a class="btn btn--brand" href="#/compose">＋ منشورٌ جديد</a>
           <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">فتحُ الموقع ↗</a>
         </div>
       </div>
@@ -347,7 +347,7 @@
       ${pending ? `
       <div class="banner banner--warn">
         <div class="banner__body">
-          <strong>${pending} مادّةً منشورةً لم تدخل البناءَ بعد</strong>
+          <strong>${pending} منشوراًً لم تدخل البناءَ بعد</strong>
           <span>الموقعُ الثابتُ يعرضها في «الطبقة الحيّة»، لكنّ محرّكات البحث لن تراها حتّى تُبنى الصفحات. شغّل الأمر ثمّ ادفع التغيير إلى GitHub:</span>
           <code>python build.py --sync</code>
         </div>
@@ -355,24 +355,24 @@
       <div class="banner banner--ok">
         <div class="banner__body">
           <strong>الموقعُ محدَّث</strong>
-          <span>آخرُ بناءٍ ${esc(ago(S.builtAt))} — وكلُّ مادّةٍ منشورةٍ لها صفحةٌ مفهرسة.</span>
+          <span>آخرُ بناءٍ ${esc(ago(S.builtAt))} — وكلُّ منشورٍ له صفحةٌ مفهرسة.</span>
         </div>
       </div>` : '')}
 
       ${heavy ? `
       <div class="banner banner--warn">
         <div class="banner__body">
-          <strong>${heavy} مادّةً تحمل صوراً مضمّنةً داخل النصّ</strong>
+          <strong>${heavy} منشوراً تحمل صوراً مضمّنةً داخل النصّ</strong>
           <span>الصورةُ الملصوقةُ بترميز base64 تُثقل الصفحةَ والخلاصةَ عشرةَ أضعاف. أداةُ التنظيف ترفعها صوراً حقيقيّةً وتستبدل الرابط.</span>
         </div>
         <a class="btn btn--ghost" href="#/settings">أداةُ التنظيف ←</a>
       </div>` : ''}
 
       <div class="grid grid--stats" style="margin-block-end:1rem">
-        <div class="card stat"><span class="stat__label">كلُّ المواد</span><span class="stat__value">${total}</span><span class="stat__note">في سبعة أقسام</span></div>
-        <div class="card stat"><span class="stat__label">هذا الشهر</span><span class="stat__value">${thisMonth}</span><span class="stat__note">مادّةً منشورة</span></div>
+        <div class="card stat"><span class="stat__label">كلُّ المنشورات</span><span class="stat__value">${total}</span><span class="stat__note">في سبعة أقسام</span></div>
+        <div class="card stat"><span class="stat__label">هذا الشهر</span><span class="stat__value">${thisMonth}</span><span class="stat__note">منشوراً</span></div>
         <div class="card stat"><span class="stat__label">الموضوعات</span><span class="stat__value">${Object.keys(S.cats).length}</span><span class="stat__note">تصنيفاً</span></div>
-        <div class="card stat"><span class="stat__label">مختارات</span><span class="stat__value">${S.items.filter((i) => i.featured).length}</span><span class="stat__note">مادّةً مميّزة</span></div>
+        <div class="card stat"><span class="stat__label">مختارات</span><span class="stat__value">${S.items.filter((i) => i.featured).length}</span><span class="stat__note">منشوراً مميّزة</span></div>
       </div>
 
       <div class="grid grid--stats" style="margin-block-end:1rem">${perSection}</div>
@@ -388,31 +388,31 @@
                 <span class="spacer"></span>
                 <span class="row-sub">${esc(ago(item.stamp))}</span>
                 <a class="btn btn--ghost btn--sm" href="#/compose/${item.type}:${item.id}">تحرير</a>
-              </div>`).join('') || '<p class="empty">لا مواد بعد.</p>'}
+              </div>`).join('') || '<p class="empty">لا منشورات بعد.</p>'}
           </div>
         </div>
 
         <div class="card">
           <div class="card__head"><h2>ما يستحقّ الانتباه</h2></div>
           <ul class="checklist">
-            <li class="${noImage ? '' : 'is-done'}">${noImage ? `${noImage} مادّةً بلا صورةِ غلاف — الصورةُ تضاعف النقر في نتائج البحث والمشاركة.` : 'كلُّ المواد لها صورةُ غلاف.'}</li>
-            <li class="${noSummary ? '' : 'is-done'}">${noSummary ? `${noSummary} مادّةً بلا ملخّص — الملخّصُ هو ما يظهر تحت العنوان في جوجل.` : 'كلُّ المواد لها ملخّص.'}</li>
-            <li class="${Object.keys(S.cats).length ? 'is-done' : ''}">${Object.keys(S.cats).length ? 'الموضوعاتُ مضبوطة.' : 'لم تُضَف موضوعاتٌ بعد — الموضوعُ يبني صفحةً تجمع المواد المتشابهة.'}</li>
+            <li class="${noImage ? '' : 'is-done'}">${noImage ? `${noImage} منشوراً بلا صورةِ غلاف — الصورةُ تضاعف النقر في نتائج البحث والمشاركة.` : 'كلُّ المنشورات لها صورةُ غلاف.'}</li>
+            <li class="${noSummary ? '' : 'is-done'}">${noSummary ? `${noSummary} منشوراً بلا ملخّص — الملخّصُ هو ما يظهر تحت العنوان في جوجل.` : 'كلُّ المنشورات لها ملخّص.'}</li>
+            <li class="${Object.keys(S.cats).length ? 'is-done' : ''}">${Object.keys(S.cats).length ? 'الموضوعاتُ مضبوطة.' : 'لم تُضَف موضوعاتٌ بعد — الموضوعُ يبني صفحةً تجمع المنشورات المتشابهة.'}</li>
             <li class="${S.sponsorCount ? 'is-done' : ''}">${S.sponsorCount
               ? `${S.sponsorCount} داعماً في القائمة.`
               : 'لم يُضَف داعمون بعد — أضِفهم من «الداعمون» ليظهروا في الرئيسيّة.'}</li>
           </ul>
           <div class="card__head" style="margin-block:1.2rem .6rem"><h2>اختصارات</h2></div>
           <ul class="checklist">
-            <li class="is-done"><span class="kbd">/</span> البحثُ في كلّ المواد</li>
-            <li class="is-done"><span class="kbd">Ctrl</span> + <span class="kbd">S</span> حفظُ المادّة في المحرّر</li>
+            <li class="is-done"><span class="kbd">/</span> البحثُ في كلّ المنشورات</li>
+            <li class="is-done"><span class="kbd">Ctrl</span> + <span class="kbd">S</span> حفظُ المنشور في المحرّر</li>
             <li class="is-done"><span class="kbd">Esc</span> إغلاقُ النوافذ</li>
           </ul>
         </div>
       </div>`;
   };
 
-  /* ═══════════ قائمةُ المواد ═══════════════════════════ */
+  /* ═══════════ قائمةُ المنشورات ═══════════════════════════ */
   routes.content = (section) => {
     S.filter.section = section || '';
     setActive('content', S.filter.section);
@@ -453,11 +453,11 @@
     view.innerHTML = `
       <div class="page-head">
         <div>
-          <h1>${section ? esc(section.plural) : 'كلُّ المواد'}</h1>
-          <p>${list.length} مادّةً${S.filter.q ? ` تطابق «${esc(S.filter.q)}»` : ''}</p>
+          <h1>${section ? esc(section.plural) : 'كلُّ المنشورات'}</h1>
+          <p>${list.length} منشوراً${S.filter.q ? ` تطابق «${esc(S.filter.q)}»` : ''}</p>
         </div>
         <div class="page-acts">
-          <a class="btn btn--brand" href="#/compose${section ? `/${section.id}` : ''}">＋ مادّةٌ جديدة</a>
+          <a class="btn btn--brand" href="#/compose${section ? `/${section.id}` : ''}">＋ منشورٌ جديد</a>
         </div>
       </div>
 
@@ -500,7 +500,7 @@
             </tr>
           </thead>
           <tbody id="rows">
-            ${page.map(rowHTML).join('') || `<tr><td colspan="8"><div class="empty"><strong>لا توجد موادُّ مطابقة</strong>غيّر التصفية أو ابدأ مادّةً جديدة.</div></td></tr>`}
+            ${page.map(rowHTML).join('') || `<tr><td colspan="8"><div class="empty"><strong>لا توجد منشورات مطابقة</strong>غيّر التصفية أو ابدأ منشوراً جديداً.</div></td></tr>`}
           </tbody>
         </table>
       </div>
@@ -601,7 +601,7 @@
     const count = S.selected.size;
     if (!count) { host.innerHTML = ''; return; }
     host.innerHTML = `<div class="bulkbar">
-      <span>${count} مادّةً محدّدة</span>
+      <span>${count} منشوراً محدّدة</span>
       <span class="spacer"></span>
       <button class="btn btn--ghost btn--sm" type="button" data-bulk="star">تمييز</button>
       <button class="btn btn--ghost btn--sm" type="button" data-bulk="unstar">إلغاءُ التمييز</button>
@@ -620,7 +620,7 @@
         const item = S.items.find((i) => i.type === type && i.id === id);
         if (item) item.featured = featured;
       });
-      toast(featured ? 'مُيّزت المواد' : 'أُلغي التمييز', 'ok');
+      toast(featured ? 'مُيّزت المنشورات' : 'أُلغي التمييز', 'ok');
       S.selected.clear();
       drawContent();
     }, { once: true });
@@ -628,7 +628,7 @@
 
   /* حذفٌ قابلٌ للتراجع: نحتفظ بالنسخة دقائقَ في الذاكرة */
   async function removeItems(pairs) {
-    const label = pairs.length === 1 ? 'هذه المادّة' : `${pairs.length} مادّة`;
+    const label = pairs.length === 1 ? 'هذا المنشور' : `${pairs.length} منشور`;
     const ok = await confirmBox('حذفُ المحتوى', `سيُحذف ${label} من قاعدة البيانات. يمكنك التراجعُ خلال ثوانٍ.`, 'حذف');
     if (!ok) return;
 
@@ -650,7 +650,7 @@
         await loadAll();
         countsPaint();
         drawContent();
-        toast('استُرجعت المواد', 'ok');
+        toast('استُرجعت المنشورات', 'ok');
       }
     });
   }
@@ -805,10 +805,10 @@
 
     let raw = {};
     if (id) {
-      view.innerHTML = '<div class="empty">جارٍ فتحُ المادّة…</div>';
+      view.innerHTML = '<div class="empty">جارٍ فتحُ المنشور…</div>';
       const snap = await db.ref(`${type}/${id}`).once('value');
       raw = snap.val() || {};
-      if (!snap.exists()) { toast('المادّةُ غيرُ موجودة', 'bad'); go('#/content'); return; }
+      if (!snap.exists()) { toast('المنشورُ غيرُ موجودة', 'bad'); go('#/content'); return; }
     }
 
     S.editing = { type, id };
@@ -830,7 +830,7 @@
     view.innerHTML = `
       <div class="page-head">
         <div>
-          <h1>${id ? 'تحريرُ مادّة' : 'مادّةٌ جديدة'}</h1>
+          <h1>${id ? 'تحريرُ منشور' : 'منشورٌ جديد'}</h1>
           <p>${esc(section.plural)} · ${esc(DISPLAY_NAMES[section.display] || '')}${id ? ` · أُنشئت ${esc(shortDate(stamp))}` : ' · لم تُحفظ بعد'}</p>
         </div>
         <div class="page-acts">
@@ -843,7 +843,7 @@
 
       <div class="composer">
         <div>
-          <input class="title-input" id="f-title" placeholder="${section.display === 'people' ? 'اسمُ المتحدّث…' : 'عنوانُ المادّة…'}" value="${esc(raw.title || '')}">
+          <input class="title-input" id="f-title" placeholder="${section.display === 'people' ? 'اسمُ المتحدّث…' : 'عنوانُ المنشور…'}" value="${esc(raw.title || '')}">
           <div class="meter" style="margin-block:.5rem 1rem">
             <div class="meter__bar"><span class="meter__fill" id="m-title"></span></div>
             <span class="meter__text" id="m-title-text"></span>
@@ -851,7 +851,7 @@
 
           <div class="field">
             <span class="field__label">الملخّص — هو ما يظهر تحت العنوان في جوجل وفي البطاقة</span>
-            <textarea id="f-summary" rows="3" placeholder="سطران يشرحان المادّة…">${esc(raw.summary || raw.description || '')}</textarea>
+            <textarea id="f-summary" rows="3" placeholder="سطران يشرحان المنشور…">${esc(raw.summary || raw.description || '')}</textarea>
             <div class="meter">
               <div class="meter__bar"><span class="meter__fill" id="m-sum"></span></div>
               <span class="meter__text" id="m-sum-text"></span>
@@ -899,9 +899,9 @@
               <span class="field__label">التاريخ</span>
               <input class="field__input" type="date" id="f-date" value="${isoOf(stamp)}">
             </div>
-            <label class="check"><input type="checkbox" id="f-featured" ${raw.featured ? 'checked' : ''}><span>مادّةٌ مميّزة (تظهر في «الأكثر تداولاً»)</span></label>
+            <label class="check"><input type="checkbox" id="f-featured" ${raw.featured ? 'checked' : ''}><span>منشورٌ مميّزة (تظهر في «الأكثر تداولاً»)</span></label>
             <div class="save-row">
-              <button class="btn btn--brand" type="button" id="save">${id ? 'حفظُ التعديل' : 'نشرُ المادّة'}</button>
+              <button class="btn btn--brand" type="button" id="save">${id ? 'حفظُ التعديل' : 'نشرُ المنشور'}</button>
               ${id ? '<button class="btn btn--ghost" type="button" id="delete">حذف</button>' : ''}
               <span class="spacer"></span>
             </div>
@@ -923,7 +923,7 @@
           </div>
 
           <div class="card">
-            <div class="card__head"><h2>نسبةُ المادّة</h2></div>
+            <div class="card__head"><h2>نسبةُ المنشور</h2></div>
             <div class="field">
               <span class="field__label">الكاتب</span>
               <input class="field__input" id="f-author" value="${esc(raw.author || '')}" placeholder="اسمُ المحرّر">
@@ -1211,7 +1211,7 @@
       S.dirty = false;
       await loadAll();
       countsPaint();
-      toast(moved ? 'نُقلت المادّةُ إلى قسمها الجديد' : 'حُفظت المادّة', 'ok');
+      toast(moved ? 'نُقلت المنشورُ إلى قسمها الجديد' : 'حُفظت المنشور', 'ok');
       go('#/content');
     } catch (error) {
       toast(error?.code === 'PERMISSION_DENIED'
@@ -1245,7 +1245,7 @@
 
     view.innerHTML = `
       <div class="page-head">
-        <div><h1>الموضوعات</h1><p>الموضوعُ الذي يجمع مادّتين فأكثر تُبنى له صفحةٌ مستقلّةٌ في الموقع.</p></div>
+        <div><h1>الموضوعات</h1><p>الموضوعُ الذي يجمع منشورين فأكثر تُبنى له صفحةٌ مستقلّةٌ في الموقع.</p></div>
       </div>
 
       <div class="card" style="margin-block-end:1rem">
@@ -1260,7 +1260,7 @@
         ${ids.map((id) => `
           <div class="mini__row" data-cat="${esc(id)}">
             <input type="text" class="cat-name" value="${esc(catName(id))}" style="flex:1">
-            <span class="row-sub">${used(id)} مادّة</span>
+            <span class="row-sub">${used(id)} منشور</span>
             <button class="btn btn--ghost btn--sm" type="button" data-save>حفظ</button>
             <button class="btn btn--ghost btn--sm" type="button" data-del>حذف</button>
           </div>`).join('') || '<div class="empty"><strong>لا موضوعاتٍ بعد</strong>أضف أوّلَ موضوعٍ من الحقل أعلاه.</div>'}
@@ -1290,7 +1290,7 @@
       if (e.target.closest('[data-del]')) {
         const count = used(id);
         const ok = await confirmBox('حذفُ الموضوع',
-          count ? `هذا الموضوعُ مربوطٌ بـ ${count} مادّة. سيُحذف الموضوعُ ويُنزع من موادّه.` : 'سيُحذف الموضوع.',
+          count ? `هذا الموضوعُ مربوطٌ بـ ${count} منشور. سيُحذف الموضوعُ ويُنزع من منشوراتُه.` : 'سيُحذف الموضوع.',
           'حذف');
         if (!ok) return;
         await db.ref(`categories/${id}`).remove();
@@ -1309,7 +1309,7 @@
   /* ═══════════ التعليقات ═════════════════════════════ */
   routes.comments = () => {
     setActive('comments');
-    const titleOf = (row) => S.items.find((i) => i.type === row.type && i.id === row.item)?.title || 'مادّةٌ محذوفة';
+    const titleOf = (row) => S.items.find((i) => i.type === row.type && i.id === row.item)?.title || 'منشورٌ محذوفة';
     const pending = S.comments.filter((c) => c.approved === false);
     const shown = S.commentsFilter === 'pending' ? pending : S.comments;
 
@@ -1342,7 +1342,7 @@
             <p style="margin:0;white-space:pre-wrap">${esc(row.body)}</p>
             <p class="row-sub" style="margin:0">
               على: <a href="#/compose/${esc(row.type)}:${esc(row.item)}">${esc(titleOf(row))}</a>
-              · <a href="/read.html?type=${esc(row.type)}&id=${encodeURIComponent(row.item)}" target="_blank" rel="noopener">فتحُ المادّة ↗</a>
+              · <a href="/read.html?type=${esc(row.type)}&id=${encodeURIComponent(row.item)}" target="_blank" rel="noopener">فتحُ المنشور ↗</a>
             </p>
           </div>`).join('') || '<div class="empty"><strong>لا تعليقاتٍ هنا</strong>حين يكتب القرّاءُ تعليقاً يظهر في هذه الشاشة.</div>'}
       </div>`;
@@ -1427,7 +1427,7 @@
         <div class="card__head">
           <h2><span class="side__dot" style="--accent:${esc(s.accent || '#C2185B')}"></span>${esc(s.plural || s.name || s.id)}</h2>
           <div class="page-acts">
-            <span class="row-sub">${used} مادّة</span>
+            <span class="row-sub">${used} منشور</span>
             <button class="btn btn--ghost btn--sm" type="button" data-sec-move="-1"${index === 0 ? ' disabled' : ''}>▲</button>
             <button class="btn btn--ghost btn--sm" type="button" data-sec-move="1">▼</button>
             <button class="btn btn--ghost btn--sm" type="button" data-sec-del>حذف</button>
@@ -1443,7 +1443,7 @@
             <input class="field__input" data-sf="plural" value="${esc(s.plural || '')}" placeholder="أخبارُ المؤتمر">
           </label>
           <label class="field">
-            <span class="field__label">اسمُ المادّة الواحدة</span>
+            <span class="field__label">اسمُ المنشور الواحدة</span>
             <input class="field__input" data-sf="single" value="${esc(s.single || '')}" placeholder="خبر">
           </label>
           <label class="field">
@@ -1550,8 +1550,8 @@
         const ok = await confirmBox(
           'حذفُ القسم',
           `سيختفي «${section.plural || section.id}» من الموقع ومن القائمة`
-          + `${used ? ` ومعه ${used} مادّةً لن تظهر` : ''}. `
-          + 'موادُّه تبقى في قاعدة البيانات، فإن أعدتَ القسمَ بالمعرّف نفسِه عادت معه.',
+          + `${used ? ` ومعه ${used} منشوراً لن تظهر` : ''}. `
+          + 'منشوراتُه تبقى في قاعدة البيانات، فإن أعدتَ القسمَ بالمعرّف نفسِه عادت معه.',
           'حذف'
         );
         if (!ok) return;
@@ -1749,7 +1749,7 @@
       ['home.follow', 'لوحُ المتابعة'],
       ['home.sponsors', 'شريطُ داعمي المؤتمر']
     ]],
-    ['صفحةُ المادّة', [
+    ['صفحةُ المنشور', [
       ['article.tools', 'أدواتُ المقال (استماع · قراءة · حجم)'],
       ['article.toc', 'جدولُ المحتويات'],
       ['article.share', 'شريطُ المشاركة'],
@@ -2349,7 +2349,7 @@
       <div class="grid grid--2">
         <div class="card">
           <div class="card__head"><h2>النسخُ الاحتياطي</h2></div>
-          <p class="row-sub">ملفٌّ واحدٌ يحوي كلَّ ما في القاعدة: المواد والموضوعات والأسئلة والنتائج.</p>
+          <p class="row-sub">ملفٌّ واحدٌ يحوي كلَّ ما في القاعدة: المنشورات والموضوعات والأسئلة والنتائج.</p>
           <div class="save-row" style="margin-block-start:.9rem">
             <button class="btn btn--brand" type="button" id="do-export">تنزيلُ نسخة</button>
             <button class="btn btn--ghost" type="button" id="do-import">استيرادُ نسخة</button>
@@ -2360,7 +2360,7 @@
           <div class="card__head"><h2>تنظيفُ الصور المضمّنة</h2></div>
           <p class="row-sub">
             ${heavy.length
-              ? `${heavy.length} مادّةً تحمل صوراً بترميز base64 داخل نصّها. الأداةُ ترفع كلَّ صورةٍ إلى المستضيف وتستبدل الرابطَ في القاعدة — فتخفّ الصفحاتُ والخلاصةُ ولوحةُ التحرير نفسُها.`
+              ? `${heavy.length} منشوراً تحمل صوراً بترميز base64 داخل نصّها. الأداةُ ترفع كلَّ صورةٍ إلى المستضيف وتستبدل الرابطَ في القاعدة — فتخفّ الصفحاتُ والخلاصةُ ولوحةُ التحرير نفسُها.`
               : 'لا توجد صورٌ مضمّنة. القاعدةُ نظيفة.'}
           </p>
           <div class="save-row" style="margin-block-start:.9rem">
@@ -2442,7 +2442,7 @@
 
   async function cleanEmbedded(list) {
     const ok = await confirmBox('تنظيفُ الصور',
-      `ستُرفع صورُ ${list.length} مادّةٍ إلى المستضيف وتُحدَّث القاعدة. قد يستغرق ذلك دقائق.`, 'ابدأ');
+      `ستُرفع صورُ ${list.length} منشورٍ إلى المستضيف وتُحدَّث القاعدة. قد يستغرق ذلك دقائق.`, 'ابدأ');
     if (!ok) return;
 
     const log = $('#clean-log');
@@ -2477,7 +2477,7 @@
     await loadAll();
     countsPaint();
     log.textContent = `اكتمل: رُفعت ${images} صورة.`;
-    toast(`نُظّفت ${list.length} مادّة`, 'ok');
+    toast(`نُظّفت ${list.length} منشور`, 'ok');
     routes.settings();
   }
 

@@ -3,7 +3,7 @@
 {% import "ads.html" as adx %}
 
 {% block title %}{{ category.name }} | {{ cfg.title }}{% endblock %}
-{% block description %}كلُّ ما نُشر على موقع المؤتمر في موضوع «{{ category.name }}» — {{ items|length }} مادّة.{% endblock %}
+{% block description %}كلُّ ما نُشر على موقع المؤتمر في موضوع «{{ category.name }}» — {{ items|length }} منشور.{% endblock %}
 
 {% block content %}
 <header class="pagehead" style="--accent: {{ category.color }}">
@@ -17,7 +17,7 @@
     </nav>
     <p class="pagehead__eyebrow">موضوع</p>
     <h1 class="pagehead__title">{{ category.name }}</h1>
-    <p class="pagehead__count">{{ items|length }} مادّةً في هذا الموضوع</p>
+    <p class="pagehead__count">{{ items|length }} منشوراً في هذا الموضوع</p>
   </div>
 </header>
 
@@ -28,7 +28,7 @@
       {% for item in items %}{{ ui.card(item, 'standard') }}{% endfor %}
     </div>
   {% else %}
-    {{ ui.empty_state('لا توجد موادُّ بعد تحت هذا الموضوع.') }}
+    {{ ui.empty_state('لا توجد منشوراتٌ بعد تحت هذا الموضوع.') }}
   {% endif %}
 </section>
 

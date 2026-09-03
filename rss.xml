@@ -7,8 +7,20 @@
 <description>الموقعُ الرسميُّ للمؤتمر السنوي للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦، المنعقدِ في المركز القومي للبحوث: أخبارُ المؤتمر وفعاليّاتُه والمتحدّثون فيه وجلساتُه المصوّرةُ وصورُه.</description>
 <language>ar</language>
 <ttl>60</ttl>
-<lastBuildDate>Thu, 03 Sep 2026 08:30:40 +0000</lastBuildDate>
+<lastBuildDate>Thu, 03 Sep 2026 09:30:40 +0000</lastBuildDate>
 <atom:link href="https://eacr-conference.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
 <image><url>https://eacr-conference.vercel.app/assets/img/icon-512.png</url><title>EACR Conference</title><link>https://eacr-conference.vercel.app</link></image>
+<item>
+<title>تجربه</title>
+<link>https://eacr-conference.vercel.app/events/تجربه-ixa2a/</link>
+<guid isPermaLink="true">https://eacr-conference.vercel.app/events/تجربه-ixa2a/</guid>
+<pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
+<category>فعاليّات</category>
+<dc:creator>معاذ</dc:creator>
+<description>تجربه — فعاليّةٌ ضمن برنامج المؤتمرُ السنوي للجمعيّة المصريّة لأبحاث السرطان في المركزُ القوميُّ للبحوث.</description>
+<media:content url="https://i.ibb.co/Jjqg9fVQ/download.png" medium="image"/>
+<media:thumbnail url="https://i.ibb.co/Jjqg9fVQ/download.png"/>
+<content:encoded><![CDATA[<p><img src="https://i.ibb.co/Jjqg9fVQ/download.png" loading="lazy" decoding="async" alt=""></p>]]></content:encoded>
+</item>
 </channel>
 </rss>

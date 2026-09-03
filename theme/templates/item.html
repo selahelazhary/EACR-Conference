@@ -129,7 +129,7 @@
   <div class="article__grid shell">
     {% if item.headings|length >= 3 and show('article.toc') %}
     <aside class="toc" aria-label="محتوياتُ المقال">
-      <p class="toc__label">في هذه المادّة</p>
+      <p class="toc__label">في هذا المنشور</p>
       <ol class="toc__list">
         {% for heading in item.headings %}
           <li class="toc__item toc__item--h{{ heading.level }}">
@@ -144,7 +144,7 @@
     <div class="prose{% if item.headings|length < 3 or not show('article.toc') %} prose--wide{% endif %}" id="article-body">
       {{ item.body|safe }}
       {% if not item.body %}
-        <p class="prose__empty">لا يتوفّر نصُّ هذه المادّة بعد.</p>
+        <p class="prose__empty">لا يتوفّر نصُّ هذا المنشور بعد.</p>
       {% endif %}
     </div>
   </div>
@@ -177,7 +177,7 @@
 
     {% if show('article.share') %}
     <div class="sharebar">
-      <span>انشر المادّة</span>
+      <span>شارك المنشور</span>
       <a class="sharebar__btn" target="_blank" rel="noopener"
          href="https://www.facebook.com/sharer/sharer.php?u={{ item.url|absolute|urlencode }}">فيسبوك</a>
       <a class="sharebar__btn" target="_blank" rel="noopener"
@@ -191,15 +191,15 @@
     {% endif %}
 
     {% if show('article.prevnext') %}
-    <nav class="prevnext" aria-label="مادّةٌ سابقةٌ ولاحقة">
+    <nav class="prevnext" aria-label="منشورٌ سابقٌ ولاحق">
       {% if next_item %}
         <a class="prevnext__link" href="{{ next_item.url }}">
-          <span>المادّةُ التالية</span><b>{{ next_item.title }}</b>
+          <span>المنشورُ التالي</span><b>{{ next_item.title }}</b>
         </a>
       {% endif %}
       {% if prev_item %}
         <a class="prevnext__link prevnext__link--prev" href="{{ prev_item.url }}">
-          <span>المادّةُ السابقة</span><b>{{ prev_item.title }}</b>
+          <span>المنشورُ السابق</span><b>{{ prev_item.title }}</b>
         </a>
       {% endif %}
     </nav>
@@ -222,7 +222,7 @@
       اترك هذا الحقل فارغاً<input type="text" name="website" tabindex="-1" autocomplete="off">
     </label>
     <textarea class="field__input" name="body" rows="3" maxlength="1200" required
-              placeholder="اكتب تعليقك… رأيٌ أو سؤالٌ أو إضافةٌ إلى المادّة."></textarea>
+              placeholder="اكتب تعليقك… رأيٌ أو سؤالٌ أو إضافةٌ إلى المنشور."></textarea>
     <div class="comment-form__foot">
       <p class="comment-form__note" data-comment-note hidden></p>
       <button class="btn" type="submit">نشرُ التعليق</button>
@@ -236,8 +236,8 @@
 {% endif %}
 
 {% if related and show('article.related') %}
-<section class="strip shell" aria-label="موادُّ ذاتُ صلة">
-  {{ ui.section_head('اقرأ أيضاً', 'موادُّ تشترك مع هذه في الموضوع أو القسم') }}
+<section class="strip shell" aria-label="منشوراتٌ ذاتُ صلة">
+  {{ ui.section_head('اقرأ أيضاً', 'منشوراتٌ تشترك مع هذا في الموضوع أو القسم') }}
   <div class="grid grid--4">
     {% for other in related %}{{ ui.card(other, 'standard', dek=false) }}{% endfor %}
   </div>
