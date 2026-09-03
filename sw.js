@@ -1,6 +1,6 @@
 /* عاملُ الخدمة — تصفّحٌ سريعٌ وقراءةٌ دون اتّصال. */
 const SITE_TITLE = "EACR Conference";
-const VERSION = 'eacr-1-202609030935';
+const VERSION = 'eacr-2-202609030959';
 const SHELL = `${VERSION}-shell`;
 const PAGES = `${VERSION}-pages`;
 const MEDIA = `${VERSION}-media`;
@@ -15,7 +15,7 @@ const PRECACHE = [
   '/assets/css/layout.css?v=a663b4a1',
   '/assets/css/components.css?v=9dbdb67b',
   '/assets/css/layouts.css?v=864895ab',
-  '/assets/css/conference.css?v=ba96c468',
+  '/assets/css/conference.css?v=2284a91f',
   '/assets/js/skin.js?v=df0daedb',
   '/assets/js/lang.js?v=286bcb3d',
   '/assets/i18n/en.json',

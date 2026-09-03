@@ -7,9 +7,21 @@
 <description>الموقعُ الرسميُّ للمؤتمر السنوي للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦، المنعقدِ في المركز القومي للبحوث: أخبارُ المؤتمر وفعاليّاتُه والمتحدّثون فيه وجلساتُه المصوّرةُ وصورُه.</description>
 <language>ar</language>
 <ttl>60</ttl>
-<lastBuildDate>Thu, 03 Sep 2026 09:35:31 +0000</lastBuildDate>
+<lastBuildDate>Thu, 03 Sep 2026 09:59:08 +0000</lastBuildDate>
 <atom:link href="https://eacr-conference.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
 <image><url>https://eacr-conference.vercel.app/assets/img/icon-512.png</url><title>EACR Conference</title><link>https://eacr-conference.vercel.app</link></image>
+<item>
+<title>تجربه</title>
+<link>https://eacr-conference.vercel.app/news/تجربه-m3rjk/</link>
+<guid isPermaLink="true">https://eacr-conference.vercel.app/news/تجربه-m3rjk/</guid>
+<pubDate>Thu, 03 Sep 2026 00:00:00 +0000</pubDate>
+<category>أخبار</category>
+<dc:creator>EACR Conference</dc:creator>
+<description>تجربه — أخبارُ المؤتمر في المؤتمرُ السنوي للجمعيّة المصريّة لأبحاث السرطان، المنعقد في المركزُ القوميُّ للبحوث.</description>
+<media:content url="https://i.ibb.co/VW1mSJ2C/light.png" medium="image"/>
+<media:thumbnail url="https://i.ibb.co/VW1mSJ2C/light.png"/>
+<content:encoded><![CDATA[]]></content:encoded>
+</item>
 <item>
 <title>تجربه</title>
 <link>https://eacr-conference.vercel.app/events/تجربه-ixa2a/</link>

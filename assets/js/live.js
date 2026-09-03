@@ -15,7 +15,10 @@
 
   const BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s]));
   const CACHE_KEY = 'eacr:live';
-  const TTL = 5 * 60 * 1000;
+  /* الذاكرةُ للرسم الأوّل لا للحقيقة: نعرض المحفوظَ فوراً ثمّ نسأل
+     القاعدةَ في كلِّ فتحةِ صفحة. فمن نشر من اللوحة ثمّ فتح الموقعَ
+     يرى منشورَه الآن، لا بعد خمس دقائق. */
+  const TTL = 60 * 1000;
 
   const escape = (value) => (value || '').toString().replace(/[&<>"]/g, (ch) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]
@@ -100,21 +103,28 @@
     }
   }
 
-  async function collect() {
-    const cached = readCache();
-    if (cached) return cached;
+  async function fetchAll() {
     const groups = await Promise.all(SECTIONS.map(fetchSection));
     const items = groups.flat().sort((a, b) => b.stamp - a.stamp).slice(0, 120);
     writeCache(items);
     return items;
   }
 
-  /* ── ما بُني في الصفحة مسبقاً: لا نكرّره ───────────────── */
+  /* ── ما بُني في الصفحة مسبقاً: لا نكرّره ─────────────────
+     المقارنةُ بالمعرّف لا بالعنوان: العنوانُ نصٌّ قد تكون طبقةُ
+     الترجمة بدّلته قبل أن نصل، فيصير «تجربه» في القاعدة و
+     «an experience» في الصفحة، فيُحقن المنشورُ مرّتين. */
   const known = new Set(
+    Array.from(document.querySelectorAll('[data-item]'))
+      .map((node) => node.getAttribute('data-item'))
+      .filter(Boolean)
+  );
+  const knownTitles = new Set(
     Array.from(document.querySelectorAll(
       '.card__title a, .ticker__track a, .lead__title a, .event__title a, .person__name a, .tile__cap'
     )).map((node) => node.textContent.trim()).filter(Boolean)
   );
+  const isBuilt = (item) => known.has(item.id) || knownTitles.has(item.title);
 
   /* ── بطاقاتٌ تطابق قوالبَ macros.html شكلاً بشكل ────────── */
 
@@ -129,7 +139,7 @@
   const freshTag = '<span class="fresh-tag">جديد</span>';
 
   const standardCard = (item) => `
-    <article class="card card--standard is-fresh" style="--accent: ${escape(item.accent)}">
+    <article class="card card--standard is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
       <a class="card__media" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">${thumb(item)}</a>
       <div class="card__body">
         <span class="kicker"><span class="kicker__dot"></span>${escape(item.sectionName)}${freshTag}</span>
@@ -150,7 +160,7 @@
            <img src="${escape(item.image)}" alt="" loading="lazy" decoding="async"></a>`
       : '';
     return `
-    <article class="event is-fresh" style="--accent: ${escape(item.accent)}">
+    <article class="event is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
       ${badge}
       <div class="event__body">
         <h3 class="event__title"><a href="${readUrl(item)}">${escape(item.title)}</a> ${freshTag}</h3>
@@ -165,7 +175,7 @@
   };
 
   const personCard = (item) => `
-    <article class="person is-fresh" style="--accent: ${escape(item.accent)}">
+    <article class="person is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
       <a class="person__face" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">
         ${item.image
           ? `<img src="${escape(item.image)}" alt="" loading="lazy" decoding="async">`
@@ -176,7 +186,7 @@
     </article>`;
 
   const galleryTile = (item) => `
-    <a class="tile is-fresh" href="${readUrl(item)}" style="--accent: ${escape(item.accent)}">
+    <a class="tile is-fresh" href="${readUrl(item)}" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
       ${item.image
         ? `<img src="${escape(item.image)}" alt="${escape(item.title)}" loading="lazy" decoding="async">`
         : `<span class="tile__initial" aria-hidden="true">${escape(item.title.slice(0, 1))}</span>`}
@@ -184,7 +194,7 @@
     </a>`;
 
   const videoCard = (item) => `
-    <article class="card card--video is-fresh" style="--accent: ${escape(item.accent)}">
+    <article class="card card--video is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
       <a class="card__media" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">
         ${thumb(item)}<span class="play" aria-hidden="true"></span>
       </a>
@@ -213,23 +223,17 @@
     return true;
   };
 
-  const run = async () => {
+  /* ما حُقن في هذه الجولة — فلا يُحقن ثانيةً حين يعود الجوابُ من الشبكة */
+  const placed = new Set();
+
+  const paint = (all) => {
     const page = document.querySelector('[data-live-section]');
     const pageSection = page ? page.getAttribute('data-live-section') : '';
     const homeGrid = document.getElementById('latest-grid');
 
-    /* هيكلٌ عظميٌّ ريثما يصل الجديد — على الرئيسيّة وحدها */
-    const ghost = document.createElement('div');
-    if (homeGrid && !readCache()) {
-      ghost.style.display = 'contents';
-      ghost.innerHTML = window.EACR?.skeletonCards(3) || '';
-      homeGrid.prepend(ghost);
-    }
-
-    const all = await collect();
-    ghost.remove();
-    const fresh = all.filter((item) => !known.has(item.title));
-    if (!fresh.length) return;
+    const fresh = all.filter((item) => !isBuilt(item) && !placed.has(item.id));
+    if (!fresh.length) return 0;
+    fresh.forEach((item) => placed.add(item.id));
 
     /* صفحةُ قسم: كلُّ جديدِ هذا القسم في صدر شبكته */
     if (pageSection) {
@@ -249,15 +253,40 @@
       const track = document.getElementById('ticker-track');
       if (track) {
         track.insertAdjacentHTML('afterbegin', fresh.slice(0, 4).map((item) => `
-          <a href="${readUrl(item)}"><b>${escape(item.sectionName)}</b>${escape(item.title)}</a>`).join(''));
+          <a href="${readUrl(item)}" data-item="${escape(item.id)}"><b>${escape(item.sectionName)}</b>${escape(item.title)}</a>`).join(''));
       }
     }
 
     window.EACR?.refreshSavedUI?.();
     document.dispatchEvent(new CustomEvent('eacr:live', { detail: { count: fresh.length } }));
+    return fresh.length;
+  };
+
+  const run = async () => {
+    const homeGrid = document.getElementById('latest-grid');
+    const cached = readCache();
+
+    /* ١. المحفوظُ يُرسم فوراً إن وُجد */
+    if (cached) paint(cached);
+
+    /* ٢. وفي كلِّ الأحوال نسأل القاعدةَ — لأنّ المحرّرَ قد نشر للتوّ */
+    const ghost = document.createElement('div');
+    if (homeGrid && !cached) {
+      ghost.style.display = 'contents';
+      ghost.innerHTML = window.EACR?.skeletonCards(3) || '';
+      homeGrid.prepend(ghost);
+    }
+    const live = await fetchAll();
+    ghost.remove();
+    paint(live);
   };
 
   const start = () => { run().catch(() => {}); };
-  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 2000 });
-  else setTimeout(start, 800);
+  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1500 });
+  else setTimeout(start, 500);
+
+  /* العودةُ إلى اللسان بعد النشر من اللوحة: نسأل من جديد */
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) fetchAll().then(paint).catch(() => {});
+  });
 })();

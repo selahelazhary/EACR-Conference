@@ -15,7 +15,7 @@
     <span class="ticker__tag"><span class="ticker__pulse" aria-hidden="true"></span>الأحدث</span>
     <div class="ticker__track" id="ticker-track">
       {% for item in latest[:8] %}
-        <a href="{{ item.url }}"><b>{{ item.section_one or item.section_name }}</b>{{ item.title }}</a>
+        <a href="{{ item.url }}" data-item="{{ item.id }}"><b>{{ item.section_one or item.section_name }}</b>{{ item.title }}</a>
       {% endfor %}
     </div>
   </div>
@@ -25,58 +25,10 @@
 
 {% block content %}
 
-{# ═══ صدرُ المؤتمر: ما هو، وأين، ومتى ═══════════════════════ #}
-{% if show('home.hero') %}
-<section class="hero" aria-label="عن المؤتمر">
-  <div class="shell hero__inner">
-    <img class="hero__seal" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="132" height="132"
-         alt="شعار {{ conference.get('organizer') or cfg.title }}" fetchpriority="high" decoding="async">
-    <div class="hero__text">
-      {% if conference.get('organizer') %}
-        <p class="hero__eyebrow">{{ conference.organizer }}</p>
-      {% endif %}
-      <h1 class="hero__title">{{ conference.get('name') or cfg.title }}
-        {%- if conference.get('edition') %} <span class="hero__edition">{{ conference.edition }}</span>{% endif %}</h1>
-      <p class="hero__facts">
-        {% if conference.get('venue') %}
-          <span class="hero__fact">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-              <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-              <circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
-            </svg>{{ conference.venue }}
-          </span>
-        {% endif %}
-        {% if conference.get('date_label') or conference.get('starts') %}
-          <span class="hero__fact">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-              <rect x="3.5" y="5" width="17" height="15.5" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
-              <path d="M3.5 10h17M8 3.2v3.4M16 3.2v3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-            </svg>{{ conference.get('date_label') or conference.get('starts') }}
-          </span>
-        {% endif %}
-        {% if conference.get('city') %}
-          <span class="hero__fact">{{ conference.city }}{% if conference.get('country') %}، {{ conference.country }}{% endif %}</span>
-        {% endif %}
-      </p>
-      {{ ui.countdown(conference) }}
-
-      <div class="hero__acts">
-        {% if conference.get('register_url') %}
-          <a class="btn btn--brand" href="{{ conference.register_url }}" rel="noopener" target="_blank">التسجيلُ في المؤتمر</a>
-        {% endif %}
-        {% if conference.get('abstract_url') %}
-          <a class="btn btn--ghost" href="{{ conference.abstract_url }}" rel="noopener" target="_blank">إرسالُ ملخّصٍ بحثيّ</a>
-        {% endif %}
-        <a class="btn btn--ghost" href="/about/">عن المؤتمر</a>
-      </div>
-    </div>
-  </div>
-</section>
-{% endif %}
 
 {% if lead %}
 <section class="lead-grid shell" aria-label="أبرزُ الأخبار">
-  <article class="lead" style="--accent: {{ lead.accent }}">
+  <article class="lead" data-item="{{ lead.id }}" style="--accent: {{ lead.accent }}">
     <a class="lead__media" href="{{ lead.url }}" tabindex="-1" aria-hidden="true">
       {{ ui.thumb(lead, sizes='(max-width: 900px) 100vw, 62vw', eager=true) }}
     </a>
@@ -216,6 +168,55 @@
   </section>
   {% endif %}
 {% endfor %}
+
+{# ═══ بطاقةُ المؤتمر: بعد الأخبار — فالخبرُ يتصدّر الصفحة ═══ #}
+{% if show('home.hero') %}
+<section class="hero" aria-label="عن المؤتمر">
+  <div class="shell hero__inner">
+    <img class="hero__seal" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="132" height="132"
+         alt="شعار {{ conference.get('organizer') or cfg.title }}" fetchpriority="high" decoding="async">
+    <div class="hero__text">
+      {% if conference.get('organizer') %}
+        <p class="hero__eyebrow">{{ conference.organizer }}</p>
+      {% endif %}
+      <h1 class="hero__title">{{ conference.get('name') or cfg.title }}
+        {%- if conference.get('edition') %} <span class="hero__edition">{{ conference.edition }}</span>{% endif %}</h1>
+      <p class="hero__facts">
+        {% if conference.get('venue') %}
+          <span class="hero__fact">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            </svg>{{ conference.venue }}
+          </span>
+        {% endif %}
+        {% if conference.get('date_label') or conference.get('starts') %}
+          <span class="hero__fact">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <rect x="3.5" y="5" width="17" height="15.5" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3.5 10h17M8 3.2v3.4M16 3.2v3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>{{ conference.get('date_label') or conference.get('starts') }}
+          </span>
+        {% endif %}
+        {% if conference.get('city') %}
+          <span class="hero__fact">{{ conference.city }}{% if conference.get('country') %}، {{ conference.country }}{% endif %}</span>
+        {% endif %}
+      </p>
+      {{ ui.countdown(conference) }}
+
+      <div class="hero__acts">
+        {% if conference.get('register_url') %}
+          <a class="btn btn--brand" href="{{ conference.register_url }}" rel="noopener" target="_blank">التسجيلُ في المؤتمر</a>
+        {% endif %}
+        {% if conference.get('abstract_url') %}
+          <a class="btn btn--ghost" href="{{ conference.abstract_url }}" rel="noopener" target="_blank">إرسالُ ملخّصٍ بحثيّ</a>
+        {% endif %}
+        <a class="btn btn--ghost" href="/about/">عن المؤتمر</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
 
 {# ═══ داعمو المؤتمر ═════════════════════════════════════════ #}
 {% if site.sponsors and sponsor_cfg.get('enabled', true) and show('home.sponsors') %}

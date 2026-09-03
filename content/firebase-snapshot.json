@@ -9,7 +9,7 @@
    "videos",
    "gallery"
   ],
-  "synced_at": "2026-09-03T08:57:13+00:00"
+  "synced_at": "2026-09-03T09:54:26+00:00"
  },
  "categories": {
   "cat_1788424590602": {
@@ -27,7 +27,7 @@
    "createdAt": 1788424668010,
    "date": "2026-09-03",
    "dateLabel": "3 سبتمبر 2026",
-   "featured": true,
+   "featured": false,
    "focus": {
     "x": 50,
     "y": 50
@@ -38,20 +38,41 @@
    "summary": "تجربه",
    "timestamp": 1788426000000,
    "title": "تجربه",
-   "updatedAt": 1788424939019,
+   "updatedAt": 1788428906404,
    "updatedBy": "elgoharyx@admin.com",
    "venue": "",
    "when": ""
   }
  },
  "gallery": null,
- "news": null,
+ "news": {
+  "-P0aeoYFiSY42Umm3rJk": {
+   "author": "",
+   "content": "",
+   "createdAt": 1788428898869,
+   "date": "2026-09-03",
+   "dateLabel": "3 سبتمبر 2026",
+   "featured": false,
+   "focus": {
+    "x": 50,
+    "y": 50
+   },
+   "image": "https://i.ibb.co/VW1mSJ2C/light.png",
+   "readTime": 1,
+   "source": "",
+   "summary": "وات",
+   "timestamp": 1788426000000,
+   "title": "تجربه",
+   "updatedAt": 1788428898869,
+   "updatedBy": "elgoharyx@admin.com"
+  }
+ },
  "site_config": {
   "appearance": {
    "brand": "#000000",
    "radius": "sharp",
    "spark": "#000000",
-   "theme": "nile"
+   "theme": "tribune"
   },
   "identity": {
    "title": "EACR Conference"
@@ -124,7 +145,7 @@
     "slug": "gallery"
    }
   ],
-  "updatedAt": 1788425349025,
+  "updatedAt": 1788425865745,
   "updatedBy": "elgoharyx@admin.com"
  },
  "site_texts": null,
