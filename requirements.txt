@@ -1,0 +1,4 @@
+Jinja2>=3.1
+PyYAML>=6.0
+Markdown>=3.5
+Pillow>=10.0  # لتوليد الأيقونات فقط: python tools/make_icons.py

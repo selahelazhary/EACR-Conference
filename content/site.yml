@@ -1,0 +1,243 @@
+# ملفُّ الإعدادات المركزيُّ لموقع «EACR Conference»
+# كلُّ ما يظهر في الواجهة من أسماءٍ وروابطَ وأقسامٍ يُضبط من هنا،
+# وما تكتبه لوحةُ الإدارة في عقدة site_config يتقدّم عليه عند البناء.
+
+title: "EACR Conference"
+tagline: "المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦"
+description: >-
+  الموقعُ الرسميُّ للمؤتمر السنويِّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦،
+  المنعقدِ في المركز القومي للبحوث: أخبارُ المؤتمر وفعاليّاتُه والمتحدّثون فيه
+  وجلساتُه المصوّرةُ وصورُه.
+url: "https://eacr-conference.vercel.app"
+lang: "ar"
+dir: "rtl"
+locale: "ar_EG"
+copyright: "الجمعيّة المصريّة لأبحاث السرطان"
+founded: 2026
+
+# رموزُ إثبات ملكيّة الموقع لجوجل — تُضاف بعد التسجيل في Search Console
+verification:
+  google: []
+
+# ═══ بياناتُ المؤتمر ═════════════════════════════════════════
+# تظهر في صدر الرئيسيّة وصفحة «عن المؤتمر» وفي البيانات المهيكلة،
+# وكلُّها قابلةٌ للتحرير من لوحة الإدارة ← «بياناتُ المؤتمر».
+conference:
+  name: "المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان"
+  short: "مؤتمر EACR ٢٠٢٦"
+  edition: "٢٠٢٦"
+  year: 2026
+  organizer: "الجمعيّة المصريّة لأبحاث السرطان"
+  organizer_en: "Egyptian Association of Cancer Research"
+  venue: "المركزُ القوميُّ للبحوث"
+  venue_en: "National Research Centre"
+  address: "شارعُ البحوث — الدقّي، الجيزة"
+  city: "القاهرة"
+  country: "مصر"
+  map: "https://maps.google.com/?q=National+Research+Centre+Dokki+Giza"
+  starts: ""            # 2026-11-15 — يُضبط من اللوحة متى تحدّد الموعد
+  ends: ""
+  date_label: ""        # نصٌّ حرٌّ يُعرض بدل التاريخ إن لم يُحدَّد بعد
+  register_url: ""      # رابطُ التسجيل — الزرُّ لا يظهر ما دام فارغاً
+  abstract_url: ""      # رابطُ إرسال الملخّصات
+  email: ""
+  phone: ""
+  patron:
+    label: "تحت رعاية"
+    name: "الأستاذ الدكتور ممدوح معوّض حسن"
+    role: "رئيسُ المركز القومي للبحوث · القائمُ بأعمال رئيس أكاديميّة البحث العلمي والتكنولوجيا"
+    photo: ""
+  president:
+    label: "رئيسُ المؤتمر"
+    name: "الأستاذ الدكتور محمد لبيب سالم"
+    role: "رئيسُ الجمعيّة المصريّة لأبحاث السرطان · رئيسُ المؤتمر"
+    photo: ""
+
+# ═══ قاعدةُ البيانات ═════════════════════════════════════════
+# مشروع Firebase الذي تكتب إليه لوحةُ الإدارة.
+# المفاتيحُ علنيّةٌ بطبيعتها: حمايةُ القاعدة من «قواعد الأمان»
+# لا من إخفاء المفتاح (انظر firebase-rules.json في جذر المستودع).
+firebase:
+  database_url: "https://earc-55619-default-rtdb.europe-west1.firebasedatabase.app"
+  project_id: "earc-55619"
+  web:
+    api_key: "AIzaSyC3t6Dl0U2OjuZLBW10TrGN5Llg8YGWTj0"
+    auth_domain: "earc-55619.firebaseapp.com"
+    storage_bucket: "earc-55619.firebasestorage.app"
+    messaging_sender_id: "562271422203"
+    app_id: "1:562271422203:web:6496eece2791711d94d25e"
+    measurement_id: "G-GZYXH4NSST"
+
+# ═══ لوحةُ الإدارة ═══════════════════════════════════════════
+admin:
+  path: "admin.html"
+  title: "لوحةُ إدارة المؤتمر"
+  imgbb_key: "926c4a15635bfbd9038815bcbc0184ad"
+  autosave_seconds: 20
+
+# ═══ الأقسام ═════════════════════════════════════════════════
+# هذه هي الأقسامُ الافتراضيّة. ما يُضاف أو يُحذف من لوحة الإدارة
+# ← «الأقسام» يُحفظ في site_config/sections ويتقدّم على هذه القائمة.
+#
+# display يحدّد شكلَ عرض القسم:
+#   standard  بطاقاتٌ بصورةٍ وعنوانٍ وملخّص        (الأخبار)
+#   agenda    بطاقاتُ موعدٍ ومكانٍ لكلِّ فعاليّة    (الفعاليّات)
+#   people    شبكةُ صورٍ دائريّةٍ بأسماءٍ وصفات     (المتحدّثون)
+#   video     شبكةٌ بعلامة تشغيلٍ فوق الصورة       (الفيديوهات)
+#   gallery   معرضُ صورٍ يُفتح بحجمٍ كامل           (صور المؤتمر)
+sections:
+  - id: news
+    name: "أخبار"
+    single: "خبر"
+    plural: "أخبارُ المؤتمر"
+    slug: "news"
+    icon: "bolt"
+    accent: "#E72085"
+    display: "standard"
+    description: "ما استجدَّ من إعلانات المؤتمر ومواعيدِه وقراراتِ لجانه."
+  - id: events
+    name: "فعاليّات"
+    single: "فعاليّة"
+    plural: "فعاليّاتُ المؤتمر"
+    slug: "events"
+    icon: "calendar"
+    accent: "#00ABCB"
+    display: "agenda"
+    description: "الجلساتُ العلميّةُ وورشُ العمل والندواتُ بمواعيدها وقاعاتها."
+  - id: workshops
+    name: "ورش العمل"
+    single: "ورشة"
+    plural: "ورشُ العمل"
+    slug: "workshops"
+    icon: "tools"
+    accent: "#B8860B"
+    display: "agenda"
+    description: "ورشٌ تدريبيّةٌ عمليّةٌ مصاحبةٌ للمؤتمر بمواعيدها وقاعاتها ومدرّبيها."
+  - id: speakers
+    name: "المتحدّثون"
+    single: "متحدّث"
+    plural: "المتحدّثون"
+    slug: "speakers"
+    icon: "mic"
+    accent: "#7A2E8E"
+    display: "people"
+    description: "الأساتذةُ والباحثون المشاركون في جلسات المؤتمر."
+  - id: videos
+    name: "فيديوهات"
+    single: "فيديو"
+    plural: "فيديوهاتُ المؤتمر"
+    slug: "videos"
+    icon: "play"
+    accent: "#C2185B"
+    display: "video"
+    description: "تسجيلاتُ الجلسات والكلماتِ ومقتطفاتٌ مصوّرةٌ من أروقة المؤتمر."
+  - id: gallery
+    name: "صور المؤتمر"
+    single: "صورة"
+    plural: "صورُ المؤتمر"
+    slug: "gallery"
+    icon: "camera"
+    accent: "#0F7C8A"
+    display: "gallery"
+    description: "ألبومُ المؤتمر: لحظاتٌ من الافتتاح والجلسات والمعارض المصاحبة."
+
+# ═══ الداعمون والرُّعاة ══════════════════════════════════════
+# القائمةُ نفسُها تُدار من لوحة الإدارة ← «الداعمون» وتُحفظ في عقدة sponsors.
+# هنا تُعرَّف مستوياتُ الدعم وترتيبُها وحجمُ الشعار في كلِّ مستوى.
+sponsors:
+  enabled: true
+  title: "داعمو المؤتمر"
+  subtitle: "شركاءُ النجاح الذين أسهموا في إقامة المؤتمر"
+  tiers:
+    - id: platinum
+      name: "الرعاةُ البلاتينيّون"
+      size: 200
+    - id: gold
+      name: "الرعاةُ الذهبيّون"
+      size: 168
+    - id: silver
+      name: "الرعاةُ الفضّيّون"
+      size: 140
+    - id: bronze
+      name: "الرعاةُ البرونزيّون"
+      size: 118
+    - id: partner
+      name: "شركاءٌ وجهاتٌ داعمة"
+      size: 104
+
+# صفحاتٌ ثابتةٌ تُضاف إلى القائمة العلويّة بعد الأقسام
+extra_nav:
+  - name: "الداعمون"
+    url: "/sponsors/"
+  - name: "عن المؤتمر"
+    url: "/about/"
+
+footer_nav:
+  - name: "الرئيسيّة"
+    url: "/"
+  - name: "الداعمون"
+    url: "/sponsors/"
+  - name: "عن المؤتمر"
+    url: "/about/"
+  - name: "الأرشيف"
+    url: "/archive/"
+  - name: "بحث"
+    url: "/search/"
+  - name: "خلاصة RSS"
+    url: "/rss.xml"
+  - name: "خريطة الموقع"
+    url: "/sitemap.xml"
+
+social: []
+
+# اللجنةُ المنظِّمة — تظهر في صفحة «عن المؤتمر» وذيل الصفحات
+team:
+  - name: "الأستاذ الدكتور محمد لبيب سالم"
+    role: "رئيسُ المؤتمر"
+
+redirects: []
+
+# ═══ الإعلانات ═══════════════════════════════════════════════
+# مُطفأةٌ في موقعٍ علميٍّ رسمي: لا وسمٌ في الصفحة ولا طلبُ شبكة.
+ads:
+  enabled: false
+  client: ""
+  auto_ads: false
+  test_mode: false
+  label: "إعلان"
+  lazy_margin: 400
+  in_article:
+    every: 4
+    max: 3
+  slots: {}
+
+# ═══ الإشعارات والخلاصة ══════════════════════════════════════
+notifications:
+  enabled: true
+  interval_hours: 4
+  max_per_check: 3
+  ask_after_seconds: 0   # صفرٌ = يُطلب الإذنُ فورَ فتح الموقع
+
+# ═══ التفاعل ═════════════════════════════════════════════════
+# عدّادُ المشاهدات يعمل؛ والتعليقاتُ والإعجابُ مُطفأةٌ في موقعٍ رسمي.
+engagement:
+  enabled: true
+  views: true
+  likes: false
+  comments: false
+  moderation: true
+
+# إعداداتُ البناء
+build:
+  per_page: 12
+  home_latest: 14
+  rail_count: 6
+  excerpt_words: 34
+  words_per_minute: 190
+
+# المظهرُ الافتراضيّ — يُبدَّل من لوحة الإدارة ← «الهويّة والتصميم»
+appearance:
+  theme: "eacr"
+  layout: "magazine"
+  brand: "#C2185B"
+  spark: "#00ABCB"

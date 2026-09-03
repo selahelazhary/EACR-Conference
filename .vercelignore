@@ -1,0 +1,12 @@
+# مصادرُ البناء لا تُرفع إلى الخادم — الموقعُ مبنيٌّ مسبقاً في الجذر.
+# وجودُ requirements.txt أو build.py هناك يجعل المستضيف يظنّه تطبيقَ بايثون.
+build.py
+requirements.txt
+eacr/
+tools/
+theme/
+content/
+brand/
+.claude/
+__pycache__/
+*.pyc

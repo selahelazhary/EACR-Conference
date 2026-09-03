@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}لا يوجد اتّصال | {{ cfg.title }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{% block content %}
+<section class="shell notfound">
+  <p class="notfound__code" aria-hidden="true">⌁</p>
+  <h1 class="notfound__title">أنت خارجَ الشبكة الآن</h1>
+  <p class="notfound__text">
+    تعذّر تحميلُ هذه الصفحة لانقطاع الاتّصال. الصفحاتُ التي زرتَها سابقاً ما تزال متاحةً من ذاكرة المتصفّح،
+    وقائمةُ قراءتك محفوظةٌ كما هي.
+  </p>
+  <div class="notfound__actions">
+    <a class="btn" href="/">الصفحةُ الرئيسيّة</a>
+    <a class="btn btn--ghost" href="/saved/">قائمةُ القراءة</a>
+    <button class="btn btn--ghost" type="button" onclick="location.reload()">إعادةُ المحاولة</button>
+  </div>
+</section>
+{% endblock %}

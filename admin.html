@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لوحةُ إدارة المؤتمر</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0B0B10">
+<link rel="icon" href="/assets/img/icon-32.png?v=a66d26b6" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icon-180.png?v=3df26416">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@500;700;800;900&display=swap">
+<link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+<link rel="stylesheet" href="/assets/css/tokens.css?v=67c066b9">
+<link rel="stylesheet" href="/assets/css/admin.css?v=02911db3">
+
+<script>
+  /* يُطبَّق قبل الرسم فلا يومض الوضعُ الفاتح */
+  try {
+    var t = localStorage.getItem('eacr:admin:theme');
+    if (t) document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+
+<body class="adm is-booting">
+
+<!-- ═══ شاشةُ الدخول ═══════════════════════════════════════ -->
+<div class="gate" id="gate" hidden>
+  <div class="gate__panel">
+    <div class="gate__brand">
+      <img src="/assets/img/logo.png?v=4a492174" width="54" height="54" alt="">
+      <div>
+        <strong>EACR Conference</strong>
+        <small>لوحةُ إدارة المؤتمر</small>
+      </div>
+    </div>
+
+    <form class="gate__form" id="login-form" novalidate>
+      <h1 class="gate__title">تسجيلُ الدخول</h1>
+      <p class="gate__note">لوحةُ الإدارة مقصورةٌ على اللجنة المنظِّمة.</p>
+
+      <label class="field">
+        <span class="field__label">البريدُ الإلكتروني</span>
+        <input class="field__input" type="email" id="login-email" autocomplete="username"
+               inputmode="email" dir="ltr" required placeholder="name@example.com">
+      </label>
+
+      <label class="field">
+        <span class="field__label">كلمةُ المرور</span>
+        <span class="field__wrap">
+          <input class="field__input" type="password" id="login-pass" autocomplete="current-password"
+                 dir="ltr" required placeholder="••••••••">
+          <button class="field__eye" type="button" id="toggle-pass" aria-label="إظهارُ كلمة المرور">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"
+                    fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </button>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="login-remember" checked>
+        <span>أبقني داخلاً على هذا الجهاز</span>
+      </label>
+
+      <p class="gate__error" id="login-error" role="alert" hidden></p>
+
+      <button class="btn btn--brand btn--full" type="submit" id="login-submit">دخول</button>
+
+      <button class="gate__link" type="button" id="forgot">نسيتُ كلمةَ المرور</button>
+    </form>
+
+    <p class="gate__foot">
+      <a href="/">← العودة إلى الموقع</a>
+    </p>
+  </div>
+  <div class="gate__art" aria-hidden="true">
+    <div class="gate__glow"></div>
+    <p class="gate__slogan">المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦</p>
+  </div>
+</div>
+
+<!-- ═══ اللوحة ════════════════════════════════════════════ -->
+<div class="shell" id="shell" hidden>
+
+  <aside class="side" id="side">
+    <a class="side__brand" href="/" target="_blank" rel="noopener">
+      <img src="/assets/img/logo.png?v=4a492174" width="34" height="34" alt="">
+      <span><strong>EACR Conference</strong><small>لوحةُ الإدارة</small></span>
+    </a>
+
+    <nav class="side__nav" aria-label="أقسامُ اللوحة">
+      <p class="side__label">العمل</p>
+      <a class="side__link" href="#/dashboard" data-view="dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-4H4zM14 8h6V4h-6z" fill="currentColor"/></svg>
+        <span>لوحةُ القيادة</span>
+      </a>
+      <a class="side__link" href="#/content" data-view="content">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>كلُّ المواد</span>
+        <em class="side__count" data-count-all>0</em>
+      </a>
+      <a class="side__link" href="#/compose" data-view="compose">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>مادّةٌ جديدة</span>
+      </a>
+
+      <p class="side__label">الأقسام</p>
+      <div id="side-sections">
+        <a class="side__link side__link--sm" href="#/content/news" data-view="content" data-section="news">
+          <span class="side__dot" style="--accent: #E72085"></span>
+          <span>أخبارُ المؤتمر</span>
+          <em class="side__count" data-count="news">0</em>
+        </a>
+        <a class="side__link side__link--sm" href="#/content/events" data-view="content" data-section="events">
+          <span class="side__dot" style="--accent: #00ABCB"></span>
+          <span>فعاليّاتُ المؤتمر</span>
+          <em class="side__count" data-count="events">0</em>
+        </a>
+        <a class="side__link side__link--sm" href="#/content/workshops" data-view="content" data-section="workshops">
+          <span class="side__dot" style="--accent: #B8860B"></span>
+          <span>ورشُ العمل</span>
+          <em class="side__count" data-count="workshops">0</em>
+        </a>
+        <a class="side__link side__link--sm" href="#/content/speakers" data-view="content" data-section="speakers">
+          <span class="side__dot" style="--accent: #7A2E8E"></span>
+          <span>المتحدّثون</span>
+          <em class="side__count" data-count="speakers">0</em>
+        </a>
+        <a class="side__link side__link--sm" href="#/content/videos" data-view="content" data-section="videos">
+          <span class="side__dot" style="--accent: #C2185B"></span>
+          <span>فيديوهاتُ المؤتمر</span>
+          <em class="side__count" data-count="videos">0</em>
+        </a>
+        <a class="side__link side__link--sm" href="#/content/gallery" data-view="content" data-section="gallery">
+          <span class="side__dot" style="--accent: #0F7C8A"></span>
+          <span>صورُ المؤتمر</span>
+          <em class="side__count" data-count="gallery">0</em>
+        </a>
+      </div>
+
+      <p class="side__label">الإدارة</p>
+      <a class="side__link" href="#/topics" data-view="topics">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 7h.01M3 12V5a2 2 0 0 1 2-2h7l9 9-9 9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <span>الموضوعات</span>
+      </a>
+      <a class="side__link" href="#/comments" data-view="comments">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <span>التعليقات</span>
+        <em class="side__count" data-count-comments>0</em>
+      </a>
+      <a class="side__link" href="#/sections" data-view="sections">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M14 17h7M17.5 13.5v7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>الأقسام</span>
+      </a>
+      <a class="side__link" href="#/sponsors" data-view="sponsors">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3.2 14.6 8l5.4.8-3.9 3.8.9 5.3-4.9-2.6-4.9 2.6.9-5.3L4.2 8.8 9.6 8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span>الداعمون</span>
+      </a>
+      <a class="side__link" href="#/design" data-view="design">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.5a2.5 2.5 0 0 0 0-5H13a2 2 0 0 1 0-4h4a4 4 0 0 0 4-4 5 5 0 0 0-9-3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8" cy="10" r="1.1" fill="currentColor"/><circle cx="12" cy="7.5" r="1.1" fill="currentColor"/></svg>
+        <span>الهويّة والتصميم</span>
+      </a>
+      <a class="side__link" href="#/settings" data-view="settings">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>الإعدادات والنسخ</span>
+      </a>
+    </nav>
+
+    <div class="side__foot">
+      <a class="side__out" href="/" target="_blank" rel="noopener">فتحُ الموقع ↗</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <button class="icon-btn top__menu" type="button" id="side-toggle" aria-label="القائمة">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+
+      <div class="top__search">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.6 16.6 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" id="global-search" placeholder="ابحث في كلّ المواد…  (اضغط /)" aria-label="بحث">
+      </div>
+
+      <div class="top__tools">
+        <span class="pill" id="net-state" hidden>لا اتّصال</span>
+        <button class="icon-btn" type="button" id="theme-toggle" aria-label="الوضعُ الليلي">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+        </button>
+        <div class="who">
+          <span class="who__avatar" id="who-avatar">؟</span>
+          <span class="who__text"><b id="who-name">—</b><small id="who-mail">—</small></span>
+          <button class="btn btn--ghost btn--sm" type="button" id="signout">خروج</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="view" id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 class="modal__title" id="modal-title"></h2>
+    <p class="modal__text" id="modal-text"></p>
+    <div class="modal__acts">
+      <button class="btn btn--ghost" type="button" data-modal-cancel>إلغاء</button>
+      <button class="btn btn--danger" type="button" data-modal-ok>تأكيد</button>
+    </div>
+  </div>
+  <button class="modal__scrim" type="button" data-modal-cancel aria-label="إغلاق"></button>
+</div>
+
+<div class="boot" id="boot"><span class="boot__spin" aria-hidden="true"></span></div>
+
+<script>
+window.ADMIN = {"autosave": 20, "firebase": {"apiKey": "AIzaSyC3t6Dl0U2OjuZLBW10TrGN5Llg8YGWTj0", "appId": "1:562271422203:web:6496eece2791711d94d25e", "authDomain": "earc-55619.firebaseapp.com", "databaseURL": "https://earc-55619-default-rtdb.europe-west1.firebasedatabase.app/", "messagingSenderId": "562271422203", "projectId": "earc-55619", "storageBucket": "earc-55619.firebasestorage.app"}, "imgbbKey": "926c4a15635bfbd9038815bcbc0184ad", "sections": [{"accent": "#E72085", "description": "\u0645\u0627 \u0627\u0633\u062a\u062c\u062f\u064e\u0651 \u0645\u0646 \u0625\u0639\u0644\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u0624\u062a\u0645\u0631 \u0648\u0645\u0648\u0627\u0639\u064a\u062f\u0650\u0647 \u0648\u0642\u0631\u0627\u0631\u0627\u062a\u0650 \u0644\u062c\u0627\u0646\u0647.", "display": "standard", "icon": "bolt", "id": "news", "name": "\u0623\u062e\u0628\u0627\u0631", "plural": "\u0623\u062e\u0628\u0627\u0631\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u062e\u0628\u0631", "slug": "news"}, {"accent": "#00ABCB", "description": "\u0627\u0644\u062c\u0644\u0633\u0627\u062a\u064f \u0627\u0644\u0639\u0644\u0645\u064a\u0651\u0629\u064f \u0648\u0648\u0631\u0634\u064f \u0627\u0644\u0639\u0645\u0644 \u0648\u0627\u0644\u0646\u062f\u0648\u0627\u062a\u064f \u0628\u0645\u0648\u0627\u0639\u064a\u062f\u0647\u0627 \u0648\u0642\u0627\u0639\u0627\u062a\u0647\u0627.", "display": "agenda", "icon": "calendar", "id": "events", "name": "\u0641\u0639\u0627\u0644\u064a\u0651\u0627\u062a", "plural": "\u0641\u0639\u0627\u0644\u064a\u0651\u0627\u062a\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0641\u0639\u0627\u0644\u064a\u0651\u0629", "slug": "events"}, {"accent": "#B8860B", "description": "\u0648\u0631\u0634\u064c \u062a\u062f\u0631\u064a\u0628\u064a\u0651\u0629\u064c \u0639\u0645\u0644\u064a\u0651\u0629\u064c \u0645\u0635\u0627\u062d\u0628\u0629\u064c \u0644\u0644\u0645\u0624\u062a\u0645\u0631 \u0628\u0645\u0648\u0627\u0639\u064a\u062f\u0647\u0627 \u0648\u0642\u0627\u0639\u0627\u062a\u0647\u0627 \u0648\u0645\u062f\u0631\u0651\u0628\u064a\u0647\u0627.", "display": "agenda", "icon": "tools", "id": "workshops", "name": "\u0648\u0631\u0634 \u0627\u0644\u0639\u0645\u0644", "plural": "\u0648\u0631\u0634\u064f \u0627\u0644\u0639\u0645\u0644", "single": "\u0648\u0631\u0634\u0629", "slug": "workshops"}, {"accent": "#7A2E8E", "description": "\u0627\u0644\u0623\u0633\u0627\u062a\u0630\u0629\u064f \u0648\u0627\u0644\u0628\u0627\u062d\u062b\u0648\u0646 \u0627\u0644\u0645\u0634\u0627\u0631\u0643\u0648\u0646 \u0641\u064a \u062c\u0644\u0633\u0627\u062a \u0627\u0644\u0645\u0624\u062a\u0645\u0631.", "display": "people", "icon": "mic", "id": "speakers", "name": "\u0627\u0644\u0645\u062a\u062d\u062f\u0651\u062b\u0648\u0646", "plural": "\u0627\u0644\u0645\u062a\u062d\u062f\u0651\u062b\u0648\u0646", "single": "\u0645\u062a\u062d\u062f\u0651\u062b", "slug": "speakers"}, {"accent": "#C2185B", "description": "\u062a\u0633\u062c\u064a\u0644\u0627\u062a\u064f \u0627\u0644\u062c\u0644\u0633\u0627\u062a \u0648\u0627\u0644\u0643\u0644\u0645\u0627\u062a\u0650 \u0648\u0645\u0642\u062a\u0637\u0641\u0627\u062a\u064c \u0645\u0635\u0648\u0651\u0631\u0629\u064c \u0645\u0646 \u0623\u0631\u0648\u0642\u0629 \u0627\u0644\u0645\u0624\u062a\u0645\u0631.", "display": "video", "icon": "play", "id": "videos", "name": "\u0641\u064a\u062f\u064a\u0648\u0647\u0627\u062a", "plural": "\u0641\u064a\u062f\u064a\u0648\u0647\u0627\u062a\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0641\u064a\u062f\u064a\u0648", "slug": "videos"}, {"accent": "#0F7C8A", "description": "\u0623\u0644\u0628\u0648\u0645\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631: \u0644\u062d\u0638\u0627\u062a\u064c \u0645\u0646 \u0627\u0644\u0627\u0641\u062a\u062a\u0627\u062d \u0648\u0627\u0644\u062c\u0644\u0633\u0627\u062a \u0648\u0627\u0644\u0645\u0639\u0627\u0631\u0636 \u0627\u0644\u0645\u0635\u0627\u062d\u0628\u0629.", "display": "gallery", "icon": "camera", "id": "gallery", "name": "\u0635\u0648\u0631 \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "plural": "\u0635\u0648\u0631\u064f \u0627\u0644\u0645\u0624\u062a\u0645\u0631", "single": "\u0635\u0648\u0631\u0629", "slug": "gallery"}], "siteTitle": "EACR Conference", "siteUrl": "https://eacr-conference.vercel.app", "sponsorTiers": [{"id": "platinum", "name": "\u0627\u0644\u0631\u0639\u0627\u0629\u064f \u0627\u0644\u0628\u0644\u0627\u062a\u064a\u0646\u064a\u0651\u0648\u0646", "size": 200}, {"id": "gold", "name": "\u0627\u0644\u0631\u0639\u0627\u0629\u064f \u0627\u0644\u0630\u0647\u0628\u064a\u0651\u0648\u0646", "size": 168}, {"id": "silver", "name": "\u0627\u0644\u0631\u0639\u0627\u0629\u064f \u0627\u0644\u0641\u0636\u0651\u064a\u0651\u0648\u0646", "size": 140}, {"id": "bronze", "name": "\u0627\u0644\u0631\u0639\u0627\u0629\u064f \u0627\u0644\u0628\u0631\u0648\u0646\u0632\u064a\u0651\u0648\u0646", "size": 118}, {"id": "partner", "name": "\u0634\u0631\u0643\u0627\u0621\u064c \u0648\u062c\u0647\u0627\u062a\u064c \u062f\u0627\u0639\u0645\u0629", "size": 104}]};
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="/assets/js/editor.js?v=6c9a723d"></script>
+<script src="/assets/js/admin.js?v=43116491"></script>
+</body>
+</html>

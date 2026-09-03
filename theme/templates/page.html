@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} | {{ cfg.title }}{% endblock %}
+{% block description %}{{ page.description }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ asset('css/article.css') }}">{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">{{ page.title }}</li></ol>
+    </nav>
+    <h1 class="pagehead__title">{{ page.title }}</h1>
+    {% if page.description %}<p class="pagehead__dek">{{ page.description }}</p>{% endif %}
+  </div>
+</header>
+
+<section class="shell section-body">
+  <div class="article__grid">
+    {% if page.headings|length >= 3 %}
+      <aside class="toc" aria-label="محتويات الصفحة">
+        <p class="toc__label">في هذه الصفحة</p>
+        <ol class="toc__list">
+          {% for heading in page.headings %}
+            <li class="toc__item toc__item--h{{ heading.level }}"><a href="#{{ heading.anchor }}">{{ heading.text }}</a></li>
+          {% endfor %}
+        </ol>
+      </aside>
+      <div class="prose">{{ page.body|safe }}</div>
+    {% else %}
+      <div class="prose prose--wide">{{ page.body|safe }}</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

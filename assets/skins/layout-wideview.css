@@ -1,0 +1,17 @@
+:root {
+  --shell: min(1600px, 94vw);
+  --gap: clamp(1rem, .6rem + 1.4vw, 1.75rem);
+  --gap-lg: clamp(2.2rem, 1.4rem + 3vw, 4.5rem);
+  --pad: clamp(1rem, .5rem + 2vw, 2rem);
+  --card-pad: 1rem;
+  --card-bg: var(--surface);
+  --card-line: 1px;
+  --card-shadow: none;
+  --card-radius: var(--r-md);
+  --media-ratio: 16/9;
+  --title-weight: 800;
+  --title-track: -.015em;
+  --title-lh: 1.35;
+  --rule-w: 2px;
+  --header-h: 62px;
+}

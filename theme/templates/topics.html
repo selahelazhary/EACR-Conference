@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% block title %}الموضوعات | {{ cfg.title }}{% endblock %}
+{% block description %}خريطةُ الموضوعات التي يعالجها موقعُ المؤتمر — من الأبحاث والجلسات إلى الورش والفعاليّات المصاحبة.{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">الموضوعات</li></ol>
+    </nav>
+    <h1 class="pagehead__title">الموضوعات</h1>
+    <p class="pagehead__dek">مدخلٌ إلى الأرشيف من باب الفكرة لا من باب التاريخ.</p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  {{ adx.unit('list_top', 'band') }}
+  {% if site.categories %}
+    <div class="topic-grid">
+      {% for category in site.categories %}
+        <a class="topic-card" href="{{ category.url }}" style="--accent: {{ category.color }}">
+          <span class="topic-card__bar" aria-hidden="true"></span>
+          <b>{{ category.name }}</b>
+          <span class="topic-card__count">{{ category.count }} مادّة</span>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    {{ ui.empty_state('لم تُنشأ موضوعاتٌ بعد.', 'ستظهر هنا موضوعاتُ المؤتمر مع نشر المواد.') }}
+  {% endif %}
+
+  <div class="section-grid">
+    {% for section in sections %}
+      <a class="topic-card topic-card--section" href="{{ section.url }}" style="--accent: {{ section.accent }}">
+        <span class="topic-card__bar" aria-hidden="true"></span>
+        <b>{{ section.plural }}</b>
+        <span class="topic-card__count">{{ site.by_section(section.id)|length }} مادّة</span>
+        <span class="topic-card__dek">{{ section.description }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

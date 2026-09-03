@@ -1,0 +1,335 @@
+{% import "ads.html" as adx %}
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="auto" {{ layout_attrs|safe }}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ page_title ~ ' | ' ~ cfg.title if page_title else cfg.title ~ ' — ' ~ cfg.tagline }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ cfg.description|trim }}{% endblock %}">
+<link rel="canonical" href="{{ page_url|absolute }}">
+{% for token in cfg.get('verification', {}).get('google', []) %}
+<meta name="google-site-verification" content="{{ token }}">
+{% endfor %}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot-news" content="index, follow">
+<link rel="alternate" hreflang="ar" href="{{ page_url|absolute }}">
+<link rel="alternate" hreflang="x-default" href="{{ page_url|absolute }}">
+{% block keywords %}{% endblock %}
+
+{# ── الهويّة الاجتماعيّة ── #}
+<meta property="og:site_name" content="{{ cfg.title }}">
+<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+<meta property="og:locale" content="{{ cfg.locale }}">
+<meta property="og:title" content="{% block og_title %}{{ page_title or cfg.title }}{% endblock %}">
+<meta property="og:description" content="{% block og_description %}{{ cfg.description|trim }}{% endblock %}">
+<meta property="og:url" content="{{ page_url|absolute }}">
+<meta property="og:image" content="{% block og_image %}{{ identity.get('share') or asset('img/share.png') }}{% endblock %}">
+<meta name="twitter:card" content="summary_large_image">
+
+{# ── الخطوط ── #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap">
+{% if theme_fonts %}<link rel="stylesheet" href="{{ theme_fonts }}">{% endif %}
+
+{# ── الأنماط ── #}
+<link rel="stylesheet" href="{{ asset('css/tokens.css') }}">
+<link rel="stylesheet" href="{{ asset('css/base.css') }}">
+<link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+<link rel="stylesheet" href="{{ asset('css/components.css') }}">
+<link rel="stylesheet" href="{{ asset('css/layouts.css') }}">
+<link rel="stylesheet" href="{{ asset('css/conference.css') }}">
+{% block styles %}{% endblock %}
+{# التصميمُ والتنسيقُ المختاران من اللوحة — بعد الأنماط ليتقدّما عليها #}
+<style>{{ theme_css }}
+{{ layout_css }}</style>
+
+{# ── الأيقونات والتطبيق ── #}
+<link rel="icon" href="{{ identity.get('favicon') or asset('img/icon-32.png') }}" sizes="32x32" type="image/png">
+<link rel="icon" href="{{ asset('img/icon-192.png') }}" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="{{ asset('img/icon-180.png') }}">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#FCFAFB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0A0E" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="application/rss+xml" title="{{ cfg.title }}" href="/rss.xml">
+
+{# يمنع وميضَ الوضع الفاتح قبل تطبيق تفضيل القارئ #}
+<script>
+(function(){try{var p=JSON.parse(localStorage.getItem('eacr:prefs')||'{}');
+var r=document.documentElement;if(p.theme)r.dataset.theme=p.theme;
+if(p.accent)r.style.setProperty('--brand',p.accent);
+if(p.size)r.dataset.size=p.size;if(p.serif)r.dataset.serif='1';}catch(e){}})();
+</script>
+{{ adx.head() }}
+{% if notify.get('enabled') %}
+<script>window.EACR_NOTIFY={{ {
+  "interval": notify.get('interval_hours', 4),
+  "max": notify.get('max_per_check', 3),
+  "ask": notify.get('ask_after_seconds', 45)
+}|tojson }};</script>
+{% endif %}
+<script>window.EACR_DB={{ cfg.firebase.database_url|tojson }};
+window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};</script>
+
+{# جلدُ الموقع: ما بُني في الرأس، وما قد يكون تبدّل في القاعدة بعده #}
+<script>window.EACR_SKIN={{ skin|tojson }};window.EACR_SKIN.attrs={{ layout_attrs_map|tojson }};</script>
+<script src="{{ asset('js/skin.js') }}"></script>
+{% if engage.get('enabled') %}
+<script>window.EACR_ENGAGE={{ {
+  "db": cfg.firebase.database_url,
+  "moderation": engage.get('moderation', false)
+}|tojson }};</script>
+{% endif %}
+{% block head %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#main">تخطّي إلى المحتوى</a>
+<div class="progress" id="progress" aria-hidden="true"><span></span></div>
+
+<header class="masthead" id="masthead">
+  <div class="masthead__bar shell">
+    <button class="icon-btn masthead__menu" type="button" data-drawer-open aria-label="فتحُ القائمة" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <a class="brand" href="/" aria-label="{{ cfg.title }} — الصفحة الرئيسيّة">
+      <img class="brand__mark" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="40" height="40"
+           alt="شعار {{ cfg.title }}" fetchpriority="high" decoding="async">
+      <span class="brand__text">
+        <strong>{{ cfg.title }}</strong>
+        <small>{{ cfg.tagline }}</small>
+      </span>
+    </a>
+
+    <nav class="masthead__nav" aria-label="الأقسام">
+      <ul>
+        {% for section in sections %}
+          <li><a href="{{ section.url }}" style="--accent: {{ section.accent }}"
+                 {% if page_url.startswith(section.url) %}aria-current="page"{% endif %}>{{ section.name }}</a></li>
+        {% endfor %}
+        {% for link in cfg.extra_nav %}
+          <li><a href="{{ link.url }}" class="{{ 'is-highlight' if link.get('highlight') else '' }}"
+                 {% if page_url == link.url %}aria-current="page"{% endif %}>{{ link.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="masthead__tools">
+      {% if show('masthead.search') %}
+      <button class="icon-btn" type="button" data-search-open aria-label="بحث (اضغط /)" title="بحث — /">
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="m16.6 16.6 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      {% endif %}
+      {% if show('masthead.saved') %}
+      <a class="icon-btn" href="/saved/" aria-label="المحفوظات" title="المحفوظات">
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+        <span class="badge" data-saved-count hidden>0</span>
+      </a>
+      {% endif %}
+      {% if notify.get('enabled') and show('masthead.bell') %}
+      <button class="icon-btn icon-btn--bell" type="button" data-notify-toggle
+              aria-label="إشعاراتُ المواد الجديدة" title="إشعاراتُ الجديد" hidden>
+        <svg class="ico-bell" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 4-1.5 5.5-2 6.2-.3.4 0 1 .5 1h14c.5 0 .8-.6.5-1-.5-.7-2-2.2-2-6.2A5.5 5.5 0 0 0 12 3z"
+                fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <svg class="ico-bell-off" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 4-1.5 5.5-2 6.2-.3.4 0 1 .5 1h14c.5 0 .8-.6.5-1-.5-.7-2-2.2-2-6.2A5.5 5.5 0 0 0 12 3z"
+                fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <span class="badge badge--pulse" data-notify-count hidden>0</span>
+      </button>
+      {% endif %}
+      {% if show('masthead.theme') %}
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="تبديلُ الوضع الليلي" title="الوضع الليلي — D">
+        <svg class="ico-sun" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/>
+        </svg>
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  {% block ticker %}{% endblock %}
+</header>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="القائمة">
+    <div class="drawer__head">
+      <span class="drawer__brand"><img src="{{ identity.get('logo') or asset('img/logo.png') }}" width="30" height="30" alt="" loading="lazy">
+        <strong>{{ cfg.title }}</strong></span>
+      <button class="icon-btn" type="button" data-drawer-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav aria-label="أقسامُ الموقع">
+      <p class="drawer__label">الأقسام</p>
+      <ul class="drawer__list">
+        {% for section in sections %}
+          <li><a href="{{ section.url }}" style="--accent: {{ section.accent }}">
+            <span class="drawer__dot" aria-hidden="true"></span>{{ section.many }}</a></li>
+        {% endfor %}
+      </ul>
+      <p class="drawer__label">المؤتمر</p>
+      <ul class="drawer__list">
+        <li><a href="/about/">عن المؤتمر</a></li>
+        <li><a href="/sponsors/">داعمو المؤتمر</a></li>
+        <li><a href="/topics/">الموضوعات</a></li>
+        <li><a href="/archive/">الأرشيف</a></li>
+        <li><a href="/saved/">المحفوظات</a></li>
+        <li><a href="/subscribe/">اشترك وتابع</a></li>
+      </ul>
+    </nav>
+    <div class="drawer__accents">
+      <p class="drawer__label">لونُ الواجهة</p>
+      <div class="swatches" role="group" aria-label="اختيارُ لون الواجهة">
+        {% for color in ['#C2185B', '#E72085', '#00ABCB', '#7A2E8E', '#0F7C8A', '#111117'] %}
+          <button class="swatch" type="button" data-accent="{{ color }}" style="--sw: {{ color }}"
+                  aria-label="اللون {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <button class="drawer__scrim" type="button" data-drawer-close aria-label="إغلاق القائمة"></button>
+</div>
+
+<div class="finder" id="finder" hidden>
+  <div class="finder__panel" role="dialog" aria-modal="true" aria-label="البحث في الموقع">
+    <div class="finder__field">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="m16.6 16.6 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <input type="search" id="finder-input" placeholder="ابحث في أخبار المؤتمر وفعاليّاته ومتحدّثيه…"
+             autocomplete="off" aria-label="كلمةُ البحث">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="finder__filters" id="finder-filters" role="group" aria-label="تصفيةٌ بالقسم"></div>
+    <div class="finder__results" id="finder-results" aria-live="polite"></div>
+    <p class="finder__foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> تنقّل</span>
+      <span><kbd>Enter</kbd> فتح</span>
+      <a href="/search/">بحثٌ موسّع</a>
+    </p>
+  </div>
+  <button class="finder__scrim" type="button" data-search-close aria-label="إغلاق البحث"></button>
+</div>
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <div class="shell footer__grid">
+    <div class="footer__brand">
+      <img class="footer__seal" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="84" height="84"
+           alt="شعار {{ cfg.title }}" loading="lazy" decoding="async">
+      <p class="footer__logo">{{ cfg.title }}</p>
+      <p class="footer__tagline">{{ cfg.tagline }}</p>
+      <p class="footer__about">{{ cfg.description|trim }}</p>
+      <div class="footer__social">
+        {% for link in cfg.social %}
+          <a href="{{ link.url }}" rel="noopener noreferrer" target="_blank">{{ link.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div>
+      <p class="footer__label">الأقسام</p>
+      <ul class="footer__list">
+        {% for section in sections %}
+          <li><a href="{{ section.url }}">{{ section.many }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <p class="footer__label">روابط</p>
+      <ul class="footer__list">
+        {% for link in cfg.footer_nav %}
+          <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% if show('footer.team') %}
+    <div>
+      <p class="footer__label">اللجنةُ المنظِّمة</p>
+      <ul class="footer__list footer__list--plain">
+        {% for member in cfg.team %}
+          <li>{{ member.name }} <span>{{ member.role }}</span></li>
+        {% endfor %}
+      </ul>
+      {% if conference.get('venue') %}
+        <p class="footer__label footer__label--gap">مكانُ الانعقاد</p>
+        <p class="footer__where">{{ conference.venue }}{% if conference.get('address') %}<span>{{ conference.address }}</span>{% endif %}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="shell footer__base">
+    <p>© {{ build_year }} {{ cfg.copyright }} — جميع الحقوق محفوظة.</p>
+    {% if conference.get('organizer') %}<p>{{ conference.organizer }}{% if conference.get('organizer_en') %} · {{ conference.organizer_en }}{% endif %}</p>{% endif %}
+  </div>
+</footer>
+
+{% if show('to_top') %}<button class="to-top" type="button" data-to-top aria-label="العودة إلى الأعلى" hidden>
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>{% endif %}
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": (conference.get("organizer") or cfg.title),
+  "alternateName": conference.get("organizer_en", ""),
+  "url": cfg.url,
+  "slogan": cfg.tagline,
+  "description": cfg.description|trim,
+  "foundingDate": cfg.founded|string,
+  "logo": {"@type": "ImageObject", "url": (identity.get("publisher_logo") or identity.get("logo") or (cfg.url ~ "/assets/img/icon-512.png"))},
+  "sameAs": cfg.social|map(attribute='url')|list,
+  "knowsAbout": ["أبحاث السرطان", "الأورام", "العلاج المناعي", "التشخيص المبكّر", "البحث العلمي"]
+}|tojson }}
+</script>
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": cfg.title,
+  "url": cfg.url,
+  "inLanguage": "ar",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {"@type": "EntryPoint", "urlTemplate": (cfg.url ~ "/search/?q={search_term_string}")},
+    "query-input": "required name=search_term_string"
+  }
+}|tojson }}
+</script>
+{% block jsonld %}{% endblock %}
+
+<script src="{{ asset('js/core.js') }}" defer></script>
+<script src="{{ asset('js/search.js') }}" defer></script>
+{% if notify.get('enabled') %}<script src="{{ asset('js/notify.js') }}" defer></script>{% endif %}
+{% if engage.get('enabled') %}<script src="{{ asset('js/engage.js') }}" defer></script>{% endif %}
+{{ adx.scripts() }}
+{% block scripts %}{% endblock %}
+</body>
+</html>

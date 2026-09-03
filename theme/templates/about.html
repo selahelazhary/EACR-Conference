@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+
+{% block title %}عن المؤتمر | {{ cfg.title }}{% endblock %}
+{% block description %}{{ conference.get('name') or cfg.title }} {{ conference.get('edition', '') }} — تنظّمه {{ conference.get('organizer', '') }} في {{ conference.get('venue', '') }}.{% endblock %}
+
+{% block content %}
+<header class="pagehead pagehead--about">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">عن المؤتمر</li></ol>
+    </nav>
+    {% if conference.get('organizer') %}
+      <p class="pagehead__eyebrow">{{ conference.organizer }}{% if conference.get('organizer_en') %} · {{ conference.organizer_en }}{% endif %}</p>
+    {% endif %}
+    <h1 class="pagehead__title">{{ conference.get('name') or cfg.title }}
+      {%- if conference.get('edition') %} {{ conference.edition }}{% endif %}</h1>
+    <p class="pagehead__dek">{{ cfg.description|trim }}</p>
+  </div>
+</header>
+
+{% if conference.get('patron', {}).get('name') or conference.get('president', {}).get('name') %}
+<section class="band band--patronage" aria-label="رعايةُ المؤتمر">
+  <div class="shell dignitaries">
+    {{ ui.dignitary(conference.get('patron')) }}
+    {{ ui.dignitary(conference.get('president')) }}
+  </div>
+</section>
+{% endif %}
+
+<section class="shell section-body about">
+  <div class="about__grid">
+    <div class="prose prose--wide">
+      <h2 class="prose-heading">عن المؤتمر</h2>
+      <p>
+        يجمع {{ conference.get('name') or cfg.title }}{% if conference.get('edition') %} في نسخته {{ conference.edition }}{% endif %}
+        الباحثين والأطبّاءَ وأساتذةَ الجامعات والمهتمّين بأبحاث السرطان في مصر والمنطقة العربيّة،
+        لعرض أحدث ما وصل إليه البحثُ العلميُّ في التشخيص المبكّر والعلاج وتطوير الدواء،
+        ولمناقشة ما يواجه الميدانَ من تحدّيات.
+      </p>
+      {% if conference.get('venue') %}
+      <p>
+        تُعقد جلساتُ المؤتمر في <b>{{ conference.venue }}</b>{% if conference.get('address') %} — {{ conference.address }}{% endif %}{% if conference.get('city') %}، {{ conference.city }}{% endif %}{% if conference.get('country') %}، {{ conference.country }}{% endif %}.
+        {% if conference.get('map') %}<a href="{{ conference.map }}" target="_blank" rel="noopener noreferrer">موقعُ الانعقاد على الخريطة ←</a>{% endif %}
+      </p>
+      {% endif %}
+
+      <h2 class="prose-heading">أقسامُ الموقع</h2>
+      <ul>
+        {% for section in sections %}
+          <li><b><a href="{{ section.url }}">{{ section.many }}</a>:</b> {{ section.description }}</li>
+        {% endfor %}
+      </ul>
+
+      {% if conference.get('register_url') or conference.get('abstract_url') %}
+      <h2 class="prose-heading">المشاركةُ في المؤتمر</h2>
+      <p>
+        {% if conference.get('register_url') %}<a class="btn btn--brand" href="{{ conference.register_url }}" target="_blank" rel="noopener">التسجيلُ في المؤتمر</a>{% endif %}
+        {% if conference.get('abstract_url') %}<a class="btn btn--ghost" href="{{ conference.abstract_url }}" target="_blank" rel="noopener">إرسالُ ملخّصٍ بحثيّ</a>{% endif %}
+      </p>
+      {% endif %}
+
+      <h2 class="prose-heading">خصوصيّتك</h2>
+      <p>
+        لا يطلب هذا الموقعُ تسجيلاً ولا يستخدم أدواتِ تتبّعٍ إعلانيّة. ما تحفظه في «قائمة القراءة»
+        وما تختاره من وضعٍ ليليٍّ أو حجمِ خطٍّ يبقى في متصفّحك وحده.
+      </p>
+    </div>
+
+    <aside class="about__side">
+      {% if conference.get('venue') or conference.get('date_label') or conference.get('starts') %}
+      <div class="panel">
+        <p class="panel__eyebrow">بطاقةُ المؤتمر</p>
+        <dl class="factlist">
+          {% if conference.get('date_label') or conference.get('starts') %}
+            <div><dt>الموعد</dt><dd>{{ conference.get('date_label') or conference.get('starts') }}</dd></div>
+          {% endif %}
+          {% if conference.get('venue') %}
+            <div><dt>المكان</dt><dd>{{ conference.venue }}</dd></div>
+          {% endif %}
+          {% if conference.get('city') %}
+            <div><dt>المدينة</dt><dd>{{ conference.city }}{% if conference.get('country') %}، {{ conference.country }}{% endif %}</dd></div>
+          {% endif %}
+          {% if conference.get('email') %}
+            <div><dt>البريد</dt><dd><a href="mailto:{{ conference.email }}" dir="ltr">{{ conference.email }}</a></dd></div>
+          {% endif %}
+          {% if conference.get('phone') %}
+            <div><dt>الهاتف</dt><dd dir="ltr">{{ conference.phone }}</dd></div>
+          {% endif %}
+        </dl>
+      </div>
+      {% endif %}
+
+      {% if cfg.team %}
+      <div class="panel">
+        <p class="panel__eyebrow">اللجنةُ المنظِّمة</p>
+        <ul class="team">
+          {% for member in cfg.team %}
+            <li class="team__member">
+              <span class="team__avatar" aria-hidden="true">{{ member.name[:1] }}</span>
+              <span><b>{{ member.name }}</b><small>{{ member.get('role', '') }}</small></span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="panel">
+        <p class="panel__eyebrow">بالأرقام</p>
+        <ul class="stats">
+          <li><b>{{ site.items|length }}</b><span>مادّةً منشورة</span></li>
+          <li><b>{{ sections|length }}</b><span>أقساماً</span></li>
+          <li><b>{{ site.sponsor_count }}</b><span>داعماً</span></li>
+        </ul>
+      </div>
+
+      {% if site.sponsors %}
+      <div class="panel">
+        <p class="panel__eyebrow">{{ sponsor_cfg.get('title', 'داعمو المؤتمر') }}</p>
+        <a class="btn btn--ghost btn--full" href="/sponsors/">قائمةُ الداعمين ←</a>
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "عن المؤتمر",
+  "url": page_url|absolute,
+  "inLanguage": "ar",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": (conference.get("organizer") or cfg.title),
+    "url": cfg.url,
+    "slogan": cfg.tagline
+  }
+}|tojson }}
+</script>
+{% if cfg.team %}
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ItemList",
+ "name": "اللجنة المنظِّمة",
+ "itemListElement": [
+ {% for member in cfg.team %}
+  {"@type": "ListItem", "position": {{ loop.index }},
+   "item": {"@type": "Person", "name": {{ member.name|tojson }}, "jobTitle": {{ member.get('role', '')|tojson }}}}{{ "," if not loop.last }}
+ {% endfor %}
+ ]
+}
+</script>
+{% endif %}
+{% endblock %}

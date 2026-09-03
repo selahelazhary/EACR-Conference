@@ -1,0 +1,124 @@
+:root {
+  --paper: #F4F6F8;
+  --paper-2: #EAECEE;
+  --surface: #FBFCFC;
+  --surface-2: #E3E5E7;
+  --ink: #0E1216;
+  --ink-2: #414448;
+  --muted: #787B7E;
+  --line: #CFD2D4;
+  --line-soft: #E0E3E5;
+  --brand: #475569;
+  --brand-ink: #FFFFFF;
+  --spark: #0891B2;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Readex Pro", "Tajawal", system-ui, sans-serif;
+  --font-body: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="light"] {
+  --paper: #F4F6F8;
+  --paper-2: #EAECEE;
+  --surface: #FBFCFC;
+  --surface-2: #E3E5E7;
+  --ink: #0E1216;
+  --ink-2: #414448;
+  --muted: #787B7E;
+  --line: #CFD2D4;
+  --line-soft: #E0E3E5;
+  --brand: #475569;
+  --brand-ink: #FFFFFF;
+  --spark: #0891B2;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Readex Pro", "Tajawal", system-ui, sans-serif;
+  --font-body: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --paper: #0F1016;
+  --paper-2: #191A1F;
+  --surface: #1A1B20;
+  --surface-2: #202026;
+  --ink: #EBEAE5;
+  --ink-2: #BBBAB7;
+  --muted: #868686;
+  --line: #323337;
+  --line-soft: #222328;
+  --brand: #75808E;
+  --brand-ink: #FFFFFF;
+  --spark: #0891B2;
+  --amber: #FFC14D;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
+  --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Readex Pro", "Tajawal", system-ui, sans-serif;
+  --font-body: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+  --paper: #0F1016;
+  --paper-2: #191A1F;
+  --surface: #1A1B20;
+  --surface-2: #202026;
+  --ink: #EBEAE5;
+  --ink-2: #BBBAB7;
+  --muted: #868686;
+  --line: #323337;
+  --line-soft: #222328;
+  --brand: #75808E;
+  --brand-ink: #FFFFFF;
+  --spark: #0891B2;
+  --amber: #FFC14D;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
+  --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Readex Pro", "Tajawal", system-ui, sans-serif;
+  --font-body: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+}
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+  --paper: #F4F6F8;
+  --paper-2: #EAECEE;
+  --surface: #FBFCFC;
+  --surface-2: #E3E5E7;
+  --ink: #0E1216;
+  --ink-2: #414448;
+  --muted: #787B7E;
+  --line: #CFD2D4;
+  --line-soft: #E0E3E5;
+  --brand: #475569;
+  --brand-ink: #FFFFFF;
+  --spark: #0891B2;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Readex Pro", "Tajawal", system-ui, sans-serif;
+  --font-body: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+}

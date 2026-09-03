@@ -1,0 +1,64 @@
+{
+  "name": "EACR Conference — المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦",
+  "short_name": "EACR Conference",
+  "description": "الموقعُ الرسميُّ للمؤتمر السنويِّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦، المنعقدِ في المركز القومي للبحوث: أخبارُ المؤتمر وفعاليّاتُه والمتحدّثون فيه وجلساتُه المصوّرةُ وصورُه.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FCFAFB",
+  "theme_color": "#C2185B",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": [
+    "news",
+    "science",
+    "education",
+    "medical"
+  ],
+  "icons": [
+    {
+      "src": "/assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/img/share.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "أخبارُ المؤتمر",
+      "url": "/news/"
+    },
+    {
+      "name": "فعاليّاتُ المؤتمر",
+      "url": "/events/"
+    },
+    {
+      "name": "ورشُ العمل",
+      "url": "/workshops/"
+    },
+    {
+      "name": "بحث",
+      "url": "/search/"
+    }
+  ]
+}

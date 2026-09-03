@@ -1,0 +1,124 @@
+:root {
+  --paper: #FFFFFF;
+  --paper-2: #F4F4F4;
+  --surface: #FFFFFF;
+  --surface-2: #ECECEC;
+  --ink: #000000;
+  --ink-2: #383838;
+  --muted: #757575;
+  --line: #D6D6D6;
+  --line-soft: #E9E9E9;
+  --brand: #0000CC;
+  --brand-ink: #FFFFFF;
+  --spark: #CC0000;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Noto Kufi Arabic", "Tajawal", system-ui, sans-serif;
+  --font-body: "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="light"] {
+  --paper: #FFFFFF;
+  --paper-2: #F4F4F4;
+  --surface: #FFFFFF;
+  --surface-2: #ECECEC;
+  --ink: #000000;
+  --ink-2: #383838;
+  --muted: #757575;
+  --line: #D6D6D6;
+  --line-soft: #E9E9E9;
+  --brand: #0000CC;
+  --brand-ink: #FFFFFF;
+  --spark: #CC0000;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Noto Kufi Arabic", "Tajawal", system-ui, sans-serif;
+  --font-body: "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --paper: #0A0A1D;
+  --paper-2: #141426;
+  --surface: #151527;
+  --surface-2: #1B1A2C;
+  --ink: #E8E6EA;
+  --ink-2: #B7B6BD;
+  --muted: #82818C;
+  --line: #2E2D3E;
+  --line-soft: #1D1D2E;
+  --brand: #7373E3;
+  --brand-ink: #FFFFFF;
+  --spark: #D94040;
+  --amber: #FFC14D;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
+  --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Noto Kufi Arabic", "Tajawal", system-ui, sans-serif;
+  --font-body: "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+  --paper: #0A0A1D;
+  --paper-2: #141426;
+  --surface: #151527;
+  --surface-2: #1B1A2C;
+  --ink: #E8E6EA;
+  --ink-2: #B7B6BD;
+  --muted: #82818C;
+  --line: #2E2D3E;
+  --line-soft: #1D1D2E;
+  --brand: #7373E3;
+  --brand-ink: #FFFFFF;
+  --spark: #D94040;
+  --amber: #FFC14D;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / .5);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / .5);
+  --shadow-lg: 0 18px 50px rgb(0 0 0 / .6);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Noto Kufi Arabic", "Tajawal", system-ui, sans-serif;
+  --font-body: "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+}
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+  --paper: #FFFFFF;
+  --paper-2: #F4F4F4;
+  --surface: #FFFFFF;
+  --surface-2: #ECECEC;
+  --ink: #000000;
+  --ink-2: #383838;
+  --muted: #757575;
+  --line: #D6D6D6;
+  --line-soft: #E9E9E9;
+  --brand: #0000CC;
+  --brand-ink: #FFFFFF;
+  --spark: #CC0000;
+  --amber: #F0A202;
+  --shadow-sm: 0 1px 2px rgb(20 18 30 / .05), 0 2px 8px rgb(20 18 30 / .04);
+  --shadow-md: 0 2px 6px rgb(20 18 30 / .06), 0 12px 32px rgb(20 18 30 / .08);
+  --shadow-lg: 0 8px 24px rgb(20 18 30 / .10), 0 32px 64px rgb(20 18 30 / .12);
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --font-display: "Noto Kufi Arabic", "Tajawal", system-ui, sans-serif;
+  --font-body: "Noto Kufi Arabic", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+}

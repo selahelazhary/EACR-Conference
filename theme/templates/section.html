@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% block title %}{{ section.many }}{% if page.number > 1 %} — صفحة {{ page.number }}{% endif %} | {{ cfg.title }}{% endblock %}
+{% block description %}{{ section.description }}{% endblock %}
+
+{% block head %}
+{% if page.has_prev %}<link rel="prev" href="{{ page.prev_url|absolute }}">{% endif %}
+{% if page.has_next %}<link rel="next" href="{{ page.next_url|absolute }}">{% endif %}
+{% endblock %}
+
+{% block content %}
+<header class="pagehead" style="--accent: {{ section.accent }}">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol>
+        <li><a href="/">الرئيسيّة</a></li>
+        <li aria-current="page">{{ section.many }}</li>
+      </ol>
+    </nav>
+    <h1 class="pagehead__title">{{ section.many }}</h1>
+    <p class="pagehead__dek">{{ section.description }}</p>
+    <p class="pagehead__count">العدد: {{ site.by_section(section.id)|length }}
+      {%- if page.total > 1 %} · صفحة {{ page.number }} من {{ page.total }}{% endif %}</p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  {{ adx.unit('section_top', 'band') }}
+  {% if page.items %}
+    {% if section.display in ('people', 'gallery', 'agenda') %}
+      {{ ui.section_grid(section, page.items) }}
+    {% elif page.number == 1 and page.items|length > 2 %}
+      <div class="grid grid--feature">
+        {{ ui.card(page.items[0], 'hero') }}
+        <div class="grid grid--stack">
+          {% for item in page.items[1:3] %}{{ ui.card(item, 'list') }}{% endfor %}
+        </div>
+      </div>
+      <div class="grid grid--3 grid--gap">
+        {% for item in page.items[3:] %}
+          {{ ui.card(item, 'standard') }}
+          {% if loop.index == 3 %}{{ adx.cell('section_mid') }}{% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="grid grid--3 grid--gap">
+        {% for item in page.items %}
+          {{ ui.card(item, 'standard') }}
+          {% if loop.index == 3 %}{{ adx.cell('section_mid') }}{% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    {{ ui.pagination(page) }}
+  {% else %}
+    {{ ui.empty_state('لا توجد موادُّ في هذا القسم بعد.', 'يُستكمل النشرُ تباعاً — عُد إلينا قريباً.') }}
+  {% endif %}
+</section>
+
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": section.many,
+  "description": section.description,
+  "url": page_url|absolute,
+  "inLanguage": "ar",
+  "isPartOf": {"@type": "WebSite", "name": cfg.title, "url": cfg.url}
+}|tojson }}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ItemList",
+ "name": {{ section.many|tojson }},
+ "numberOfItems": {{ page.items|length }},
+ "itemListElement": [
+ {% for item in page.items %}
+  {"@type": "ListItem", "position": {{ loop.index }}, "url": {{ item.url|absolute|tojson }}, "name": {{ item.title|tojson }}}{{ "," if not loop.last }}
+ {% endfor %}
+ ]
+}
+</script>
+{% endblock %}

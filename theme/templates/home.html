@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% set agenda_sections = sections|selectattr('display', 'equalto', 'agenda')|list %}
+{% set speaker_items = site.items|selectattr('display', 'equalto', 'people')|list %}
+
+{% block title %}{{ cfg.title }} — {{ cfg.tagline }}{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block ticker %}
+{% if show('ticker') and latest %}
+<div class="ticker" aria-label="أحدثُ العناوين">
+  <div class="shell ticker__inner">
+    <span class="ticker__tag"><span class="ticker__pulse" aria-hidden="true"></span>الأحدث</span>
+    <div class="ticker__track" id="ticker-track">
+      {% for item in latest[:8] %}
+        <a href="{{ item.url }}"><b>{{ item.section_one or item.section_name }}</b>{{ item.title }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{# ═══ صدرُ المؤتمر: ما هو، وأين، ومتى ═══════════════════════ #}
+{% if show('home.hero') %}
+<section class="hero" aria-label="عن المؤتمر">
+  <div class="shell hero__inner">
+    <img class="hero__seal" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="132" height="132"
+         alt="شعار {{ conference.get('organizer') or cfg.title }}" fetchpriority="high" decoding="async">
+    <div class="hero__text">
+      {% if conference.get('organizer') %}
+        <p class="hero__eyebrow">{{ conference.organizer }}</p>
+      {% endif %}
+      <h1 class="hero__title">{{ conference.get('name') or cfg.title }}
+        {%- if conference.get('edition') %} <span class="hero__edition">{{ conference.edition }}</span>{% endif %}</h1>
+      <p class="hero__facts">
+        {% if conference.get('venue') %}
+          <span class="hero__fact">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            </svg>{{ conference.venue }}
+          </span>
+        {% endif %}
+        {% if conference.get('date_label') or conference.get('starts') %}
+          <span class="hero__fact">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <rect x="3.5" y="5" width="17" height="15.5" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3.5 10h17M8 3.2v3.4M16 3.2v3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>{{ conference.get('date_label') or conference.get('starts') }}
+          </span>
+        {% endif %}
+        {% if conference.get('city') %}
+          <span class="hero__fact">{{ conference.city }}{% if conference.get('country') %}، {{ conference.country }}{% endif %}</span>
+        {% endif %}
+      </p>
+      <div class="hero__acts">
+        {% if conference.get('register_url') %}
+          <a class="btn btn--brand" href="{{ conference.register_url }}" rel="noopener" target="_blank">التسجيلُ في المؤتمر</a>
+        {% endif %}
+        {% if conference.get('abstract_url') %}
+          <a class="btn btn--ghost" href="{{ conference.abstract_url }}" rel="noopener" target="_blank">إرسالُ ملخّصٍ بحثيّ</a>
+        {% endif %}
+        <a class="btn btn--ghost" href="/about/">عن المؤتمر</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ═══ الرعايةُ ورئاسةُ المؤتمر ══════════════════════════════ #}
+{% if show('home.patronage') and (conference.get('patron', {}).get('name') or conference.get('president', {}).get('name')) %}
+<section class="band band--patronage" aria-label="رعايةُ المؤتمر">
+  <div class="shell dignitaries">
+    {{ ui.dignitary(conference.get('patron')) }}
+    {{ ui.dignitary(conference.get('president')) }}
+  </div>
+</section>
+{% endif %}
+
+{% if lead %}
+<section class="lead-grid shell" aria-label="أبرزُ الأخبار">
+  <article class="lead" style="--accent: {{ lead.accent }}">
+    <a class="lead__media" href="{{ lead.url }}" tabindex="-1" aria-hidden="true">
+      {{ ui.thumb(lead, sizes='(max-width: 900px) 100vw, 62vw', eager=true) }}
+    </a>
+    <div class="lead__body">
+      <div class="lead__kicker">{{ ui.kicker(lead) }}<span class="tagline-pill">{{ lead.section_one or lead.section_name }}</span></div>
+      <h2 class="lead__title"><a href="{{ lead.url }}">{{ lead.title }}</a></h2>
+      <p class="lead__dek">{{ lead.dek }}</p>
+      <div class="lead__foot">
+        {{ ui.meta(lead) }}
+        {{ ui.save_button(lead) }}
+      </div>
+    </div>
+  </article>
+
+  {% if top %}
+  <div class="top-list">
+    <h2 class="top-list__head">مختاراتُ اللجنة</h2>
+    <ol>
+      {% for item in top %}
+        <li>{{ ui.card(item, 'list', dek=loop.first) }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endif %}
+</section>
+{% elif not site.items %}
+<section class="shell onboarding">
+  <h2>{{ conference.get('name') or cfg.title }}</h2>
+  <p>يُستكمل نشرُ برنامج المؤتمر وأخباره تباعاً. تابِعنا ليصلك كلُّ جديد.</p>
+  <p><a class="btn btn--brand" href="/about/">عن المؤتمر</a></p>
+</section>
+{% endif %}
+
+{{ adx.unit('home_top', 'band') }}
+
+{% if river %}
+<section class="river shell" aria-label="أحدثُ ما نُشر">
+  <div class="river__main">
+    {{ ui.section_head('أحدثُ ما نُشر', 'أخبارُ المؤتمر وفعاليّاتُه أوّلاً بأوّل', '/archive/') }}
+    <div class="grid grid--3" id="latest-grid">
+      {% for item in river %}
+        {{ ui.card(item, 'standard') }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <aside class="river__side" aria-label="ألواحٌ جانبيّة">
+    {% if agenda_sections and show('home.agenda') %}
+      {% set agenda = agenda_sections[0] %}
+      {% set upcoming = site.by_section(agenda.id)[:4] %}
+      {% if upcoming %}
+      <div class="panel panel--agenda" style="--accent: {{ agenda.accent }}">
+        <p class="panel__eyebrow">{{ agenda.many }}</p>
+        <div class="agenda agenda--slim">
+          {% for item in upcoming %}{{ ui.event_card(item, compact=true) }}{% endfor %}
+        </div>
+        <a class="panel__link" href="{{ agenda.url }}">البرنامجُ كاملاً ←</a>
+      </div>
+      {% endif %}
+    {% endif %}
+
+    {% if site.categories and show('home.topics') %}
+    <div class="panel">
+      <p class="panel__eyebrow">تصفّح بالموضوع</p>
+      <div class="chips">
+        {% for category in site.categories[:14] %}{{ ui.topic_chip(category) }}{% endfor %}
+      </div>
+      <a class="panel__link" href="/topics/">كلُّ الموضوعات ←</a>
+    </div>
+    {% endif %}
+
+    {% if featured and show('home.featured') %}
+    <div class="panel">
+      <p class="panel__eyebrow">الأكثرُ متابعة</p>
+      <ol class="ranks">
+        {% for item in featured[:5] %}{{ ui.rank_item(item, loop.index) }}{% endfor %}
+      </ol>
+    </div>
+    {% endif %}
+
+    {% if show('home.follow') %}
+    <div class="panel panel--follow">
+      <p class="panel__eyebrow">تابع المؤتمر</p>
+      <p class="panel__text">إشعارٌ فورَ إعلان موعدٍ أو فعاليّةٍ جديدة، أو خلاصةٌ في قارئك.</p>
+      <a class="btn btn--ghost btn--full" href="/subscribe/">اشترك وتابع</a>
+    </div>
+    {% endif %}
+  </aside>
+</section>
+{% endif %}
+
+{{ adx.unit('home_mid', 'band') }}
+
+{# ═══ ألواحُ الأقسام — كلُّ قسمٍ بشكل عرضه، فالقسمُ الجديدُ يظهر بلا تعديلِ قالب ═══ #}
+{% for section, items in rails %}
+  {% if section.display == 'standard' %}
+  <section class="strip shell" style="--accent: {{ section.accent }}" aria-label="{{ section.many }}">
+    {{ ui.section_head(section.many, section.description, section.url, section.accent) }}
+    <div class="grid grid--{{ 4 if items|length > 3 else 3 }}">
+      {% for item in items[:4] %}{{ ui.card(item, 'standard', dek=loop.first) }}{% endfor %}
+    </div>
+  </section>
+  {% elif section.display == 'agenda' %}
+  <section class="strip strip--tint shell" style="--accent: {{ section.accent }}" aria-label="{{ section.many }}">
+    {{ ui.section_head(section.many, section.description, section.url, section.accent) }}
+    <div class="agenda">
+      {% for item in items[:5] %}{{ ui.event_card(item) }}{% endfor %}
+    </div>
+  </section>
+  {% elif section.display == 'people' %}
+  <section class="strip shell" style="--accent: {{ section.accent }}" aria-label="{{ section.many }}">
+    {{ ui.section_head(section.many, section.description, section.url, section.accent) }}
+    <div class="grid grid--people">
+      {% for item in items[:6] %}{{ ui.person_card(item) }}{% endfor %}
+    </div>
+  </section>
+  {% elif section.display == 'gallery' %}
+  <section class="strip strip--tint shell" style="--accent: {{ section.accent }}" aria-label="{{ section.many }}">
+    {{ ui.section_head(section.many, section.description, section.url, section.accent) }}
+    <div class="scroller">
+      {% for item in items %}
+        <a class="poster" href="{{ item.url }}" style="--accent: {{ item.accent }}">
+          {{ ui.thumb(item, '4/5', '260px') }}
+          <span class="poster__title">{{ item.title }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% elif section.display == 'video' %}
+  <section class="band band--video" aria-label="{{ section.many }}">
+    <div class="shell">
+      {{ ui.section_head(section.many, section.description, section.url, section.accent) }}
+      <div class="grid grid--3">
+        {% for item in items[:3] %}{{ ui.card(item, 'standard', dek=false) }}{% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+{% endfor %}
+
+{# ═══ داعمو المؤتمر ═════════════════════════════════════════ #}
+{% if site.sponsors and sponsor_cfg.get('enabled', true) and show('home.sponsors') %}
+<section class="band band--sponsors" aria-label="{{ sponsor_cfg.get('title', 'داعمو المؤتمر') }}">
+  <div class="shell">
+    {{ ui.section_head(sponsor_cfg.get('title', 'داعمو المؤتمر'), sponsor_cfg.get('subtitle', ''), '/sponsors/') }}
+    {% for tier in site.sponsors %}
+      <p class="tier__name">{{ tier.name }}</p>
+      <div class="plaques">
+        {% for sponsor in tier.sponsors %}{{ ui.sponsor_logo(sponsor, tier.size) }}{% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Event",
+ "name": {{ (conference.get('name') or cfg.title)|tojson }},
+ "description": {{ cfg.description|trim|tojson }},
+ "url": {{ cfg.url|tojson }},
+ "eventStatus": "https://schema.org/EventScheduled",
+ "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+{% if conference.get('starts') %}
+ "startDate": {{ conference.starts|tojson }},
+ "endDate": {{ (conference.get('ends') or conference.starts)|tojson }},
+{% endif %}
+ "image": {{ (identity.get('share') or (cfg.url ~ '/assets/img/share.png'))|tojson }},
+ "organizer": {
+  "@type": "Organization",
+  "name": {{ (conference.get('organizer') or cfg.title)|tojson }},
+  "url": {{ cfg.url|tojson }}
+ },
+ "location": {
+  "@type": "Place",
+  "name": {{ conference.get('venue', '')|tojson }},
+  "address": {
+   "@type": "PostalAddress",
+   "streetAddress": {{ conference.get('address', '')|tojson }},
+   "addressLocality": {{ conference.get('city', '')|tojson }},
+   "addressCountry": {{ conference.get('country', '')|tojson }}
+  }
+ }{% if speaker_items %},
+ "performer": [
+ {% for person in speaker_items[:20] %}
+  {"@type": "Person", "name": {{ person.title|tojson }}, "url": {{ person.url|absolute|tojson }}}{{ "," if not loop.last }}
+ {% endfor %}
+ ]{% endif %}
+}
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ asset('js/live.js') }}" defer></script>
+{% endblock %}

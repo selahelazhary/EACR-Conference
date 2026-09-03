@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+
+{% block title %}الصفحةُ غير موجودة | {{ cfg.title }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, follow">{% endblock %}
+
+{% block content %}
+<section class="shell notfound">
+  <p class="notfound__code" aria-hidden="true">٤٠٤</p>
+  <h1 class="notfound__title">لا شيء هنا… وهذه فرصةٌ للتوقّف</h1>
+  <p class="notfound__text">
+    الرابطُ الذي طلبتَه غيرُ موجودٍ أو نُقل إلى عنوانٍ جديد بعد إعادة بناء الموقع.
+    جرّب البحث، أو ابدأ من إحدى هذه المداخل.
+  </p>
+  <div class="notfound__actions">
+    <a class="btn" href="/">الصفحةُ الرئيسيّة</a>
+    <button class="btn btn--ghost" type="button" data-search-open>ابحث في المنصّة</button>
+    <a class="btn btn--ghost" href="/archive/">الأرشيف</a>
+  </div>
+
+  <div class="notfound__sections">
+    {% for section in sections %}
+      <a href="{{ section.url }}" style="--accent: {{ section.accent }}">{{ section.plural }}</a>
+    {% endfor %}
+  </div>
+
+  {% if site.items %}
+    <div class="strip">
+      {{ ui.section_head('اقرأ بدلاً من ذلك') }}
+      <div class="grid grid--4">
+        {% for item in site.items[:4] %}{{ ui.card(item, 'standard', dek=false) }}{% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

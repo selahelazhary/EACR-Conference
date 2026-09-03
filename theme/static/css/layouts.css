@@ -1,0 +1,188 @@
+/* ═══ التنسيقات: هيكلُ الصفحة ═══════════════════════════════
+   عشرون تنسيقاً لا تُكتب عشرين مرّة. المقاديرُ تصل رموزاً من
+   eacr/layouts.py (--card-bg و --media-ratio و --shell …)،
+   وما لا يُقال برمزٍ — بنيةُ الصدر وهيئةُ الشريط — يُلتقط من
+   سماتِ الجذر: data-masthead و data-hero.
+   ═══════════════════════════════════════════════════════ */
+
+/* ───────────────── البطاقة تتشكّل بالرموز ───────────────── */
+.card:not(.card--list):not(.card--compact) {
+  background: var(--card-bg, transparent);
+  border: var(--card-line, 0) solid var(--line);
+  border-radius: var(--card-radius, 0);
+  padding: var(--card-pad, 0);
+  box-shadow: var(--card-shadow, none);
+  transition: box-shadow var(--t-base), border-color var(--t-base), transform var(--t-base);
+}
+.card:not(.card--list):not(.card--compact):hover {
+  box-shadow: var(--card-shadow, none);
+  border-color: color-mix(in srgb, var(--brand) 34%, var(--line));
+}
+[data-cards="shadow"] .card:not(.card--list):not(.card--compact):hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+/* الصورةُ تلتصق بحافّة البطاقة حين يكون لها حشوة */
+.card:not(.card--list):not(.card--compact) .thumb {
+  border-radius: calc(var(--card-radius, var(--r-md)) - 4px);
+}
+
+.thumb { aspect-ratio: var(--ratio, var(--media-ratio, 16/9)); }
+/* صدرُ الرئيسيّة له نسبتُه، وكلُّ صدرٍ يزيحها كما يشاء */
+.lead .thumb { aspect-ratio: var(--lead-ratio, 3/2); }
+.card--list .thumb { aspect-ratio: 1/1; }
+
+.card__title {
+  font-weight: var(--title-weight, 800);
+  letter-spacing: var(--title-track, -.015em);
+  line-height: var(--title-lh, 1.35);
+}
+.lead__title, .pagehead__title, .strip__title {
+  font-weight: var(--title-weight, 900);
+  letter-spacing: var(--title-track, -.03em);
+}
+
+.strip__head, .top-list__head { border-bottom-width: var(--rule-w, 2px); }
+.strip__head::before { height: var(--rule-w, 2px); inset-block-end: calc(var(--rule-w, 2px) * -1); }
+
+/* ───────────────── الشريطُ العلويّ ───────────────── */
+[data-masthead="compact"] .brand__mark { width: 30px; height: 30px; }
+[data-masthead="compact"] .brand__text strong { font-size: 1.15rem; }
+[data-masthead="compact"] .brand__text small { display: none; }
+[data-masthead="compact"] .masthead__nav a { padding-inline: .5rem; font-size: .84rem; }
+
+[data-masthead="tall"] .masthead__bar { padding-block: .9rem; }
+[data-masthead="tall"] .brand__mark { width: 52px; height: 52px; }
+[data-masthead="tall"] .brand__text strong { font-size: 1.9rem; }
+
+[data-masthead="center"] .masthead__bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "menu brand tools" "nav nav nav";
+  align-items: center;
+  row-gap: .35rem;
+  padding-block: .7rem;
+  height: auto;
+}
+[data-masthead="center"] .masthead__menu { grid-area: menu; }
+[data-masthead="center"] .brand {
+  grid-area: brand;
+  justify-self: center;
+  flex-direction: column;
+  text-align: center;
+  gap: .35rem;
+  margin: 0;
+}
+[data-masthead="center"] .brand__mark { width: 46px; height: 46px; }
+[data-masthead="center"] .brand__text { align-items: center; }
+[data-masthead="center"] .brand__text strong { font-size: 1.7rem; }
+[data-masthead="center"] .masthead__nav {
+  grid-area: nav;
+  justify-self: center;
+  margin: 0;
+  border-top: 1px solid var(--line-soft);
+  padding-top: .3rem;
+  width: 100%;
+}
+[data-masthead="center"] .masthead__nav ul { justify-content: center; flex-wrap: wrap; }
+[data-masthead="center"] .masthead__tools { grid-area: tools; margin: 0; }
+
+/* ───────────────── صدرُ الرئيسيّة ───────────────── */
+/* عمودٌ واحد: الصدرُ فوق والمختاراتُ تحته صفّاً */
+[data-hero="stack"] .lead-grid { grid-template-columns: minmax(0, 1fr); gap: var(--gap-lg); }
+[data-hero="stack"] .lead { --lead-ratio: 2.4/1; }
+[data-hero="stack"] .top-list { border-inline-start: 0; padding-inline-start: 0; border-top: var(--rule-w, 2px) solid var(--line); padding-top: 1rem; }
+[data-hero="stack"] .top-list ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--gap); }
+[data-hero="stack"] .top-list ol > li { border-bottom: 1px solid var(--line-soft); }
+
+/* عريض: الصورةُ تمتدُّ والعنوانُ تحتها بحجمٍ أكبر */
+[data-hero="wide"] .lead-grid { grid-template-columns: minmax(0, 1fr); }
+[data-hero="wide"] .lead { --lead-ratio: 21/9; }
+[data-hero="wide"] .lead__title { font-size: clamp(2.4rem, 1.4rem + 4vw, 5rem); }
+[data-hero="wide"] .lead__dek { max-width: 74ch; }
+[data-hero="wide"] .top-list { border-inline-start: 0; padding-inline-start: 0; border-top: var(--rule-w, 2px) solid var(--line); padding-top: 1rem; }
+[data-hero="wide"] .top-list ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gap-lg); }
+
+/* ملصق: النصُّ فوق الصورة */
+[data-hero="poster"] .lead-grid { grid-template-columns: minmax(0, 1fr); }
+[data-hero="poster"] .lead {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  --lead-ratio: 2/1;
+}
+[data-hero="poster"] .lead__media { position: relative; border-radius: 0; }
+[data-hero="poster"] .lead__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(6 6 10 / .92) 8%, rgb(6 6 10 / .55) 46%, rgb(6 6 10 / .05) 78%);
+}
+[data-hero="poster"] .lead__body {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 2;
+  padding: clamp(1rem, 3vw, 2.6rem);
+  display: grid;
+  gap: .7rem;
+  color: #FBFAF7;
+}
+[data-hero="poster"] .lead__title a,
+[data-hero="poster"] .lead__dek,
+[data-hero="poster"] .lead__foot,
+[data-hero="poster"] .lead__kicker { color: #FBFAF7; }
+[data-hero="poster"] .lead__dek { color: rgb(255 255 255 / .84); }
+[data-hero="poster"] .tagline-pill { border-color: rgb(255 255 255 / .4); color: rgb(255 255 255 / .82); }
+[data-hero="poster"] .lead .meta { color: rgb(255 255 255 / .74); }
+[data-hero="poster"] .lead .save { color: #FBFAF7; }
+
+/* قائمة: صدرٌ بلا صورةٍ كبيرة — عنوانٌ وموجزٌ ثمّ قائمةٌ مرقّمة */
+[data-hero="list"] .lead__media { display: none; }
+[data-hero="list"] .lead-grid { grid-template-columns: 1.2fr 1fr; padding-block-start: clamp(1rem, 2vw, 2rem); }
+[data-hero="list"] .lead__title { font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.2rem); }
+[data-hero="list"] .lead__dek { font-size: var(--step-1); }
+[data-hero="list"] .top-list ol { counter-reset: pick; }
+[data-hero="list"] .top-list ol > li { counter-increment: pick; position: relative; padding-inline-start: 1.9rem; }
+[data-hero="list"] .top-list ol > li::before {
+  content: counter(pick);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 1.05rem;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--spark);
+}
+[data-hero="list"] .card--list .card__media { display: none; }
+
+/* ───────────────── نَفَسٌ أوسع في التنسيقات الفسيحة ───────────────── */
+[data-layout="minimal"] .strip__head::before,
+[data-layout="focus"] .strip__head::before,
+[data-layout="reader"] .strip__head::before { display: none; }
+[data-layout="minimal"] .pagehead,
+[data-layout="focus"] .pagehead { background: var(--paper); }
+
+/* الشاشاتُ الصغيرة تعود إلى عمودٍ واحدٍ مهما كان التنسيق */
+@media (max-width: 1080px) {
+  [data-hero="list"] .lead-grid,
+  [data-hero="split"] .lead-grid { grid-template-columns: minmax(0, 1fr); }
+  [data-hero="stack"] .top-list ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-masthead="center"] .masthead__nav { display: none; }
+  [data-masthead="center"] .masthead__bar { grid-template-areas: "menu brand tools"; }
+}
+
+@media (max-width: 620px) {
+  [data-hero="stack"] .top-list ol,
+  [data-hero="wide"] .top-list ol { grid-template-columns: minmax(0, 1fr); }
+  [data-hero="poster"] .lead__body { position: static; color: inherit; padding: .9rem 0 0; }
+  [data-hero="poster"] .lead__media::after { display: none; }
+  [data-hero="poster"] .lead__title a,
+  [data-hero="poster"] .lead__dek,
+  [data-hero="poster"] .lead__kicker { color: inherit; }
+  [data-hero="poster"] .lead__dek { color: var(--ink-2); }
+  [data-hero="poster"] .lead .meta { color: var(--muted); }
+  [data-masthead="tall"] .brand__mark { width: 38px; height: 38px; }
+  [data-masthead="tall"] .brand__text strong { font-size: 1.4rem; }
+}

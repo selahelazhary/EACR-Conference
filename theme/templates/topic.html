@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% block title %}{{ category.name }} | {{ cfg.title }}{% endblock %}
+{% block description %}كلُّ ما نُشر على موقع المؤتمر في موضوع «{{ category.name }}» — {{ items|length }} مادّة.{% endblock %}
+
+{% block content %}
+<header class="pagehead" style="--accent: {{ category.color }}">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol>
+        <li><a href="/">الرئيسيّة</a></li>
+        <li><a href="/topics/">الموضوعات</a></li>
+        <li aria-current="page">{{ category.name }}</li>
+      </ol>
+    </nav>
+    <p class="pagehead__eyebrow">موضوع</p>
+    <h1 class="pagehead__title">{{ category.name }}</h1>
+    <p class="pagehead__count">{{ items|length }} مادّةً في هذا الموضوع</p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  {{ adx.unit('list_top', 'band') }}
+  {% if items %}
+    <div class="grid grid--3 grid--gap">
+      {% for item in items %}{{ ui.card(item, 'standard') }}{% endfor %}
+    </div>
+  {% else %}
+    {{ ui.empty_state('لا توجد موادُّ بعد تحت هذا الموضوع.') }}
+  {% endif %}
+</section>
+
+{% if site.categories|length > 1 %}
+<section class="shell strip">
+  {{ ui.section_head('موضوعاتٌ أخرى', '', '/topics/') }}
+  <div class="chips chips--wrap">
+    {% for other in site.categories %}
+      {% if other.id != category.id %}{{ ui.topic_chip(other) }}{% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

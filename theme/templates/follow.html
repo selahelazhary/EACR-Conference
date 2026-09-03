@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% import "ads.html" as adx %}
+
+{% block title %}اشترك وتابع | {{ cfg.title }}{% endblock %}
+{% block description %}ثلاثُ طرقٍ لمتابعة المؤتمر: إشعارٌ في متصفّحك فور النشر، أو خلاصةُ RSS في قارئك، أو تثبيتُ الموقع تطبيقاً على جهازك — بلا بريدٍ ولا تسجيل.{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">اشترك وتابع</li></ol>
+    </nav>
+    <h1 class="pagehead__title">اشترك وتابع</h1>
+    <p class="pagehead__dek">
+      لا نطلب بريدك ولا نبني عنك ملفّاً. اختر الطريقةَ التي تصلك بها المادّةُ الجديدة،
+      وتبقى أنت مَن يقرّر متى يقرأ.
+    </p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  <div class="follow-grid">
+
+    {# ── ١ · الإشعارات ─────────────────────────────────── #}
+    <article class="follow-card follow-card--lead" data-notify-state="off">
+      <span class="follow-card__num" aria-hidden="true">١</span>
+      <div class="follow-card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <path d="M12 3a5.5 5.5 0 0 0-5.5 5.5c0 4-1.5 5.5-2 6.2-.3.4 0 1 .5 1h14c.5 0 .8-.6.5-1-.5-.7-2-2.2-2-6.2A5.5 5.5 0 0 0 12 3z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>إشعارٌ في متصفّحك</h2>
+      <p>
+        فور نشر مادّةٍ جديدة يصلك عنوانُها إشعاراً على هذا الجهاز — ولو كان الموقعُ مغلقاً.
+        لا يُرسَل شيءٌ إلى خادمٍ عنك: جهازُك هو الذي يسأل الموقعَ عن الجديد.
+      </p>
+
+      <div class="follow-card__act">
+        <button class="btn btn--lg" type="button" data-notify-action="enable" data-state-on-hide>
+          فعّل الإشعارات
+        </button>
+        <button class="btn btn--lg btn--ghost" type="button" data-notify-action="disable" data-state-on-show>
+          أوقف الإشعارات
+        </button>
+      </div>
+
+      <p class="follow-card__state follow-card__state--on">
+        <span class="dot dot--live" aria-hidden="true"></span>
+        الإشعاراتُ مفعّلةٌ على هذا الجهاز.
+      </p>
+      <p class="follow-card__state follow-card__state--blocked">
+        الإشعاراتُ محجوبةٌ من إعدادات المتصفّح لهذا الموقع. افتح قفلَ العنوان ← الإشعارات ← اسمح،
+        ثمّ أعد المحاولة.
+      </p>
+      <p class="follow-card__state follow-card__state--unsupported">
+        متصفّحك الحاليُّ لا يدعم الإشعارات. على iPhone: أضف الموقعَ إلى الشاشة الرئيسيّة أوّلاً،
+        ثمّ افتحه من الأيقونة.
+      </p>
+    </article>
+
+    {# ── ٢ · الخلاصة ───────────────────────────────────── #}
+    <article class="follow-card">
+      <span class="follow-card__num" aria-hidden="true">٢</span>
+      <div class="follow-card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <circle cx="6.5" cy="17.5" r="2.2" fill="currentColor"/>
+          <path d="M4 10.5a9.5 9.5 0 0 1 9.5 9.5M4 4a16 16 0 0 1 16 16"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>خلاصةُ RSS</h2>
+      <p>
+        انسخ الرابطَ وألصقه في أيِّ قارئ خلاصات، فتصلك كلُّ مادّةٍ بترتيب نشرها لا بترتيب خوارزميّة.
+      </p>
+
+      <div class="feed-field">
+        <code id="feed-url">{{ '/rss.xml'|absolute }}</code>
+        <button class="btn btn--sm" type="button" data-copy="{{ '/rss.xml'|absolute }}">نسخ</button>
+      </div>
+
+      <p class="follow-card__label">أو افتحه مباشرةً في:</p>
+      <div class="reader-links">
+        <a class="reader" target="_blank" rel="noopener"
+           href="https://feedly.com/i/subscription/feed/{{ ('/rss.xml'|absolute)|urlencode }}">Feedly</a>
+        <a class="reader" target="_blank" rel="noopener"
+           href="https://www.inoreader.com/?add_feed={{ ('/rss.xml'|absolute)|urlencode }}">Inoreader</a>
+        <a class="reader" target="_blank" rel="noopener"
+           href="https://feedbin.com/?subscribe={{ ('/rss.xml'|absolute)|urlencode }}">Feedbin</a>
+        <a class="reader" target="_blank" rel="noopener"
+           href="https://newsblur.com/?url={{ ('/rss.xml'|absolute)|urlencode }}">NewsBlur</a>
+        <a class="reader" href="/rss.xml">عرضُ الخلاصة</a>
+      </div>
+    </article>
+
+    {# ── ٣ · التطبيق ───────────────────────────────────── #}
+    <article class="follow-card">
+      <span class="follow-card__num" aria-hidden="true">٣</span>
+      <div class="follow-card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M10.5 18.6h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>ثبّتها تطبيقاً</h2>
+      <p>
+        موقعُ المؤتمر يعمل تطبيقاً كاملاً على هاتفك وحاسوبك: يفتح دون متصفّح، ويقرأ ما حفظتَه دون إنترنت،
+        وعليه تعمل الإشعاراتُ بأفضل صورة.
+      </p>
+      <ul class="follow-steps">
+        <li><b>أندرويد · كروم:</b> قائمةُ المتصفّح ← «تثبيت التطبيق»</li>
+        <li><b>آيفون · سفاري:</b> زرُّ المشاركة ← «إضافة إلى الشاشة الرئيسيّة»</li>
+        <li><b>ويندوز · ماك:</b> أيقونةُ التثبيت في يمين شريط العنوان</li>
+      </ul>
+      <a class="btn btn--ghost" href="/saved/">قائمةُ القراءة المحفوظة</a>
+    </article>
+
+    {# ── ٤ · المنصّات ──────────────────────────────────── #}
+    <article class="follow-card">
+      <span class="follow-card__num" aria-hidden="true">٤</span>
+      <div class="follow-card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26">
+          <circle cx="18" cy="5.5" r="2.6" fill="currentColor"/><circle cx="6" cy="12" r="2.6" fill="currentColor"/>
+          <circle cx="18" cy="18.5" r="2.6" fill="currentColor"/>
+          <path d="M8.3 10.8 15.7 7.1M8.3 13.2l7.4 3.7" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h2>على المنصّات</h2>
+      <p>نُعيد نشر المختارات، لكنّ الأصلَ هنا — والخلاصةُ أوفى.</p>
+      <div class="reader-links">
+        {% for link in cfg.social %}
+          <a class="reader" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.name }}</a>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+
+  {{ adx.unit('list_top', 'band') }}
+
+  <div class="follow-note">
+    <h2>ماذا نعرف عنك؟</h2>
+    <p>
+      لا شيء. الإشعاراتُ والمحفوظاتُ وتفضيلاتُ العرض كلُّها محفوظةٌ في متصفّحك وحده،
+      ولا تغادر جهازَك إلى أيِّ خادمٍ لنا. أمّا الإعلاناتُ فتُقدَّم من شبكةٍ خارجيّةٍ لها سياستُها،
+      وتفصيلُ ذلك في <a href="/privacy/">سياسة الخصوصيّة</a>.
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "اشترك وتابع",
+  "url": page_url|absolute,
+  "inLanguage": "ar",
+  "isPartOf": {"@type": "WebSite", "name": cfg.title, "url": cfg.url}
+}|tojson }}
+</script>
+{% endblock %}

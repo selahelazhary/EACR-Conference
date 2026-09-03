@@ -1,0 +1,568 @@
+/* ═══ وحداتُ المؤتمر ═══════════════════════════════════════════
+   ما لا تعرفه صحيفةٌ عاديّة: صدرُ المؤتمر، وشريطُ الرعاية،
+   وبرنامجُ الفعاليّات، وشبكةُ المتحدّثين، ومعرضُ الصور،
+   ولوحُ شعارات الداعمين.
+   كلُّها تقرأ رموزَ التصميم نفسَها، فتتبع التصميمَ المختار
+   من لوحة الإدارة ولا تحتاج لوحةً ثانية.
+   ═════════════════════════════════════════════════════════ */
+
+/* ── صدرُ المؤتمر ───────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding-block: clamp(2rem, 1.2rem + 3.4vw, 4rem);
+  background:
+    radial-gradient(120% 150% at 88% -30%, color-mix(in srgb, var(--brand) 11%, transparent), transparent 60%),
+    radial-gradient(90% 130% at 6% -10%, color-mix(in srgb, var(--spark) 9%, transparent), transparent 56%),
+    var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+/* خطٌّ رفيعٌ بلوني العلامة يعلو الصدر — توقيعٌ بصريٌّ هادئ */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(to left, var(--brand), var(--spark));
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.1rem, .6rem + 2vw, 2.4rem);
+}
+
+.hero__seal {
+  width: clamp(84px, 9vw, 148px);
+  height: auto;
+  padding: .5rem;
+  background: #fff;
+  border-radius: var(--r-full);
+  box-shadow: 0 0 0 1px var(--line), 0 10px 30px rgb(20 18 30 / .12);
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: .02em;
+  margin-bottom: .5rem;
+}
+
+.hero__eyebrow::after {
+  content: "";
+  width: clamp(28px, 5vw, 64px);
+  height: 2px;
+  background: currentColor;
+  opacity: .45;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 900;
+  line-height: var(--lh-tight);
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+
+.hero__edition {
+  color: var(--brand);
+  white-space: nowrap;
+}
+
+.hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-block: 1.1rem .2rem;
+  font-size: .87rem;
+  color: var(--ink-2);
+}
+
+.hero__fact {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .38rem .8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  font-weight: 600;
+}
+.hero__fact svg { color: var(--brand); flex: none; }
+
+.hero__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-top: 1.1rem;
+}
+
+/* ── الرعايةُ ورئاسةُ المؤتمر ───────────────────────────── */
+.band--patronage {
+  background: var(--surface-2);
+  border-block: 1px solid var(--line);
+  margin-block: 0;
+  padding-block: clamp(1.4rem, 1rem + 2vw, 2.6rem);
+}
+
+.dignitaries {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--gap);
+}
+
+.dignitary {
+  position: relative;
+  text-align: center;
+  padding: clamp(1.2rem, .8rem + 1.2vw, 1.9rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.dignitary::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(to left, var(--brand), var(--spark));
+}
+
+.dignitary__photo {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: var(--r-full);
+  margin: 0 auto .8rem;
+  display: block;
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--brand);
+}
+
+.dignitary__label {
+  font-size: .76rem;
+  font-weight: 800;
+  color: var(--brand);
+  letter-spacing: .12em;
+  margin-bottom: .45rem;
+}
+
+.dignitary__name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.dignitary__role {
+  font-size: .84rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-top: .35rem;
+  text-wrap: balance;
+}
+
+/* ── برنامجُ الفعاليّات ─────────────────────────────────── */
+.agenda { display: grid; gap: .8rem; }
+
+.event {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  border-inline-start: 3px solid var(--accent);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+.event:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+/* البطاقةُ التي معها صورة: عمودٌ ثالثٌ على الشاشات الواسعة */
+.event:has(.event__media) { grid-template-columns: auto minmax(0, 1fr) clamp(120px, 16vw, 190px); }
+
+.daymark {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-width: 62px;
+  padding: .5rem .55rem;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.daymark b { font-size: 1.5rem; font-weight: 900; font-family: var(--font-display); }
+.daymark span { font-size: .7rem; font-weight: 700; opacity: .85; }
+
+.event__title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.event__title a { color: inherit; }
+.event__title a:hover { color: var(--accent); }
+
+.event__dek {
+  font-size: .87rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: .3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.event__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1rem;
+  margin-top: .55rem;
+  font-size: .82rem;
+  color: var(--ink-2);
+}
+
+.event__fact { display: inline-flex; align-items: center; gap: .35rem; }
+.event__fact svg { color: var(--accent); flex: none; }
+
+.event__media { display: block; border-radius: var(--r-sm); overflow: hidden; aspect-ratio: 4 / 3; }
+.event__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.event--compact { padding: .7rem; gap: .7rem; grid-template-columns: auto minmax(0, 1fr); }
+.event--compact .event__title { font-size: .95rem; }
+.event--compact .daymark { min-width: 48px; padding: .35rem .4rem; }
+.event--compact .daymark b { font-size: 1.15rem; }
+
+.agenda--slim { gap: .5rem; margin-block: .7rem; }
+
+/* ── المتحدّثون ─────────────────────────────────────────── */
+.grid--people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+  gap: var(--gap);
+}
+
+.person { text-align: center; }
+
+.person__face {
+  display: block;
+  width: min(100%, 160px);
+  margin: 0 auto .75rem;
+  aspect-ratio: 1;
+  border-radius: var(--r-full);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+.person__face:hover { transform: translateY(-2px); box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--accent); }
+.person__face img { width: 100%; height: 100%; object-fit: cover; }
+
+.person__initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.person__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.person__name a { color: inherit; }
+.person__name a:hover { color: var(--accent); }
+
+.person__role {
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: .25rem;
+  text-wrap: balance;
+}
+
+/* ── معرضُ الصور ────────────────────────────────────────── */
+.grid--tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: .8rem;
+}
+
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-2));
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s cubic-bezier(.2, .7, .3, 1);
+}
+
+.tile:hover img { transform: scale(1.05); }
+
+.tile__initial {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.tile__cap {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 1.7rem .8rem .7rem;
+  font-size: .84rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(transparent, rgb(10 8 14 / .82));
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--t-fast), transform var(--t-fast);
+}
+
+.tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; transform: none; }
+
+@media (hover: none) {
+  .tile__cap { opacity: 1; transform: none; }
+}
+
+/* ── الداعمون ───────────────────────────────────────────── */
+.band--sponsors {
+  background: var(--surface-2);
+  border-block: 1px solid var(--line);
+  margin-bottom: 0;
+}
+
+.tier { margin-block-end: var(--gap); }
+
+.tier__name {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-weight: 800;
+  color: var(--ink-2);
+  letter-spacing: .06em;
+  margin-block: 1.6rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.tier__name::before,
+.tier__name::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to left, transparent, var(--line));
+}
+
+.tier__name::after { background: linear-gradient(to right, transparent, var(--line)); }
+
+.plaques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.plaques--page { gap: 1rem; }
+
+/* الشعاراتُ تُصمَّم لخلفيّةٍ بيضاء، فتُعرض على لوحٍ أبيضَ دائماً
+   حتّى في الوضع الليليّ — وإلّا اختفت حروفُها الداكنة. */
+.plaque {
+  display: grid;
+  place-items: center;
+  width: var(--plaque, 140px);
+  min-height: calc(var(--plaque, 140px) * .62);
+  padding: .8rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+a.plaque:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.plaque img {
+  max-width: 100%;
+  max-height: calc(var(--plaque, 140px) * .52);
+  object-fit: contain;
+}
+
+.plaque__name {
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+  color: #23222a;
+  text-wrap: balance;
+}
+
+.tier__note {
+  font-size: .84rem;
+  color: var(--muted);
+  line-height: 1.9;
+  padding-top: var(--gap);
+  border-top: 1px solid var(--line);
+}
+
+/* ── حقائقُ المادّة: موعدٌ ومكان ────────────────────────── */
+.factbar, .factlist {
+  display: grid;
+  gap: .1rem .9rem;
+  margin-top: 1rem;
+}
+
+.factbar {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  padding: .9rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.factbar > div, .factlist > div { min-width: 0; }
+
+.factbar dt, .factlist dt {
+  font-size: .74rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: .03em;
+  margin-bottom: .15rem;
+}
+
+.factbar dd, .factlist dd {
+  font-size: .92rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.factlist > div { padding-block: .5rem; border-bottom: 1px solid var(--line-soft); }
+.factlist > div:last-child { border-bottom: 0; }
+
+.article__role {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-weight: 700;
+  color: var(--brand);
+  line-height: 1.7;
+  margin-top: .4rem;
+}
+
+/* ── الذيل ──────────────────────────────────────────────── */
+.footer__label--gap { margin-top: 1.2rem; }
+
+.footer__where {
+  font-size: .86rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.footer__where span { display: block; font-size: .8rem; opacity: .85; }
+
+/* ── لوحُ الفعاليّات الجانبيّ ───────────────────────────── */
+.panel--agenda .event {
+  border-inline-start-width: 2px;
+  box-shadow: none;
+}
+
+.panel--agenda .event:hover { transform: none; box-shadow: var(--shadow-sm); }
+
+/* ── شاشاتٌ ضيّقة ───────────────────────────────────────── */
+@media (max-width: 720px) {
+  .hero__inner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .hero__facts, .hero__acts { justify-content: center; }
+  .event:has(.event__media) { grid-template-columns: auto minmax(0, 1fr); }
+  .event__media { display: none; }
+}
+
+/* ── لمساتٌ عامّةٌ تليق بموقعٍ رسميّ ────────────────────── */
+
+/* خيطٌ بلوني العلامة يعلو الشريطَ العلويَّ في كلِّ صفحة */
+.masthead { position: relative; }
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(to left, var(--brand), var(--spark));
+  z-index: 2;
+}
+
+/* صدرُ صفحات الأقسام: علامةٌ قصيرةٌ فوق العنوان بدل الفراغ */
+.pagehead { position: relative; }
+
+.pagehead__title { position: relative; }
+
+.pagehead__title::before {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent, var(--brand));
+  margin-bottom: .7rem;
+}
+
+.pagehead__count {
+  display: inline-block;
+  margin-top: .8rem;
+  padding: .3rem .75rem;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+}
+
+/* الشعارُ في الشريط العلويّ: قرصٌ أبيضُ يحفظ ألوانَ الختم ليلاً ونهاراً */
+.brand__mark {
+  background: #fff;
+  border-radius: var(--r-full);
+  padding: 2px;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.footer__seal {
+  background: #fff;
+  border-radius: var(--r-full);
+  padding: 5px;
+  box-shadow: 0 0 0 1px var(--line);
+}

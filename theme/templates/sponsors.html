@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+
+{% set heading = sponsor_cfg.get('title', 'داعمو المؤتمر') %}
+
+{% block title %}{{ heading }} | {{ cfg.title }}{% endblock %}
+{% block description %}{{ sponsor_cfg.get('subtitle', '') or ('الجهاتُ الداعمةُ والراعيةُ لـ' ~ (conference.get('name') or cfg.title)) }}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">{{ heading }}</li></ol>
+    </nav>
+    <h1 class="pagehead__title">{{ heading }}</h1>
+    {% if sponsor_cfg.get('subtitle') %}
+      <p class="pagehead__dek">{{ sponsor_cfg.subtitle }}</p>
+    {% endif %}
+    <p class="pagehead__count">العدد: {{ site.sponsor_count }}</p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  {% if site.sponsors %}
+    {% for tier in site.sponsors %}
+      <section class="tier" aria-label="{{ tier.name }}">
+        <h2 class="tier__name">{{ tier.name }}</h2>
+        <div class="plaques plaques--page">
+          {% for sponsor in tier.sponsors %}{{ ui.sponsor_logo(sponsor, tier.size) }}{% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+
+    <p class="tier__note">
+      يتقدّم المؤتمرُ بخالص الشكر لكلِّ جهةٍ أسهمت في إقامته ودعمِ باحثيه.
+    </p>
+  {% else %}
+    {{ ui.empty_state('لم تُعلَن قائمةُ الداعمين بعد.', 'تُنشر أسماءُ الجهات الراعية للمؤتمر هنا فور اكتمالها.') }}
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "CollectionPage",
+ "name": {{ heading|tojson }},
+ "url": {{ page_url|absolute|tojson }},
+ "inLanguage": "ar",
+ "isPartOf": {"@type": "WebSite", "name": {{ cfg.title|tojson }}, "url": {{ cfg.url|tojson }}}
+{%- if site.sponsors %},
+ "mainEntity": {
+  "@type": "ItemList",
+  "numberOfItems": {{ site.sponsor_count }},
+  "itemListElement": [
+  {% set ns = namespace(position=0) %}
+  {% for tier in site.sponsors %}{% for sponsor in tier.sponsors %}{% set ns.position = ns.position + 1 %}
+   {"@type": "ListItem", "position": {{ ns.position }},
+    "item": {"@type": "Organization", "name": {{ sponsor.name|tojson }}
+    {%- if sponsor.url %}, "url": {{ sponsor.url|tojson }}{% endif %}
+    {%- if sponsor.logo %}, "logo": {{ sponsor.logo|tojson }}{% endif %}}}{{ "," if not (loop.last and tier == site.sponsors[-1]) }}
+  {% endfor %}{% endfor %}
+  ]
+ }
+{%- endif %}
+}
+</script>
+{% endblock %}

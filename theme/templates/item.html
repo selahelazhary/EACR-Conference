@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% block title %}{{ item.title }} | {{ cfg.title }}{% endblock %}
+{% block description %}{{ item.dek }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ item.title }}{% endblock %}
+{% block og_description %}{{ item.dek }}{% endblock %}
+{% block og_image %}{{ item.poster or asset('img/share.png') }}{% endblock %}
+{% block keywords %}
+{% if item.categories %}<meta name="news_keywords" content="{{ item.categories|map(attribute='name')|join(', ') }}">{% endif %}
+{% endblock %}
+
+{% block head %}
+<meta property="article:published_time" content="{{ item.iso }}">
+<meta property="article:section" content="{{ item.section_name }}">
+{% for category in item.categories %}<meta property="article:tag" content="{{ category.name }}">
+{% endfor %}
+{% if item.poster %}<link rel="preload" as="image" href="{{ item.poster }}" fetchpriority="high">{% endif %}
+{% endblock %}
+
+{% block styles %}<link rel="stylesheet" href="{{ asset('css/article.css') }}">{% endblock %}
+{% block body_class %}is-article{% endblock %}
+
+{% block content %}
+<article class="article" style="--accent: {{ item.accent }}" data-article
+         {% if engage.get('enabled') %}data-engage-item="{{ item.section }}:{{ item.id }}"{% endif %}>
+
+  <nav class="crumbs shell" aria-label="مسارُ التصفّح">
+    <ol>
+      <li><a href="/">الرئيسيّة</a></li>
+      <li><a href="{{ section.url }}">{{ section.many }}</a></li>
+      <li aria-current="page">{{ item.title }}</li>
+    </ol>
+  </nav>
+
+  <header class="article__head shell">
+    <div class="article__kicker">
+      {{ ui.kicker(item) }}
+      {% for category in item.categories[:3] %}
+        <a class="chip chip--sm" href="{{ category.url }}" style="--accent: {{ category.color }}">{{ category.name }}</a>
+      {% endfor %}
+    </div>
+
+    <h1 class="article__title">{{ item.title }}</h1>
+    {% if item.display == 'people' and item.role %}
+      <p class="article__role">{{ item.role }}</p>
+    {% endif %}
+    {% if item.dek %}<p class="article__dek">{{ item.dek }}</p>{% endif %}
+
+    {% if item.when or item.venue %}
+    <dl class="factbar">
+      {% if item.when %}
+        <div><dt>الموعد</dt><dd>{{ item.when }}</dd></div>
+      {% endif %}
+      <div><dt>التاريخ</dt><dd><time datetime="{{ item.iso }}">{{ item.date_label }}</time></dd></div>
+      {% if item.venue %}
+        <div><dt>المكان</dt><dd>{{ item.venue }}</dd></div>
+      {% endif %}
+      {% if conference.get('venue') and item.venue != conference.venue %}
+        <div><dt>مقرُّ المؤتمر</dt><dd>{{ conference.venue }}</dd></div>
+      {% endif %}
+    </dl>
+    {% endif %}
+
+    <div class="article__meta">
+      <div class="byline">
+        <span class="byline__avatar" aria-hidden="true">{{ (item.author or cfg.title)[:1] }}</span>
+        <span>
+          <b>{{ item.author or conference.get('organizer') or cfg.title }}</b>
+          <small>
+            <time datetime="{{ item.iso }}">{{ item.date_label }}</time>
+            {% if item.words > 60 %} · {{ item.minutes }} دقائق قراءة · {{ item.words }} كلمة{% endif %}
+            {% if engage.get('views') %} · <span data-view-total hidden></span>{% endif %}
+          </small>
+        </span>
+      </div>
+
+      {% if show('article.tools') %}
+      <div class="tools" role="group" aria-label="أدواتُ المقال">
+        <button class="tool" type="button" data-speak aria-label="استماعٌ إلى المقال" title="استماع">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+            <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg><span>استماع</span>
+        </button>
+        <button class="tool" type="button" data-reading-mode aria-label="وضعُ القراءة الهادئ" title="وضع القراءة">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>قراءة</span>
+        </button>
+        <div class="tool tool--group" role="group" aria-label="حجمُ الخطّ">
+          <button type="button" data-size="down" aria-label="تصغيرُ الخطّ">أ−</button>
+          <button type="button" data-size="up" aria-label="تكبيرُ الخطّ">أ+</button>
+        </div>
+        {{ ui.save_button(item) }}
+        <button class="tool" type="button" data-share="{{ item.url }}" data-share-title="{{ item.title }}" title="مشاركة">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <circle cx="18" cy="5" r="2.6" fill="currentColor"/><circle cx="6" cy="12" r="2.6" fill="currentColor"/>
+            <circle cx="18" cy="19" r="2.6" fill="currentColor"/>
+            <path d="M8.3 10.8 15.7 6.6M8.3 13.2l7.4 4.2" stroke="currentColor" stroke-width="1.5"/>
+          </svg><span>مشاركة</span>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if item.video_id %}
+    <div class="article__hero shell">
+      <div class="embed embed--video">
+        <iframe src="https://www.youtube-nocookie.com/embed/{{ item.video_id }}" title="{{ item.title }}"
+                loading="lazy" allowfullscreen
+                allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+      </div>
+    </div>
+  {% elif item.image %}
+    <figure class="article__hero shell">
+      <img src="{{ item.image }}" alt="{{ item.title }}" fetchpriority="high" decoding="async"
+           {% if item.off_center %}style="object-position: {{ item.focus }}"{% endif %}>
+      {% if item.source %}<figcaption>المصدر: {{ item.source }}</figcaption>{% endif %}
+    </figure>
+  {% endif %}
+
+  {{ adx.unit('article_top', 'band') }}
+
+  <div class="article__grid shell">
+    {% if item.headings|length >= 3 and show('article.toc') %}
+    <aside class="toc" aria-label="محتوياتُ المقال">
+      <p class="toc__label">في هذه المادّة</p>
+      <ol class="toc__list">
+        {% for heading in item.headings %}
+          <li class="toc__item toc__item--h{{ heading.level }}">
+            <a href="#{{ heading.anchor }}">{{ heading.text }}</a>
+          </li>
+        {% endfor %}
+      </ol>
+      {{ adx.unit('article_side', 'side') }}
+    </aside>
+    {% endif %}
+
+    <div class="prose{% if item.headings|length < 3 or not show('article.toc') %} prose--wide{% endif %}" id="article-body">
+      {{ item.body|safe }}
+      {% if not item.body %}
+        <p class="prose__empty">لا يتوفّر نصُّ هذه المادّة بعد.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {{ adx.unit('article_end', 'band') }}
+
+  <footer class="article__foot shell">
+    {% if item.categories %}
+      <div class="article__tags">
+        <span>موضوعات:</span>
+        {% for category in item.categories %}
+          <a class="chip chip--sm" href="{{ category.url }}" style="--accent: {{ category.color }}">{{ category.name }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if engage.get('likes') %}
+    <div class="reactbar">
+      <button class="react" type="button" data-like aria-pressed="false" title="أعجبني">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M12 20.4 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        <span class="react__label">أعجبني</span>
+        <span class="react__count" data-like-count>0</span>
+      </button>
+      <p class="reactbar__note">إعجابُك يبقى على جهازك، ولا نجمع عنك شيئاً.</p>
+    </div>
+    {% endif %}
+
+    {% if show('article.share') %}
+    <div class="sharebar">
+      <span>انشر المادّة</span>
+      <a class="sharebar__btn" target="_blank" rel="noopener"
+         href="https://www.facebook.com/sharer/sharer.php?u={{ item.url|absolute|urlencode }}">فيسبوك</a>
+      <a class="sharebar__btn" target="_blank" rel="noopener"
+         href="https://api.whatsapp.com/send?text={{ (item.title ~ ' — ' ~ item.url|absolute)|urlencode }}">واتساب</a>
+      <a class="sharebar__btn" target="_blank" rel="noopener"
+         href="https://twitter.com/intent/tweet?text={{ item.title|urlencode }}&url={{ item.url|absolute|urlencode }}">إكس</a>
+      <a class="sharebar__btn" target="_blank" rel="noopener"
+         href="https://t.me/share/url?url={{ item.url|absolute|urlencode }}&text={{ item.title|urlencode }}">تيليجرام</a>
+      <button class="sharebar__btn" type="button" data-copy="{{ item.url|absolute }}">نسخُ الرابط</button>
+    </div>
+    {% endif %}
+
+    {% if show('article.prevnext') %}
+    <nav class="prevnext" aria-label="مادّةٌ سابقةٌ ولاحقة">
+      {% if next_item %}
+        <a class="prevnext__link" href="{{ next_item.url }}">
+          <span>المادّةُ التالية</span><b>{{ next_item.title }}</b>
+        </a>
+      {% endif %}
+      {% if prev_item %}
+        <a class="prevnext__link prevnext__link--prev" href="{{ prev_item.url }}">
+          <span>المادّةُ السابقة</span><b>{{ prev_item.title }}</b>
+        </a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </footer>
+</article>
+
+{% if engage.get('comments') %}
+<section class="comments shell" data-comments="{{ item.section }}:{{ item.id }}" aria-label="التعليقات">
+  <header class="comments__head">
+    <h2>التعليقات <span class="comments__count" data-comment-count></span></h2>
+    <p>رأيُك يُنشر باسمٍ تختاره أنت — بلا تسجيلٍ ولا بريد.</p>
+  </header>
+
+  <form class="comment-form" data-comment-form novalidate>
+    <div class="comment-form__row">
+      <input class="field__input" type="text" name="name" maxlength="40" placeholder="اسمُك (اختياري)" autocomplete="nickname">
+    </div>
+    <label class="comment-form__trap" aria-hidden="true">
+      اترك هذا الحقل فارغاً<input type="text" name="website" tabindex="-1" autocomplete="off">
+    </label>
+    <textarea class="field__input" name="body" rows="3" maxlength="1200" required
+              placeholder="اكتب تعليقك… رأيٌ أو سؤالٌ أو إضافةٌ إلى المادّة."></textarea>
+    <div class="comment-form__foot">
+      <p class="comment-form__note" data-comment-note hidden></p>
+      <button class="btn" type="submit">نشرُ التعليق</button>
+    </div>
+  </form>
+
+  <ul class="comment-list" data-comment-list>
+    <li class="comment comment--empty">جارٍ تحميلُ التعليقات…</li>
+  </ul>
+</section>
+{% endif %}
+
+{% if related and show('article.related') %}
+<section class="strip shell" aria-label="موادُّ ذاتُ صلة">
+  {{ ui.section_head('اقرأ أيضاً', 'موادُّ تشترك مع هذه في الموضوع أو القسم') }}
+  <div class="grid grid--4">
+    {% for other in related %}{{ ui.card(other, 'standard', dek=false) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": ("VideoObject" if item.video_id else ("Event" if item.display == "agenda" else ("Person" if item.display == "people" else ("ImageObject" if item.display == "gallery" else "NewsArticle")))),
+  "headline": item.title[:110],
+  "name": item.title,
+  "description": item.dek,
+  "inLanguage": "ar",
+  "datePublished": item.iso,
+  "dateModified": item.iso,
+  "url": item.url|absolute,
+  "mainEntityOfPage": {"@type": "WebPage", "@id": item.url|absolute},
+  "image": [item.poster] if item.poster else [],
+  "articleSection": item.section_name,
+  "keywords": item.categories|map(attribute='name')|join(', '),
+  "wordCount": item.words,
+  "timeRequired": ("PT" ~ item.minutes ~ "M"),
+  "embedUrl": ("https://www.youtube.com/embed/" ~ item.video_id) if item.video_id else None,
+  "uploadDate": item.iso if item.video_id else None,
+  "thumbnailUrl": item.poster if item.video_id else None,
+  "author": {"@type": "Person", "name": item.author} if item.author else {"@type": "Organization", "name": cfg.title},
+  "publisher": {
+    "@type": "Organization", "name": cfg.title,
+    "logo": {"@type": "ImageObject", "url": (cfg.url ~ "/assets/img/icon-512.png")}
+  },
+  "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".article__title", ".article__dek"]},
+  "startDate": item.iso if item.display == "agenda" else None,
+  "eventStatus": "https://schema.org/EventScheduled" if item.display == "agenda" else None,
+  "location": {
+    "@type": "Place",
+    "name": (item.venue or conference.get("venue", "")),
+    "address": conference.get("address", "")
+  } if item.display == "agenda" else None,
+  "jobTitle": item.role if item.display == "people" and item.role else None,
+  "affiliation": conference.get("organizer") if item.display == "people" else None
+}|tojson }}
+</script>
+<script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "الرئيسيّة", "item": cfg.url ~ "/"},
+    {"@type": "ListItem", "position": 2, "name": section.many, "item": section.url|absolute},
+    {"@type": "ListItem", "position": 3, "name": item.title, "item": item.url|absolute}
+  ]
+}|tojson }}
+</script>
+{% endblock %}

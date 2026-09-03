@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>انتقل العنوان | {{ cfg.title }}</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ target|absolute }}">
+<meta http-equiv="refresh" content="0; url={{ target }}">
+<style>
+  body { font-family: system-ui, sans-serif; background:#FBFAF7; color:#15141B;
+         display:grid; place-items:center; min-height:100vh; margin:0; text-align:center; }
+  a { color:#16597D; font-weight:700; }
+</style>
+</head>
+<body>
+  <div>
+    <p>انتقل هذا العنوان إلى مكانٍ جديد.</p>
+    <p><a href="{{ target }}">تابع إلى {{ cfg.title }} ←</a></p>
+  </div>
+  <script>location.replace({{ target|tojson }});</script>
+</body>
+</html>

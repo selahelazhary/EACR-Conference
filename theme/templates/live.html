@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}قراءةٌ مباشرة | {{ cfg.title }}{% endblock %}
+{% block description %}جارٍ فتحُ المادّة المطلوبة من موقع المؤتمر — لحظةً من فضلك حتّى يكتمل التحميل.{% endblock %}
+{% block head %}<meta name="robots" content="noindex, follow">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ asset('css/article.css') }}">{% endblock %}
+{% block body_class %}is-article{% endblock %}
+
+{% block content %}
+<article class="article" data-article>
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">قراءةٌ مباشرة</li></ol>
+    </nav>
+  </div>
+
+  <h1 class="visually-hidden">قراءةُ المادّة</h1>
+
+  <div class="shell live" id="live-root">
+    <p class="live__status" id="live-status">جارٍ تحميلُ المادّة…</p>
+  </div>
+</article>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ asset('js/read.js') }}" defer></script>
+{% endblock %}

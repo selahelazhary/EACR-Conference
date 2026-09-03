@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "macros.html" as ui %}
+{% import "ads.html" as adx %}
+
+{% block title %}أرشيفُ المنصّة | {{ cfg.title }}{% endblock %}
+{% block description %}كلُّ ما نُشر على موقع المؤتمر مرتّباً بالسنة والشهر — أرشيفٌ كاملٌ قابلٌ للتصفّح.{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+  <div class="shell">
+    <nav class="crumbs" aria-label="مسارُ التصفّح">
+      <ol><li><a href="/">الرئيسيّة</a></li><li aria-current="page">الأرشيف</li></ol>
+    </nav>
+    <h1 class="pagehead__title">الأرشيف</h1>
+    <p class="pagehead__dek">{{ site.items|length }} مادّةً منذ انطلاق المنصّة.</p>
+  </div>
+</header>
+
+<section class="shell section-body">
+  {{ adx.unit('list_top', 'band') }}
+  {% if archive %}
+    {% for year, months in archive %}
+      <section class="archive-year">
+        <h2 class="archive-year__title"><span>{{ year }}</span></h2>
+        {% for month, items in months %}
+          <div class="archive-month">
+            <h3 class="archive-month__title">
+              {{ ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'][month - 1] }}
+              <small>{{ items|length }}</small>
+            </h3>
+            <ul class="archive-list">
+              {% for item in items %}
+                <li style="--accent: {{ item.accent }}">
+                  <span class="archive-list__tag">{{ item.section_one or item.section_name }}</span>
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+                  <time datetime="{{ item.iso }}">{{ item.date_label }}</time>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </section>
+    {% endfor %}
+  {% else %}
+    {{ ui.empty_state('الأرشيفُ فارغٌ حتّى الآن.') }}
+  {% endif %}
+</section>
+{% endblock %}

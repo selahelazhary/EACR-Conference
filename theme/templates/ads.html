@@ -1,0 +1,41 @@
+{# ───── وحداتُ الإعلان ─────────────────────────────────────────
+   القالبُ يضع صندوقاً فارغاً باسم الموضع فحسب. الجافاسكربت (ads.js)
+   هو الذي يبني وسمَ أدسنس حين يقترب الصندوقُ من الشاشة، ويطويه إن
+   لم يأتِ إعلان. وإن كانت الإعلاناتُ مُطفأةً في site.yml لم يُطبع شيء.
+   ───────────────────────────────────────────────────────── #}
+
+{% macro head() %}
+{% if ads.client %}
+{# وسمُ إثبات الملكيّة — يقرؤه أدسنس عند مراجعة الموقع، ويبقى بعدها #}
+<meta name="google-adsense-account" content="{{ ads.client }}">
+{% endif %}
+{% if ads.active %}
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+{% if ads.live %}
+<link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">
+<script async src="{{ ads.script_url }}" crossorigin="anonymous"></script>
+{% endif %}
+<script>window.EACR_ADS={{ ads.to_json()|safe }};</script>
+{% endif %}
+{% endmacro %}
+
+{# variant: band · flow · side · panel #}
+{% macro unit(place, variant='band', label=true) %}
+{% if ads.has(place) %}
+<aside class="ad ad--{{ variant }}" data-ad="{{ place }}"{% if not label %} data-ad-bare="1"{% endif %}
+       role="complementary" aria-label="{{ ads.label }}"></aside>
+{% endif %}
+{% endmacro %}
+
+{# وحدةٌ تُدرَج بين بطاقات شبكةٍ فتأخذ خانةَ بطاقة #}
+{% macro cell(place) %}
+{% if ads.has(place) %}
+<aside class="ad ad--cell" data-ad="{{ place }}" role="complementary" aria-label="{{ ads.label }}"></aside>
+{% endif %}
+{% endmacro %}
+
+{% macro scripts() %}
+{% if ads.active %}
+<script src="{{ asset('js/ads.js') }}" defer></script>
+{% endif %}
+{% endmacro %}
