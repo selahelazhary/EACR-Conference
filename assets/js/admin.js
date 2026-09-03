@@ -1882,7 +1882,7 @@
           </label>
           <label class="field">
             <span class="field__label">الشعارُ النصّي (تحت الاسم)</span>
-            <input class="field__input" data-id="tagline" value="${esc(id.tagline || '')}" placeholder="المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦">
+            <input class="field__input" data-id="tagline" value="${esc(id.tagline || '')}" placeholder="المؤتمرُ السنوي للجمعيّة المصريّة لأبحاث السرطان ٢٠٢٦">
           </label>
           <label class="field">
             <span class="field__label">وصفُ الموقع — يظهر في نتائج البحث</span>
@@ -1920,7 +1920,7 @@
      وفي البيانات المهيكلة التي تقرؤها محرّكاتُ البحث. */
   const CONF_FIELDS = [
     ['التعريف', [
-      ['name', 'اسمُ المؤتمر', 'المؤتمرُ السنويُّ للجمعيّة المصريّة لأبحاث السرطان', 'text'],
+      ['name', 'اسمُ المؤتمر', 'المؤتمرُ السنوي للجمعيّة المصريّة لأبحاث السرطان', 'text'],
       ['edition', 'النسخةُ أو السنة', '٢٠٢٦', 'text'],
       ['organizer', 'الجهةُ المنظِّمة', 'الجمعيّةُ المصريّةُ لأبحاث السرطان', 'text'],
       ['organizer_en', 'اسمُها بالإنجليزيّة', 'Egyptian Association of Cancer Research', 'text']

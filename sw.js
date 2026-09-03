@@ -1,6 +1,6 @@
 /* عاملُ الخدمة — تصفّحٌ سريعٌ وقراءةٌ دون اتّصال. */
 const SITE_TITLE = "EACR Conference";
-const VERSION = 'eacr-0-202609030814';
+const VERSION = 'eacr-0-202609030827';
 const SHELL = `${VERSION}-shell`;
 const PAGES = `${VERSION}-pages`;
 const MEDIA = `${VERSION}-media`;
