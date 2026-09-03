@@ -65,7 +65,7 @@
 
 {# البطاقةُ الأساسيّة — الأنماط: lead · hero · standard · list · compact · rail #}
 {% macro card(item, variant='standard', dek=true) %}
-  <article class="card card--{{ variant }}" data-item="{{ item.id }}" style="--accent: {{ item.accent }}">
+  <article class="card card--{{ variant }}" data-item="{{ item.id }}" data-source="{{ item.origin }}" style="--accent: {{ item.accent }}">
     {% if variant != 'compact' %}
       <a class="card__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
         {{ thumb(item) }}
@@ -86,7 +86,7 @@
 {% endmacro %}
 
 {% macro rank_item(item, index) %}
-  <li class="rank" data-item="{{ item.id }}">
+  <li class="rank" data-item="{{ item.id }}" data-source="{{ item.origin }}">
     <span class="rank__num" style="--accent: {{ item.accent }}">{{ '%02d'|format(index) }}</span>
     <div>
       <a class="rank__title" href="{{ item.url }}">{{ item.title }}</a>
@@ -160,7 +160,7 @@
 
 {# بطاقةُ فعاليّة: موعدٌ ومكانٌ قبل العنوان — هذا ما يبحث عنه الزائر #}
 {% macro event_card(item, compact=false) %}
-  <article class="event{% if compact %} event--compact{% endif %}" data-item="{{ item.id }}" style="--accent: {{ item.accent }}">
+  <article class="event{% if compact %} event--compact{% endif %}" data-item="{{ item.id }}" data-source="{{ item.origin }}" style="--accent: {{ item.accent }}">
     {{ date_badge(item) }}
     <div class="event__body">
       <h3 class="event__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
@@ -195,7 +195,7 @@
 
 {# بطاقةُ متحدّث: وجهٌ دائريٌّ واسمٌ وصفة #}
 {% macro person_card(item) %}
-  <article class="person" data-item="{{ item.id }}" style="--accent: {{ item.accent }}">
+  <article class="person" data-item="{{ item.id }}" data-source="{{ item.origin }}" style="--accent: {{ item.accent }}">
     <a class="person__face" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
       {% if item.poster %}
         <img src="{{ item.poster }}" alt="" loading="lazy" decoding="async"
@@ -213,7 +213,7 @@
 
 {# بلاطةُ معرض: الصورةُ هي المنشورُ، والعنوانُ يظهر عند المرور #}
 {% macro gallery_tile(item) %}
-  <a class="tile" href="{{ item.url }}" data-item="{{ item.id }}" style="--accent: {{ item.accent }}">
+  <a class="tile" href="{{ item.url }}" data-item="{{ item.id }}" data-source="{{ item.origin }}" style="--accent: {{ item.accent }}">
     {% if item.poster %}
       <img src="{{ item.poster }}" alt="{{ item.title }}" loading="lazy" decoding="async"
            {% if item.off_center %}style="object-position: {{ item.focus }}"{% endif %}>

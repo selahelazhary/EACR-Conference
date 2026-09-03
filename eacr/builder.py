@@ -87,14 +87,13 @@ class Site:
 
 
 def collect(config: SiteConfig | None = None) -> Site:
-    """يجمع المحتوى من اللقطة ومن الملفّات المحلّيّة في كائنٍ واحد."""
+    """يجمع منشورات الموقع من لقطة Firebase وحدها."""
     config = config or load_config()
     snapshot = load_snapshot()
     config.merge_live(snapshot.get("site_config"))
 
     topics, bundles = content_mod.build_topics(snapshot.get("categories"))
     items = content_mod.from_snapshot(snapshot, config, topics, bundles)
-    items += content_mod.from_markdown(config, topics, bundles)
     items = content_mod.dedupe(items)
 
     # العدُّ بعد إزالة التكرار، ثمّ إسقاطُ الموضوعات التي لا تجمع منشورين

@@ -15,7 +15,7 @@
     <span class="ticker__tag"><span class="ticker__pulse" aria-hidden="true"></span>الأحدث</span>
     <div class="ticker__track" id="ticker-track">
       {% for item in latest[:8] %}
-        <a href="{{ item.url }}" data-item="{{ item.id }}"><b>{{ item.section_one or item.section_name }}</b>{{ item.title }}</a>
+        <a href="{{ item.url }}" data-item="{{ item.id }}" data-source="{{ item.origin }}"><b>{{ item.section_one or item.section_name }}</b>{{ item.title }}</a>
       {% endfor %}
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 {% if lead %}
 <section class="lead-grid shell" aria-label="أبرزُ الأخبار">
-  <article class="lead" data-item="{{ lead.id }}" style="--accent: {{ lead.accent }}">
+  <article class="lead" data-item="{{ lead.id }}" data-source="{{ lead.origin }}" style="--accent: {{ lead.accent }}">
     <a class="lead__media" href="{{ lead.url }}" tabindex="-1" aria-hidden="true">
       {{ ui.thumb(lead, sizes='(max-width: 900px) 100vw, 62vw', eager=true) }}
     </a>

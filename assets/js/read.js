@@ -83,7 +83,9 @@
   (async () => {
     let item = null;
     try {
-      const response = await fetch(`${DB}/${encodeURIComponent(type)}/${encodeURIComponent(id)}.json`);
+      const response = await fetch(`${DB}/${encodeURIComponent(type)}/${encodeURIComponent(id)}.json`, {
+        cache: 'no-store'
+      });
       item = await response.json();
     } catch {
       fail('تعذّر الاتّصالُ بالمحتوى');

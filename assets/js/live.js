@@ -10,10 +10,10 @@
   'use strict';
 
   const DB = (window.EACR_DB || '').replace(/\/$/, '');
-  const SECTIONS = Array.isArray(window.EACR_SECTIONS) ? window.EACR_SECTIONS : [];
-  if (!DB || !SECTIONS.length) return;
+  let sections = Array.isArray(window.EACR_SECTIONS) ? window.EACR_SECTIONS : [];
+  if (!DB || !sections.length) return;
 
-  const BY_ID = Object.fromEntries(SECTIONS.map((s) => [s.id, s]));
+  let byId = Object.fromEntries(sections.map((s) => [s.id, s]));
   const CACHE_KEY = 'eacr:live';
   /* الذاكرةُ للرسم الأوّل لا للحقيقة: نعرض المحفوظَ فوراً ثمّ نسأل
      القاعدةَ في كلِّ فتحةِ صفحة. فمن نشر من اللوحة ثمّ فتح الموقعَ
@@ -70,7 +70,10 @@
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await fetch(`${DB}/${encodeURIComponent(section.id)}.json`, { signal: controller.signal });
+      const response = await fetch(`${DB}/${encodeURIComponent(section.id)}.json`, {
+        signal: controller.signal,
+        cache: 'no-store'
+      });
       if (!response.ok) return [];
       const data = await response.json();
       if (!data || typeof data !== 'object') return [];
@@ -103,8 +106,31 @@
     }
   }
 
+  async function refreshSections() {
+    try {
+      const response = await fetch(`${DB}/site_config/sections.json`, { cache: 'no-store' });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (!Array.isArray(data)) return;
+
+      const configured = data
+        .filter((section) => section && typeof section === 'object' && String(section.id || '').trim())
+        .map((section) => ({
+          ...(byId[section.id] || {}),
+          ...section,
+          id: String(section.id).trim()
+        }));
+      if (!configured.length) return;
+      sections = configured;
+      byId = Object.fromEntries(sections.map((section) => [section.id, section]));
+      window.EACR_SECTIONS = sections;
+    } catch {
+      /* نستخدمُ تعريفاتِ البناء عند تعذّر الوصول إلى الإعدادات الحيّة */
+    }
+  }
+
   async function fetchAll() {
-    const groups = await Promise.all(SECTIONS.map(fetchSection));
+    const groups = await Promise.all(sections.map(fetchSection));
     const items = groups.flat().sort((a, b) => b.stamp - a.stamp).slice(0, 120);
     writeCache(items);
     return items;
@@ -139,7 +165,7 @@
   const freshTag = '<span class="fresh-tag">جديد</span>';
 
   const standardCard = (item) => `
-    <article class="card card--standard is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
+    <article class="card card--standard is-fresh" data-item="${escape(item.id)}" data-source="firebase" style="--accent: ${escape(item.accent)}">
       <a class="card__media" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">${thumb(item)}</a>
       <div class="card__body">
         <span class="kicker"><span class="kicker__dot"></span>${escape(item.sectionName)}${freshTag}</span>
@@ -160,7 +186,7 @@
            <img src="${escape(item.image)}" alt="" loading="lazy" decoding="async"></a>`
       : '';
     return `
-    <article class="event is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
+    <article class="event is-fresh" data-item="${escape(item.id)}" data-source="firebase" style="--accent: ${escape(item.accent)}">
       ${badge}
       <div class="event__body">
         <h3 class="event__title"><a href="${readUrl(item)}">${escape(item.title)}</a> ${freshTag}</h3>
@@ -175,7 +201,7 @@
   };
 
   const personCard = (item) => `
-    <article class="person is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
+    <article class="person is-fresh" data-item="${escape(item.id)}" data-source="firebase" style="--accent: ${escape(item.accent)}">
       <a class="person__face" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">
         ${item.image
           ? `<img src="${escape(item.image)}" alt="" loading="lazy" decoding="async">`
@@ -186,7 +212,7 @@
     </article>`;
 
   const galleryTile = (item) => `
-    <a class="tile is-fresh" href="${readUrl(item)}" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
+    <a class="tile is-fresh" href="${readUrl(item)}" data-item="${escape(item.id)}" data-source="firebase" style="--accent: ${escape(item.accent)}">
       ${item.image
         ? `<img src="${escape(item.image)}" alt="${escape(item.title)}" loading="lazy" decoding="async">`
         : `<span class="tile__initial" aria-hidden="true">${escape(item.title.slice(0, 1))}</span>`}
@@ -194,7 +220,7 @@
     </a>`;
 
   const videoCard = (item) => `
-    <article class="card card--video is-fresh" data-item="${escape(item.id)}" style="--accent: ${escape(item.accent)}">
+    <article class="card card--video is-fresh" data-item="${escape(item.id)}" data-source="firebase" style="--accent: ${escape(item.accent)}">
       <a class="card__media" href="${readUrl(item)}" tabindex="-1" aria-hidden="true">
         ${thumb(item)}<span class="play" aria-hidden="true"></span>
       </a>
@@ -227,6 +253,11 @@
   const placed = new Set();
 
   const paint = (all) => {
+    const liveIds = new Set(all.map((item) => item.id));
+    document.querySelectorAll('[data-source="firebase"][data-item]').forEach((node) => {
+      if (!liveIds.has(node.getAttribute('data-item'))) node.remove();
+    });
+
     const page = document.querySelector('[data-live-section]');
     const pageSection = page ? page.getAttribute('data-live-section') : '';
     const homeGrid = document.getElementById('latest-grid');
@@ -246,14 +277,14 @@
     /* الرئيسيّة: أحدثُ ثلاثةٍ في الشبكة، وأربعةٌ في الشريط */
     if (homeGrid) {
       const forHome = fresh
-        .filter((item) => (BY_ID[item.section] || {}).display !== 'gallery')
+        .filter((item) => (byId[item.section] || {}).display !== 'gallery')
         .slice(0, 3)
         .map((item) => ({ ...item, display: 'standard' }));
       inject(homeGrid, forHome);
       const track = document.getElementById('ticker-track');
       if (track) {
         track.insertAdjacentHTML('afterbegin', fresh.slice(0, 4).map((item) => `
-          <a href="${readUrl(item)}" data-item="${escape(item.id)}"><b>${escape(item.sectionName)}</b>${escape(item.title)}</a>`).join(''));
+          <a href="${readUrl(item)}" data-item="${escape(item.id)}" data-source="firebase"><b>${escape(item.sectionName)}</b>${escape(item.title)}</a>`).join(''));
       }
     }
 
@@ -265,6 +296,8 @@
   const run = async () => {
     const homeGrid = document.getElementById('latest-grid');
     const cached = readCache();
+
+    await refreshSections();
 
     /* ١. المحفوظُ يُرسم فوراً إن وُجد */
     if (cached) paint(cached);
