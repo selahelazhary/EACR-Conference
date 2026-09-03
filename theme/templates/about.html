@@ -19,15 +19,6 @@
   </div>
 </header>
 
-{% if conference.get('patron', {}).get('name') or conference.get('president', {}).get('name') %}
-<section class="band band--patronage" aria-label="رعايةُ المؤتمر">
-  <div class="shell dignitaries">
-    {{ ui.dignitary(conference.get('patron')) }}
-    {{ ui.dignitary(conference.get('president')) }}
-  </div>
-</section>
-{% endif %}
-
 <section class="shell section-body about">
   <div class="about__grid">
     <div class="prose prose--wide">

@@ -1,4 +1,5 @@
 {% import "ads.html" as adx %}
+{% import "macros.html" as ui %}
 <!doctype html>
 <html lang="ar" dir="rtl" data-theme="auto" {{ layout_attrs|safe }}>
 <head>
@@ -236,6 +237,15 @@ window.EACR_SITE={{ {"title": cfg.title, "sections": section_labels}|tojson }};<
 </main>
 
 <footer class="footer">
+  {% if show('footer.patronage') and (conference.get('patron', {}).get('name') or conference.get('president', {}).get('name')) %}
+  <div class="shell footer__patronage">
+    <div class="dignitaries">
+      {{ ui.dignitary(conference.get('patron')) }}
+      {{ ui.dignitary(conference.get('president')) }}
+    </div>
+  </div>
+  {% endif %}
+
   <div class="shell footer__grid">
     <div class="footer__brand">
       <img class="footer__seal" src="{{ identity.get('logo') or asset('img/logo.png') }}" width="84" height="84"

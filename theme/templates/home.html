@@ -72,16 +72,6 @@
 </section>
 {% endif %}
 
-{# ═══ الرعايةُ ورئاسةُ المؤتمر ══════════════════════════════ #}
-{% if show('home.patronage') and (conference.get('patron', {}).get('name') or conference.get('president', {}).get('name')) %}
-<section class="band band--patronage" aria-label="رعايةُ المؤتمر">
-  <div class="shell dignitaries">
-    {{ ui.dignitary(conference.get('patron')) }}
-    {{ ui.dignitary(conference.get('president')) }}
-  </div>
-</section>
-{% endif %}
-
 {% if lead %}
 <section class="lead-grid shell" aria-label="أبرزُ الأخبار">
   <article class="lead" style="--accent: {{ lead.accent }}">
